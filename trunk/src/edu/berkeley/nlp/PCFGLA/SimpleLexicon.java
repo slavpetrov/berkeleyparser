@@ -4,6 +4,7 @@ import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.util.ArrayUtil;
+import edu.berkeley.nlp.util.Counter;
 import edu.berkeley.nlp.util.Indexer;
 import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.ScalingTools;
@@ -151,7 +152,7 @@ public class SimpleLexicon implements java.io.Serializable, Lexicon {
    * Trains this lexicon on the Collection of trees.
    */
   public void trainTree(Tree<StateSet> trainTree, double randomness, Lexicon oldLexicon,
-  		boolean secondHalf, boolean noSmoothing) {
+  		boolean secondHalf, boolean noSmoothing, int unusedUnkThreshold) {
   	// scan data
     //for all substates that the word's preterminal tag has
     double sentenceScore = 0;
@@ -914,5 +915,14 @@ public class SimpleLexicon implements java.io.Serializable, Lexicon {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public Counter<String> getWordCounter() {
+		return null;
+	}
+
+	public void tieRareWordStats(int threshold) {
+		return;
+	}
+
 	
 }

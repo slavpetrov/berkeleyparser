@@ -140,6 +140,9 @@ public class ConditionalTrainer {
 
 		@Option(name = "-sm2", usage = "Lexicon smoothing parameter 2)")
 		public double smoothingParameter2 = 0.1;
+		
+		@Option(name = "-rare", usage = "Rare word threshold (Default 4)")
+		public int rare = 4;
 
 		@Option(name = "-spath", usage = "Whether or not to store the best path info (true/false) (Default: true)")
 		public boolean findClosedUnaryPaths = true;
@@ -515,7 +518,7 @@ public class ConditionalTrainer {
 			boolean secondHalf = false;
 			for (Tree<StateSet> stateSetTree : trainStateSetTrees) {
 				secondHalf = (n++>nTrees/2.0); 
-				lexicon.trainTree(stateSetTree, randomness, null, secondHalf,false);
+				lexicon.trainTree(stateSetTree, randomness, null, secondHalf,false,opts.rare);
 				grammar.tallyUninitializedStateSetTree(stateSetTree);
 			}
 			lexicon.optimize();
@@ -782,7 +785,7 @@ public class ConditionalTrainer {
 	//  			lexicon = new SimpleLexicon(grammar.numSubStates,	SophisticatedLexicon.DEFAULT_SMOOTHING_CUTOFF, null, new NoSmoothing(), opts.unkThresh);
 	  			lexicon = maxLexicon.copyLexicon();
 	  			boolean updateOnlyLexicon = false;
-	  			double trainingLikelihood = doOneEStep(previousGrammar,previousLexicon,grammar,lexicon,trainStateSetTrees,updateOnlyLexicon);  // The training LL of previousGrammar/previousLexicon
+	  			double trainingLikelihood = doOneEStep(previousGrammar,previousLexicon,grammar,lexicon,trainStateSetTrees,updateOnlyLexicon,opts.rare);  // The training LL of previousGrammar/previousLexicon
 	  			System.out.println("done: "+trainingLikelihood);
 	
 	  			// 3) Perform the M-Step
@@ -866,7 +869,7 @@ public class ConditionalTrainer {
 	 * @return
 	 */
 	public static double doOneEStep(Grammar previousGrammar, Lexicon previousLexicon, Grammar grammar, Lexicon lexicon, StateSetTreeList trainStateSetTrees,
-			boolean updateOnlyLexicon) {
+			boolean updateOnlyLexicon, int unkThreshold) {
 		boolean secondHalf = false;
 		ArrayParser parser = new ArrayParser(previousGrammar,previousLexicon);
 		double trainingLikelihood = 0;
@@ -885,7 +888,7 @@ public class ConditionalTrainer {
 				}
 			}
 			else {
-			  lexicon.trainTree(stateSetTree, -1, previousLexicon, secondHalf,noSmoothing);
+			  lexicon.trainTree(stateSetTree, -1, previousLexicon, secondHalf,noSmoothing,unkThreshold);
 				if (!updateOnlyLexicon) grammar.tallyStateSetTree(stateSetTree, previousGrammar);      // E Step
 				trainingLikelihood  += ll;  // there are for some reason some sentences that are unparsable 
 			}
