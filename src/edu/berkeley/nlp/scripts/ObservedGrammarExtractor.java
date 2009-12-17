@@ -92,7 +92,7 @@ public class ObservedGrammarExtractor {
 			Tree<String> tree = trainTrees.get(index++);
 			secondHalf = (index>nTrees/2.0); 
 			setScores(stateSetTree, tree);
-			lexicon.trainTree(stateSetTree, 0, null, secondHalf,false);
+			lexicon.trainTree(stateSetTree, 0, null, secondHalf,false,4);
 			grammar.tallyStateSetTree(stateSetTree, grammar);
 		}
 		lexicon.optimize();

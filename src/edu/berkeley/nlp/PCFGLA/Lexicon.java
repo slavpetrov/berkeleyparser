@@ -8,6 +8,7 @@ import java.util.List;
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
+import edu.berkeley.nlp.util.Counter;
 
 /**
  * @author petrov
@@ -22,7 +23,7 @@ public interface Lexicon {
 	public String getSignature(String word, int loc);
 	public void logarithmMode();
 	public boolean isLogarithmMode();
-	public void trainTree(Tree<StateSet> trainTree, double randomness, Lexicon oldLexicon, boolean secondHalf, boolean noSmoothing); 
+	public void trainTree(Tree<StateSet> trainTree, double randomness, Lexicon oldLexicon, boolean secondHalf, boolean noSmoothing, int unkThreshold); 
 	public void setSmoother(Smoother smoother);
 	public Lexicon splitAllStates(int[] counts, boolean moreSubstatesThanCounts, int mode);
 	public void mergeStates(boolean[][][] mergeThesePairs, double[][] mergeWeights);
@@ -32,6 +33,7 @@ public interface Lexicon {
 	public Lexicon copyLexicon();
 	public void removeUnlikelyTags(double threshold, double exponent);
 	public double getPruningThreshold();
-
+    public void tieRareWordStats(int threshold);
+    public Counter<String> getWordCounter();
 	public void explicitlyComputeScores(int finalLevel);
 }

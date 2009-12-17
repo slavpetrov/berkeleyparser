@@ -150,7 +150,7 @@ public class GrammarMerger {
 		ArrayParser newParser = new ArrayParser(newGrammar, lexicon);
 		SophisticatedLexicon newLexicon = new SophisticatedLexicon(newNumSubStatesArray,SophisticatedLexicon.DEFAULT_SMOOTHING_CUTOFF, lexicon.getSmoothingParams(), lexicon.getSmoother(),filter);
 		boolean updateOnlyLexicon = true;
-		double trainingLikelihood = GrammarTrainer.doOneEStep(newGrammar, lexicon, null, newLexicon, trainStateSetTrees, updateOnlyLexicon);
+		double trainingLikelihood = GrammarTrainer.doOneEStep(newGrammar, lexicon, null, newLexicon, trainStateSetTrees, updateOnlyLexicon, 4 /*opts.rare*/);
 		
 //		int n = 0;
 //		for (Tree<StateSet> stateSetTree : trainStateSetTrees) {
@@ -204,7 +204,7 @@ public class GrammarMerger {
 				else { 
 					trainingLikelihood += ll; 
 					newGrammar.tallyStateSetTree(stateSetTree, previousGrammar);      // E Step
-					newLexicon.trainTree(stateSetTree, -1, previousLexicon, secondHalf,false);
+					newLexicon.trainTree(stateSetTree, -1, previousLexicon, secondHalf,false,4 /*opts.rare*/);
 				}
 			}
 			System.out.println("The training LL is "+trainingLikelihood);

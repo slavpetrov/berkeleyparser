@@ -114,8 +114,11 @@ public class GrammarTrainer {
 		@Option(name = "-sm1", usage = "Lexicon smoothing parameter 1")
 		public double smoothingParameter1 = 0.5;
 
-		@Option(name = "-sm2", usage = "Lexicon smoothing parameter 2)")
+		@Option(name = "-sm2", usage = "Lexicon smoothing parameter 2")
 		public double smoothingParameter2 = 0.1;
+
+		@Option(name = "-rare", usage = "Rare word threshold (Default 4)")
+		public int rare = 4;
 
 		@Option(name = "-spath", usage = "Whether or not to store the best path info (true/false) (Default: true)")
 		public boolean findClosedUnaryPaths = true;
@@ -313,7 +316,7 @@ public class GrammarTrainer {
     
     if (opts.simpleLexicon){
     	System.out.println("Replacing words which have been seen less than 5 times with their signature.");
-    	Corpus.replaceRareWords(trainStateSetTrees,new SimpleLexicon(numSubStatesArray,-1), Math.abs(5));
+    	Corpus.replaceRareWords(trainStateSetTrees,new SimpleLexicon(numSubStatesArray,-1), opts.rare);
     }
 
 
@@ -328,7 +331,7 @@ public class GrammarTrainer {
 			boolean secondHalf = false;
 			for (Tree<StateSet> stateSetTree : trainStateSetTrees) {
 				secondHalf = (n++>nTrees/2.0); 
-				lexicon.trainTree(stateSetTree, randomness, null, secondHalf,false);
+				lexicon.trainTree(stateSetTree, randomness, null, secondHalf,false,opts.rare);
 				grammar.tallyUninitializedStateSetTree(stateSetTree);
 			}
 			lexicon.optimize();
@@ -393,7 +396,7 @@ public class GrammarTrainer {
   					new SimpleLexicon(newNumSubStatesArray,-1,smoothParams, maxLexicon.getSmoother() ,filter, trainStateSetTrees) :
   					new SophisticatedLexicon(newNumSubStatesArray,SophisticatedLexicon.DEFAULT_SMOOTHING_CUTOFF, maxLexicon.getSmoothingParams(), maxLexicon.getSmoother(), maxLexicon.getPruningThreshold());
     		boolean updateOnlyLexicon = true;
-    		double trainingLikelihood = GrammarTrainer.doOneEStep(grammar, maxLexicon, null, lexicon, trainStateSetTrees, updateOnlyLexicon);
+    		double trainingLikelihood = GrammarTrainer.doOneEStep(grammar, maxLexicon, null, lexicon, trainStateSetTrees, updateOnlyLexicon, opts.rare);
 //    		System.out.println("The training LL is "+trainingLikelihood);
     		lexicon.optimize();//Grammar.RandomInitializationType.INITIALIZE_WITH_SMALL_RANDOMIZATION);   // M Step    		
 
@@ -431,7 +434,7 @@ public class GrammarTrainer {
   					new SimpleLexicon(grammar.numSubStates,-1,smoothParams, lexicon.getSmoother() ,filter, trainStateSetTrees) :
   					new SophisticatedLexicon(grammar.numSubStates,	SophisticatedLexicon.DEFAULT_SMOOTHING_CUTOFF, lexicon.getSmoothingParams(), lexicon.getSmoother(), lexicon.getPruningThreshold());
   			boolean updateOnlyLexicon = false;
-  			double trainingLikelihood = doOneEStep(previousGrammar,previousLexicon,grammar,lexicon,trainStateSetTrees,updateOnlyLexicon);  // The training LL of previousGrammar/previousLexicon
+  			double trainingLikelihood = doOneEStep(previousGrammar,previousLexicon,grammar,lexicon,trainStateSetTrees,updateOnlyLexicon, opts.rare);  // The training LL of previousGrammar/previousLexicon
   			System.out.println("done: "+trainingLikelihood);
 
   			// 3) Perform the M-Step
@@ -493,7 +496,7 @@ public class GrammarTrainer {
 	 * @return
 	 */
 	public static double doOneEStep(Grammar previousGrammar, Lexicon previousLexicon, Grammar grammar, Lexicon lexicon, StateSetTreeList trainStateSetTrees,
-			boolean updateOnlyLexicon) {
+			boolean updateOnlyLexicon, int unkThreshold) {
 		boolean secondHalf = false;
 		ArrayParser parser = new ArrayParser(previousGrammar,previousLexicon);
 		double trainingLikelihood = 0;
@@ -512,12 +515,13 @@ public class GrammarTrainer {
 				}
 			}
 			else {
-			  lexicon.trainTree(stateSetTree, -1, previousLexicon, secondHalf,noSmoothing);
+			  lexicon.trainTree(stateSetTree, -1, previousLexicon, secondHalf, noSmoothing, unkThreshold);
 				if (!updateOnlyLexicon) grammar.tallyStateSetTree(stateSetTree, previousGrammar);      // E Step
 				trainingLikelihood  += ll;  // there are for some reason some sentences that are unparsable 
 			}
 		}
-		return trainingLikelihood;
+		lexicon.tieRareWordStats(unkThreshold);
+        return trainingLikelihood;
 	}
 
 
