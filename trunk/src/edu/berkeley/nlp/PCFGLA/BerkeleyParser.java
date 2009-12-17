@@ -45,7 +45,7 @@ public class BerkeleyParser  {
 	
 	public static class Options {
 
-		@Option(name = "--gr", required = true, usage = "Grammarfile (Required)\n")
+		@Option(name = "-gr", required = true, usage = "Grammarfile (Required)\n")
 		public String grFileName;
 
 		@Option(name = "-tokenize", usage = "Tokenize input first. (Default: false=text is already tokenized)")
@@ -87,10 +87,10 @@ public class BerkeleyParser  {
 		@Option(name = "-chinese", usage = "Enable some Chinese specific features in the lexicon.")
 		public boolean chinese;
 
-		@Option(name = "--inputFile", usage = "Read input from this file instead of reading it from STDIN.")
+		@Option(name = "-inputFile", usage = "Read input from this file instead of reading it from STDIN.")
 		public String inputFile;
 
-		@Option(name = "--maxLength", usage = "Maximum sentence length (Default = 200).")
+		@Option(name = "-maxLength", usage = "Maximum sentence length (Default = 200).")
 		public int maxLength = 200;
 
 		@Option(name = "-nThreads", usage = "Parse in parallel using n threads (Default: 1).")
@@ -99,7 +99,7 @@ public class BerkeleyParser  {
 		@Option(name = "-kbest", usage = "Output the k best parse max-rule trees (Default: 1).")
 		public int kbest = 1;
 
-		@Option(name = "--outputFile", usage = "Store output in this file instead of printing it to STDOUT.")
+		@Option(name = "-outputFile", usage = "Store output in this file instead of printing it to STDOUT.")
 		public String outputFile;
 	
 		@Option(name = "-useGoldPOS", usage = "Read data in CoNLL format, including gold part of speech tags.")
