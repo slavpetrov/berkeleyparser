@@ -939,7 +939,8 @@ public class SophisticatedLexicon implements java.io.Serializable, Lexicon {
 					if (noSmoothing && c_W == 0)
 						pb_T_W = c_TW / 1;
 					else
-						pb_T_W = c_TW / c_W;
+						pb_T_W = (c_TW + 0.0001 * p_T_U) / (c_W + 0.0001);
+					//	pb_T_W = c_TW / c_W;
 					// System.out.println("c_TW "+c_TW+" c_W "+c_W);
 				} else {
 					// we haven't seen the word enough times to have confidence
