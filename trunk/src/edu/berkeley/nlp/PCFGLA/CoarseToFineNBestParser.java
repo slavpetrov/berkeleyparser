@@ -19,6 +19,8 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser{
 	LazyList[][][] chartBeforeU;
 	LazyList[][][] chartAfterU;
 	int k;
+	List<Double> maxRuleScores;
+	int tmp_k;
 	
 	
 	/**
@@ -291,8 +293,13 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser{
 
   public List<Tree<String>> extractKBestMaxRuleParses(int start, int end, List<String> sentence, int k) {
   	List<Tree<String>> list = new ArrayList<Tree<String>>(k);
+  	maxRuleScores = new ArrayList<Double>(k);
+  	tmp_k = 0;
   	for (int i=0; i<k; i++){
     	Tree<String> tmp = extractBestMaxRuleParse1(start, end, 0, i, sentence);
+    	if (tmp!=null){
+    		maxRuleScores.add(chartAfterU[0][length][0].getKbest(i).score);
+    	}
 //      HyperEdge parentNode = chartAfterU[start][end][0].getKbest(i);
 //      if (parentNode!=null) System.out.println(parentNode.score+" ");
     	if (tmp!=null) list.add(tmp);
@@ -301,6 +308,12 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser{
   	return list;
 
   }
+
+  
+	public double getModelScore(Tree<String> parsedTree) {
+		return maxRuleScores.get(tmp_k++);
+	}
+
   
   /**
    * Returns the best parse for state "state", potentially starting with a unary rule

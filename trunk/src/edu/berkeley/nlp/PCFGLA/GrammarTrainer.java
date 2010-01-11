@@ -60,6 +60,9 @@ public class GrammarTrainer {
 		@Option(name = "-mergeMinIt", usage = "Minimum number of EM iterations after merging (Default: 20)")
 		public int mergeMinIterations = 20;
 
+		@Option(name = "-smoothMaxIt", usage = "Maximum number of EM iterations with smoothing (Default: 10)")
+		public int smoothMaxIterations = 10;
+
 		@Option(name = "-di", usage = "The number of allowed iterations in which the validation likelihood drops. (Default: 6)")
 		public int di = 6;
 
@@ -118,7 +121,7 @@ public class GrammarTrainer {
 		public double smoothingParameter2 = 0.1;
 
 		@Option(name = "-rare", usage = "Rare word threshold (Default 4)")
-		public int rare = 4;
+		public int rare = 20;
 
 		@Option(name = "-spath", usage = "Whether or not to store the best path info (true/false) (Default: true)")
 		public boolean findClosedUnaryPaths = true;
@@ -323,17 +326,25 @@ public class GrammarTrainer {
     
     // If we're training without loading a split grammar, then we run once without splitting.
     if (splitGrammarFile==null) {
-	  	grammar = new Grammar(numSubStatesArray, findClosedUnaryPaths, new NoSmoothing(), null, filter);
-			lexicon = (opts.simpleLexicon) ? 
+    		grammar = new Grammar(numSubStatesArray, findClosedUnaryPaths, new NoSmoothing(), null, filter);
+			Lexicon tmp_lexicon = (opts.simpleLexicon) ? 
 					new SimpleLexicon(numSubStatesArray,-1,smoothParams, new NoSmoothing(),filter, trainStateSetTrees) : 
 					new SophisticatedLexicon(numSubStatesArray,SophisticatedLexicon.DEFAULT_SMOOTHING_CUTOFF,smoothParams, new NoSmoothing(),filter);
 			int n = 0;
 			boolean secondHalf = false;
 			for (Tree<StateSet> stateSetTree : trainStateSetTrees) {
 				secondHalf = (n++>nTrees/2.0); 
-				lexicon.trainTree(stateSetTree, randomness, null, secondHalf,false,opts.rare);
+				tmp_lexicon.trainTree(stateSetTree, randomness, null, secondHalf,false,opts.rare);
+			}
+			lexicon = (opts.simpleLexicon) ? 
+					new SimpleLexicon(numSubStatesArray,-1,smoothParams, new NoSmoothing(),filter, trainStateSetTrees) : 
+					new SophisticatedLexicon(numSubStatesArray,SophisticatedLexicon.DEFAULT_SMOOTHING_CUTOFF,smoothParams, new NoSmoothing(),filter);
+			for (Tree<StateSet> stateSetTree : trainStateSetTrees) {
+				secondHalf = (n++>nTrees/2.0); 
+				lexicon.trainTree(stateSetTree, randomness, tmp_lexicon, secondHalf,false,opts.rare);
 				grammar.tallyUninitializedStateSetTree(stateSetTree);
 			}
+			lexicon.tieRareWordStats(opts.rare);
 			lexicon.optimize();
 			grammar.optimize(randomness);
 			//System.out.println(grammar);
@@ -357,7 +368,7 @@ public class GrammarTrainer {
 //        Smoother lexSmoother = new SmoothAcrossParentSubstate(0.1);
         maxGrammar.setSmoother(grSmoother);
         maxLexicon.setSmoother(lexSmoother);
-        minIterations = maxIterations = 10;
+        minIterations = maxIterations = opts.smoothMaxIterations;
         opString = "smoothing";
     	}
     	else if (splitIndex%3==0) {

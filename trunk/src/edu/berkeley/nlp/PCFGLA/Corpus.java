@@ -153,7 +153,7 @@ public class Corpus {
       	sentences.add("((Y (C (B b) (B b)) (D d)))");
         break;	
       case 6:
-      	sentences.add("((Y (C (B @) (B b)) (E (D d) (D d))))");
+      	sentences.add("((Y (C (B @) (B b)) (E (D d) (D e))))");
       	sentences.add("((Y (C (B b) (D b)) (D d)))");
 //      	sentences.add("((Y (C (K (B b)) (D b)) (Z (D d))))");
 //      	sentences.add("((Y (C (K (N n)) (B b)) (Z (D d))))");
