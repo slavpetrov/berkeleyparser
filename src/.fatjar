@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Wed Dec 30 15:04:02 EST 2009
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=BerkeleyParser_fat.jar
+manifest.mergeall=true
+manifest.mainclass=edu.berkeley.nlp.PCFGLA.BerkeleyParser
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<po|BerkeleyParser>~.settings/;<po|BerkeleyParser>~src/;<po|BerkeleyParser>~.classpath;<po|BerkeleyParser>~.fatjar;<po|BerkeleyParser>~.project;<po|BerkeleyParser>~baseline.gr;<po|BerkeleyParser>~BerkeleyParser_fat.jar
+includes=
