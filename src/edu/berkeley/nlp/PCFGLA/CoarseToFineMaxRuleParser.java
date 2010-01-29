@@ -821,8 +821,8 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 	  	double score = 0;
 	  	Grammar curGrammar = null;
 	  	Lexicon curLexicon = null;
-	  	double[] accurateThresholds =  {-8,-12,-12,-11,-12,-12,-14};
-	  	double[] fastThresholds =  {-8,-9.75,-10,-9.6,-9.66,-8.01,-7.4,-10};
+	  	double[] accurateThresholds =  {-8,-12,-12,-11,-12,-12,-14,-14};
+	  	double[] fastThresholds =  {-8,-9.75,-10,-9.6,-9.66,-8.01,-7.4,-10,-10};
 //	  	double[] accurateThresholds =  {-8,-9,-9,-9,-9,-9,-10};
 //	  	double[] fastThresholds =      {-2,-8,-9,-8,-8,-7.5,-7,-8};
 	  	double[] pruningThreshold = null;
