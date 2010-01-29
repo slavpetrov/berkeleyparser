@@ -4,6 +4,7 @@
 package edu.berkeley.nlp.PCFGLA;
 
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
@@ -77,13 +78,17 @@ public class TreeScorer{
     }
 
     try{
-    	InputStreamReader inputData = (opts.inputFile==null) ? new InputStreamReader(System.in) : new InputStreamReader(new FileInputStream(opts.inputFile), "UTF-8");
-    	PennTreeReader treeReader = new PennTreeReader(inputData);
+    	BufferedReader inputData = (opts.inputFile==null) ? new BufferedReader(new InputStreamReader(System.in)) : new BufferedReader(new InputStreamReader(new FileInputStream(opts.inputFile), "UTF-8"));
     	PrintWriter outputData = (opts.outputFile==null) ? new PrintWriter(new OutputStreamWriter(System.out)) : new PrintWriter(new OutputStreamWriter(new FileOutputStream(opts.outputFile), "UTF-8"), true);
 
     	Tree<String> tree = null;
-    	while(treeReader.hasNext()){
-    		tree = treeReader.next(); 
+    	String line = "";
+    	while((line=inputData.readLine()) != null){
+    		if (line.equals("")) {
+    			outputData.write("\n");
+    			continue;
+    		}
+    		tree = PennTreeReader.parseEasy(line);
     		if (tree.getYield().get(0).equals("")){ // empty tree -> parse failure
     			outputData.write("()\n");
     			continue;

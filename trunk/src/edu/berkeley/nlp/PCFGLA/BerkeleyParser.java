@@ -107,6 +107,10 @@ public class BerkeleyParser  {
 
 		@Option(name = "-dumpPosteriors", usage = "Dump max-rule posteriors to disk.")
 		public boolean dumpPosteriors;
+		
+		@Option(name = "-ec_format", usage = "Use Eugene Charniak's input and output format.")
+		public boolean ec_format;
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -140,7 +144,6 @@ public class BerkeleyParser  {
 			System.err.println("Parsing with "+opts.nThreads+" threads in parallel.");
 			m_parser = new MultiThreadedParserWrapper(parser, opts.nThreads);
 		}
-
 		try{
 			BufferedReader inputData = (opts.inputFile==null) ? new BufferedReader(new InputStreamReader(System.in)) : new BufferedReader(new InputStreamReader(new FileInputStream(opts.inputFile), "UTF-8"));
 			PrintWriter outputData = (opts.outputFile==null) ? new PrintWriter(new OutputStreamWriter(System.out)) : new PrintWriter(new OutputStreamWriter(new FileOutputStream(opts.outputFile), "UTF-8"), true);
@@ -148,6 +151,7 @@ public class BerkeleyParser  {
 			if (opts.tokenize) tokenizer = new PTBLineLexer();
 
 			String line = "";
+			String sentenceID = "";
 			while((line=inputData.readLine()) != null){
 				List<String> sentence = null;
 				List<String> posTags = null;
@@ -169,6 +173,11 @@ public class BerkeleyParser  {
 						posTags.add(tags[0]);
 					}
 				} else {
+					if (opts.ec_format){
+						int breakIndex = line.indexOf(">");
+						sentenceID = line.substring(3,breakIndex-1);
+						line = line.substring(breakIndex+2, line.length()-5);
+					}
 					if (!opts.tokenize) sentence = Arrays.asList(line.split("\\s+"));
 					else {
 						sentence = tokenizer.tokenizeLine(line);
@@ -187,7 +196,7 @@ public class BerkeleyParser  {
 					m_parser.parseThisSentence(sentence);
 					while (m_parser.hasNext()){
 						List<Tree<String>> parsedTrees = m_parser.getNext();
-						outputTrees(parsedTrees, outputData, parser, opts,"");
+						outputTrees(parsedTrees, outputData, parser, opts, "", sentenceID);
 					}
 				} else {
 					List<Tree<String>> parsedTrees = null;
@@ -205,14 +214,14 @@ public class BerkeleyParser  {
 						parsedTrees.add(parsedTree);
 
 					}
-					outputTrees(parsedTrees, outputData, parser, opts, line);
+					outputTrees(parsedTrees, outputData, parser, opts, line, sentenceID);
 				}
 			}
 			if (opts.nThreads > 1){
 				while(!m_parser.isDone()) {
 					while (m_parser.hasNext()){
 						List<Tree<String>> parsedTrees = m_parser.getNext();
-						outputTrees(parsedTrees, outputData, parser, opts, line);
+						outputTrees(parsedTrees, outputData, parser, opts, line, sentenceID);
 					}
 				}
 			}
@@ -236,33 +245,49 @@ public class BerkeleyParser  {
 	 * @param opts
 	 */
 	private static void outputTrees(List<Tree<String>> parseTrees, PrintWriter outputData, 
-			CoarseToFineMaxRuleParser parser, edu.berkeley.nlp.PCFGLA.BerkeleyParser.Options opts, String line) {
+			CoarseToFineMaxRuleParser parser, edu.berkeley.nlp.PCFGLA.BerkeleyParser.Options opts, 
+			String line, String sentenceID) {
+		String delimiter = "\t";
+		if (opts.ec_format){
+			outputData.write(parseTrees.size() +"\t" + sentenceID + "\n");
+			delimiter = ",\t";
+		}
 		for (Tree<String> parsedTree : parseTrees){
-			if (opts.sentence_likelihood){
-				double allLL = (parsedTree.getChildren().isEmpty()) ? Double.NEGATIVE_INFINITY : parser.getLogLikelihood();
-				outputData.write(allLL+"\t");
-				//				continue;
-			}
+			boolean addDelimiter = false;
 			if (opts.tree_likelihood){
 				double treeLL = (parsedTree.getChildren().isEmpty()) ? Double.NEGATIVE_INFINITY : parser.getLogLikelihood(parsedTree);
-				outputData.write(treeLL+"\t");
-				//				continue;
+				outputData.write(treeLL+"");
+				addDelimiter = true;
+			}
+			if (opts.sentence_likelihood){
+				double allLL = (parsedTree.getChildren().isEmpty()) ? Double.NEGATIVE_INFINITY : parser.getLogLikelihood();
+				if (addDelimiter) outputData.write(delimiter);
+				addDelimiter = true;
+				if (opts.ec_format) outputData.write("sentenceLikelihood ");
+				outputData.write(allLL+"");
 			}
 			if (!opts.binarize) parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
 			if (opts.confidence) {
 				double treeLL = (parsedTree.getChildren().isEmpty()) ? Double.NEGATIVE_INFINITY : parser.getConfidence(parsedTree);
-				outputData.write(treeLL+"\t");
+				if (addDelimiter) outputData.write(delimiter);
+				addDelimiter = true;
+				if (opts.ec_format) outputData.write("confidence ");
+				outputData.write(treeLL+"");
 			} else if (opts.modelScore) {
 				double score = (parsedTree.getChildren().isEmpty()) ? Double.NEGATIVE_INFINITY : parser.getModelScore(parsedTree);
-				outputData.write(String.format("%.8f\t", score));
+				if (addDelimiter) outputData.write(delimiter);
+				addDelimiter = true;
+				if (opts.ec_format) outputData.write("maxRuleScore ");
+				outputData.write(String.format("%.8f", score));
 			}
+			if (opts.ec_format) outputData.write("\n");
+			else if (addDelimiter) outputData.write(delimiter);
 			if (!parsedTree.getChildren().isEmpty()) { 
 				String treeString = parsedTree.getChildren().get(0).toString();
-				if (true) outputData.write("( "+treeString+" )\n");
-				//	       			else outputData.write(parsedTree.getChildren().get(0)+"\n\n");
+				if (opts.ec_format) outputData.write("(S1 "+treeString+" )\n"); 
+				else outputData.write("( "+treeString+" )\n");
 			} else {
-				if (true) outputData.write("(())\n");
-				//	    	else outputData.write("()\n\n");
+				outputData.write("(())\n");
 			}
 			if (opts.render)
 				try {
