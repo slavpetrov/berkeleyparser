@@ -323,7 +323,7 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser{
 
     HyperEdge parentNode = chartAfterU[start][end][state].getKbest(suboptimalities);
     if (parentNode==null){
-    	System.out.println("Don't have a "+(suboptimalities+1)+"-best tree.");
+    	System.err.println("Don't have a "+(suboptimalities+1)+"-best tree.");
     	return null;
     }
     int cState = parentNode.childState;

@@ -38,10 +38,13 @@ public class TreeLabeler {
 
 		@Option(name = "-getYield", usage = "Get the sentences only")
 		public boolean getyield;
-		
+
+		@Option(name = "-labelOnlyPOS", usage = "Labels only the POS categories")
+		public boolean labelOnlyPOS;
+
 		@Option(name = "-onlyConfidence", usage = "Output only confidence measure, i.e. tree likelihood: P(T|w) (Default: false)")
 		public boolean onlyConfidence;
-		
+
 		@Option(name = "-maxLength", usage = "Remove sentences that are longer than this (doesn't print an empty line)")
 		public int maxLength = 1000;		
 
@@ -50,13 +53,15 @@ public class TreeLabeler {
 
 		@Option(name = "-outputFile", usage = "Store output in this file instead of printing it to STDOUT.")
 		public String outputFile;
-		
+
 		@Option(name = "-prettyPrint", usage = "Print in human readable form rather than one tree per line")
 		public boolean prettyPrint;
 
-}
-	
-	
+		@Option(name = "-getPOSandYield", usage = "Get POS and words in CoNLL format")
+		public boolean getPOSandYield;
+	}
+
+
 	/**
 	 * @param grammar
 	 * @param lexicon
@@ -68,31 +73,31 @@ public class TreeLabeler {
 	CoarseToFineMaxRuleParser parser;
 	Numberer tagNumberer;
 	Binarization binarization;
-	
+
 	public TreeLabeler(Grammar grammar, SophisticatedLexicon lexicon, int labelLevel, Binarization bin) {
 		if (labelLevel==-1){
 			this.grammar = grammar.copyGrammar(false);
 			this.lexicon = lexicon.copyLexicon();
 		} else { // need to project
 			int[][] fromMapping = grammar.computeMapping(1);
-	    int[][] toSubstateMapping = grammar.computeSubstateMapping(labelLevel);
-	    int[][] toMapping = grammar.computeToMapping(labelLevel,toSubstateMapping);
-    	double[] condProbs = grammar.computeConditionalProbabilities(fromMapping,toMapping);
-    	
-    	this.grammar = grammar.projectGrammar(condProbs,fromMapping,toSubstateMapping);
-    	this.lexicon = lexicon.projectLexicon(condProbs,fromMapping,toSubstateMapping);
-    	this.grammar.splitRules();
-    	double filter = 1.0e-10;
-  		this.grammar.removeUnlikelyRules(filter,1.0);
-  		this.lexicon.removeUnlikelyTags(filter,1.0);
+			int[][] toSubstateMapping = grammar.computeSubstateMapping(labelLevel);
+			int[][] toMapping = grammar.computeToMapping(labelLevel,toSubstateMapping);
+			double[] condProbs = grammar.computeConditionalProbabilities(fromMapping,toMapping);
+
+			this.grammar = grammar.projectGrammar(condProbs,fromMapping,toSubstateMapping);
+			this.lexicon = lexicon.projectLexicon(condProbs,fromMapping,toSubstateMapping);
+			this.grammar.splitRules();
+			double filter = 1.0e-10;
+			this.grammar.removeUnlikelyRules(filter,1.0);
+			this.lexicon.removeUnlikelyTags(filter,1.0);
 		}
 		this.grammar.logarithmMode();
 		this.lexicon.logarithmMode();
 		this.labeler = new ArrayParser(this.grammar, this.lexicon);
 		this.parser = new CoarseToFineMaxRuleParser(grammar, lexicon, 
-    		1,-1,true,false, false, false, false, false, true);      
-    this.tagNumberer = Numberer.getGlobalNumberer("tags");
-    this.binarization = bin;
+				1,-1,true,false, false, false, false, false, true);      
+		this.tagNumberer = Numberer.getGlobalNumberer("tags");
+		this.binarization = bin;
 	}
 
 
@@ -102,98 +107,121 @@ public class TreeLabeler {
 		// provide feedback on command-line arguments
 		System.err.println("Calling with " + optParser.getPassedInOptions());
 
-    
-    String inFileName = opts.inFileName;
-    Grammar grammar = null;
-    SophisticatedLexicon lexicon = null;
-    TreeLabeler treeLabeler = null;
-    boolean labelTree = false;
-    ParserData pData = null;
-    short[] numSubstates = null;
-    if (inFileName==null) {
-    	System.err.println("Did not provide a grammar.");
-    }
-    else {
-    	labelTree = true;
-    	System.err.println("Loading grammar from "+inFileName+".");
 
-	    pData = ParserData.Load(inFileName);
-	    if (pData==null) {
-	      System.out.println("Failed to load grammar from file"+inFileName+".");
-	      System.exit(1);
-	    }
-	    grammar = pData.getGrammar();
-	    grammar.splitRules();
-	    lexicon = (SophisticatedLexicon)pData.getLexicon();
-	    
-	    Numberer.setNumberers(pData.getNumbs());
-	    
-	    int labelLevel = opts.labelLevel;
-	    if (labelLevel!=-1) System.err.println("Labeling with projected grammar from level "+labelLevel+".");
-	    treeLabeler = new TreeLabeler(grammar, lexicon, labelLevel, pData.bin);
-	    numSubstates = treeLabeler.grammar.numSubStates;
+		String inFileName = opts.inFileName;
+		Grammar grammar = null;
+		SophisticatedLexicon lexicon = null;
+		TreeLabeler treeLabeler = null;
+		boolean labelTree = false;
+		ParserData pData = null;
+		short[] numSubstates = null;
+		if (inFileName==null) {
+			System.err.println("Did not provide a grammar.");
+		}
+		else {
+			labelTree = true;
+			System.err.println("Loading grammar from "+inFileName+".");
 
-    }
-    Numberer tagNumberer =  Numberer.getGlobalNumberer("tags");
-    
-    Trees.TreeTransformer<String> treeTransformer = new Trees.StandardTreeNormalizer();
-    try{
-    	InputStreamReader inputData = (opts.inputFile==null) ? new InputStreamReader(System.in) : new InputStreamReader(new FileInputStream(opts.inputFile), "UTF-8");
-    	PennTreeReader treeReader = new PennTreeReader(inputData);
-    	PrintWriter outputData = (opts.outputFile==null) ? new PrintWriter(new OutputStreamWriter(System.out)) : new PrintWriter(new OutputStreamWriter(new FileOutputStream(opts.outputFile), "UTF-8"), true);
+			pData = ParserData.Load(inFileName);
+			if (pData==null) {
+				System.out.println("Failed to load grammar from file"+inFileName+".");
+				System.exit(1);
+			}
+			grammar = pData.getGrammar();
+			grammar.splitRules();
+			lexicon = (SophisticatedLexicon)pData.getLexicon();
 
-    	Tree<String> tree = null;
-    	while(treeReader.hasNext()){
-    		tree = treeReader.next(); 
-    		if (tree.getChildren().size() == 0 || tree.getChildren().get(0).getLabel().equals("(") || tree.getYield().get(0).equals("")){ // empty tree -> parse failure
-    			outputData.write("(())\n");
-    			continue;
-    		}
-    		if (tree.getYield().size() > opts.maxLength) continue;
-    		
-    		if (!labelTree){
-    			if (opts.getyield){
-    				List<String> words = tree.getYield();
-    				for (String word : words){
-    					outputData.write(word+" ");
-    				}
-    				outputData.write("\n");
-    			}
-    			else {
-    				Tree<String> normalizedTree = treeTransformer.transformTree(tree);
-  					outputData.write(normalizedTree+"\n");
-    			}
-          continue;
-        }
+			Numberer.setNumberers(pData.getNumbs());
 
-    		
-    		tree = TreeAnnotations.processTree(tree,pData.v_markov, pData.h_markov,pData.bin,false);
-    		List<String> sentence = tree.getYield();
-    		Tree<StateSet> stateSetTree = StateSetTreeList.stringTreeToStatesetTree(tree, numSubstates, false, tagNumberer);
-    		allocate(stateSetTree);
-    		Tree<String> labeledTree = treeLabeler.label(stateSetTree, sentence, opts.scores);
-  			if (opts.onlyConfidence) {
-  				double treeLL = stateSetTree.getLabel().getIScore(0);
-  				outputData.write(treeLL+"\n");
-      		outputData.flush();
-  				continue;
-  			}
+			int labelLevel = opts.labelLevel;
+			if (labelLevel!=-1) System.err.println("Labeling with projected grammar from level "+labelLevel+".");
+			treeLabeler = new TreeLabeler(grammar, lexicon, labelLevel, pData.bin);
+			numSubstates = treeLabeler.grammar.numSubStates;
 
-    		if (labeledTree!=null && labeledTree.getChildren().size()>0) {
-  				if (opts.prettyPrint){
-  					outputData.write(PennTreeRenderer.render(labeledTree)+"\n");
-  				} else {
-    			outputData.write(labeledTree.getChildren().get(0)+"\n");
-  				}
-    		}
-    		else outputData.write("(())\n");
-    		outputData.flush();
-    	 }
-    	outputData.close();
-    }catch (Exception ex) {
-    	ex.printStackTrace();
-    }
-    System.exit(0);
+		}
+		Numberer tagNumberer =  Numberer.getGlobalNumberer("tags");
+
+		Trees.TreeTransformer<String> treeTransformer = new Trees.StandardTreeNormalizer();
+		try{
+			InputStreamReader inputData = (opts.inputFile==null) ? new InputStreamReader(System.in) : new InputStreamReader(new FileInputStream(opts.inputFile), "UTF-8");
+			PennTreeReader treeReader = new PennTreeReader(inputData);
+			PrintWriter outputData = (opts.outputFile==null) ? new PrintWriter(new OutputStreamWriter(System.out)) : new PrintWriter(new OutputStreamWriter(new FileOutputStream(opts.outputFile), "UTF-8"), true);
+
+			Tree<String> tree = null;
+			while(treeReader.hasNext()){
+				tree = treeReader.next(); 
+				if (tree.getChildren().size() == 0 || tree.getChildren().get(0).getLabel().equals("(") || tree.getYield().get(0).equals("")){ // empty tree -> parse failure
+					outputData.write("(())\n");
+					continue;
+				}
+				if (tree.getYield().size() > opts.maxLength) continue;
+
+				if (!labelTree){
+					if (opts.getyield){
+						List<String> words = tree.getYield();
+						for (String word : words){
+							outputData.write(word+" ");
+						}
+						outputData.write("\n");
+					}
+					else {
+						Tree<String> normalizedTree = treeTransformer.transformTree(tree);
+						if (opts.getPOSandYield){
+							List<Tree<String>> leafs = normalizedTree.getPreTerminals();
+							for (Tree<String> leaf : leafs){
+								outputData.write(leaf.getChild(0).getLabel()+"\t"+leaf.getLabel()+"\n");
+							}
+							outputData.write("\n");
+						}
+						else outputData.write(normalizedTree+"\n");
+					}
+					continue;
+				}
+
+
+				tree = TreeAnnotations.processTree(tree,pData.v_markov, pData.h_markov,pData.bin,false);
+				List<String> sentence = tree.getYield();
+				Tree<StateSet> stateSetTree = StateSetTreeList.stringTreeToStatesetTree(tree, numSubstates, false, tagNumberer);
+				allocate(stateSetTree);
+				Tree<String> labeledTree = treeLabeler.label(stateSetTree, sentence, opts.scores, opts.labelOnlyPOS);
+				if (opts.onlyConfidence) {
+					double treeLL = stateSetTree.getLabel().getIScore(0);
+					outputData.write(treeLL+"\n");
+					outputData.flush();
+					continue;
+				}
+
+				if (labeledTree!=null && labeledTree.getChildren().size()>0) {
+					if (opts.prettyPrint){
+						outputData.write(PennTreeRenderer.render(labeledTree)+"\n");
+					} else {
+						if (opts.labelOnlyPOS){
+							labeledTree = TreeAnnotations.debinarizeTree(labeledTree);
+						}
+						outputData.write("( "+labeledTree.getChildren().get(0)+")\n");
+					}
+				}
+				else {
+					if (opts.labelOnlyPOS){
+						List<Tree<String>> pos = tree.getPreTerminals();
+						tree = TreeAnnotations.unAnnotateTree(tree);
+						for (Tree<String> tag : pos){
+							String t = tag.getLabel();
+							t = t + "-0";
+							tag.setLabel(t);
+						}
+						outputData.write("( "+tree.getChildren().get(0)+")\n");
+					} else {
+						outputData.write("(())\n");
+					}
+				}
+				outputData.flush();
+			}
+			outputData.close();
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		System.exit(0);
 	}
 
 
@@ -202,27 +230,27 @@ public class TreeLabeler {
 	 * @param stateSetTree
 	 * @return
 	 */
-	private Tree<String> label(Tree<StateSet> stateSetTree, List<String> sentence, boolean outputScores) {
-		Tree<String> tree = labeler.getBestViterbiDerivation(stateSetTree,outputScores);
-//		if (tree==null){ // max-rule tree had no viterbi derivation
-//			tree = parser.getBestConstrainedParse(sentence, null);
-//			tree = TreeAnnotations.processTree(tree,1, 0, binarization,false);
-////			System.out.println(tree);
-//			stateSetTree = StateSetTreeList.stringTreeToStatesetTree(tree, this.grammar.numSubStates, false, tagNumberer);
-//			allocate(stateSetTree);
-//			tree = labeler.getBestViterbiDerivation(stateSetTree,outputScores);
-//		}
+	private Tree<String> label(Tree<StateSet> stateSetTree, List<String> sentence, boolean outputScores, boolean labelOnlyPOS) {
+		Tree<String> tree = labeler.getBestViterbiDerivation(stateSetTree,outputScores, labelOnlyPOS);
+		//		if (tree==null){ // max-rule tree had no viterbi derivation
+		//			tree = parser.getBestConstrainedParse(sentence, null);
+		//			tree = TreeAnnotations.processTree(tree,1, 0, binarization,false);
+		////			System.out.println(tree);
+		//			stateSetTree = StateSetTreeList.stringTreeToStatesetTree(tree, this.grammar.numSubStates, false, tagNumberer);
+		//			allocate(stateSetTree);
+		//			tree = labeler.getBestViterbiDerivation(stateSetTree,outputScores);
+		//		}
 		return tree;
 	}
 
 	/*
-   * Allocate the inside and outside score arrays for the whole tree
-   */
-  static void allocate(Tree<StateSet> tree) {
-    tree.getLabel().allocate();
-    for (Tree<StateSet> child : tree.getChildren()) {
-      allocate(child);
-    }
-  }
-	
+	 * Allocate the inside and outside score arrays for the whole tree
+	 */
+	static void allocate(Tree<StateSet> tree) {
+		tree.getLabel().allocate();
+		for (Tree<StateSet> child : tree.getChildren()) {
+			allocate(child);
+		}
+	}
+
 }

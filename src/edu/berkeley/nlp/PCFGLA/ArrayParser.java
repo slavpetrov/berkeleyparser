@@ -1101,12 +1101,12 @@ public class ArrayParser implements Parser {
   }
 
 
-  Tree<String> extractBestViterbiDerivation(Tree<StateSet> tree, int substate, boolean outputScore){
+  Tree<String> extractBestViterbiDerivation(Tree<StateSet> tree, int substate, boolean outputScore, boolean labelOnlyPOS){
   	if (tree.isLeaf()) return new Tree<String>(tree.getLabel().getWord());
   	if (substate==-1) substate=0;
   	if (tree.isPreTerminal()){
   		ArrayList<Tree<String>> child = new ArrayList<Tree<String>>();
-  		child.add(extractBestViterbiDerivation(tree.getChildren().get(0),-1,outputScore));
+  		child.add(extractBestViterbiDerivation(tree.getChildren().get(0),-1,outputScore,labelOnlyPOS));
   		String goalStr = tagNumberer.object(tree.getLabel().getState())+"-"+substate;
   		if (outputScore) goalStr = goalStr + " " + tree.getLabel().getIScore(substate);
   		return new Tree<String>(goalStr, child);
@@ -1141,7 +1141,7 @@ public class ArrayParser implements Parser {
 					if (matches(res,myScore)) childIndex = j;
 				}
 			}
-			newChildren.add(extractBestViterbiDerivation(children.get(0), childIndex, outputScore));
+			newChildren.add(extractBestViterbiDerivation(children.get(0), childIndex, outputScore, labelOnlyPOS));
 			break;
 		case 2:
 			StateSet leftChild = children.get(0).getLabel();
@@ -1171,27 +1171,27 @@ public class ArrayParser implements Parser {
 					}
 				}
 			}
-			newChildren.add(extractBestViterbiDerivation(children.get(0), lChildIndex, outputScore));
-			newChildren.add(extractBestViterbiDerivation(children.get(1), rChildIndex, outputScore));
+			newChildren.add(extractBestViterbiDerivation(children.get(0), lChildIndex, outputScore, labelOnlyPOS));
+			newChildren.add(extractBestViterbiDerivation(children.get(1), rChildIndex, outputScore, labelOnlyPOS));
 			break;
 		default:
 			throw new Error ("Malformed tree: more than two children");
 		}
-  	String parentString = (String)tagNumberer.object(node.getState());
+		String parentString = (String)tagNumberer.object(node.getState());
 		if (parentString.endsWith("^g")) parentString = parentString.substring(0,parentString.length()-2);
-		parentString = parentString+"-"+substate;
+		if (!labelOnlyPOS) parentString = parentString+"-"+substate;
 		if (outputScore) parentString = parentString + " " + myScore;
 
 		return new Tree<String>(parentString, newChildren);
   }
   
-  public Tree<String> getBestViterbiDerivation(Tree<StateSet> tree, boolean outputScore){
+  public Tree<String> getBestViterbiDerivation(Tree<StateSet> tree, boolean outputScore, boolean labelOnlyPOS){
   	doViterbiInsideScores(tree);
   	if (tree.getLabel().getIScore(0)==Double.NEGATIVE_INFINITY) {
 //  		System.out.println("Tree is unparsable!");
   		return null;
   	}
-  	return extractBestViterbiDerivation(tree, 0, outputScore);
+  	return extractBestViterbiDerivation(tree, 0, outputScore, labelOnlyPOS);
   }
   
   

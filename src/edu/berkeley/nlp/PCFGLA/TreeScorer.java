@@ -100,7 +100,9 @@ public class TreeScorer{
     			parser.doInsideOutsideScores(stateSetTree, false, false);
     			parser.countPosteriors(cumulativePosteriors, stateSetTree, stateSetTree.getLabel().getIScore(0), stateSetTree.getLabel().getIScale());
     		} else {
-    			parser.doInsideScores(stateSetTree, false, false, null);
+    			try{
+    				parser.doInsideScores(stateSetTree, false, false, null);
+    			} catch(Exception e){}
     		}
     		double logScore = Math.log(stateSetTree.getLabel().getIScore(0)) + (stateSetTree.getLabel().getIScale()*ScalingTools.LOGSCALE);
     		outputData.write(logScore + "\n");

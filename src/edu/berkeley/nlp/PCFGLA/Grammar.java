@@ -1983,7 +1983,7 @@ public class Grammar implements java.io.Serializable {
 			return r.getScores2();
 		if (GrammarTrainer.VERBOSE) System.out.println("The requested rule ("+uSearchRule+") is not in the grammar!");
 		double[][] uscores = new double[numSubStates[cState]][numSubStates[pState]];
-		ArrayUtil.fill(uscores,1.0);
+		ArrayUtil.fill(uscores,0.0);
 		return uscores;
 	}
 
@@ -2003,9 +2003,9 @@ public class Grammar implements java.io.Serializable {
 		UnaryRule r = unaryRuleMap.get(rule);
 		if (r != null)
 			return r.getScores2();
-		if (GrammarTrainer.VERBOSE) System.out.println("The requested rule ("+rule+") is not in the grammar!");
+		if (GrammarTrainer.VERBOSE) System.err.println("The requested rule ("+rule+") is not in the grammar!");
 		double[][] uscores = new double[numSubStates[rule.getChildState()]][numSubStates[rule.getParentState()]];
-		ArrayUtil.fill(uscores,1.0);
+		ArrayUtil.fill(uscores,0.0);
 		return uscores;
 	}
 	
@@ -2013,9 +2013,14 @@ public class Grammar implements java.io.Serializable {
 		BinaryRule r = getBinaryRule(pState, lState, rState);
 		if (r != null)
 			return r.getScores2();
-		if (GrammarTrainer.VERBOSE) System.out.println("The requested rule ("+bSearchRule+") is not in the grammar!");
+		if (GrammarTrainer.VERBOSE) {
+			System.err.println(tagNumberer.object(pState)+"\t"+pState);
+			System.err.println(tagNumberer.object(lState)+"\t"+lState);
+			System.err.println(tagNumberer.object(rState)+"\t"+rState);
+			System.err.println("numSubStates.length:"+"\t"+numSubStates.length);
+		}
 		double[][][] bscores = new double[numSubStates[lState]][numSubStates[rState]][numSubStates[pState]];
-		ArrayUtil.fill(bscores,1.0);
+		ArrayUtil.fill(bscores,0.0);
 		return bscores;
 	}
 
@@ -2038,7 +2043,7 @@ public class Grammar implements java.io.Serializable {
 		else {
 			if (GrammarTrainer.VERBOSE) System.out.println("The requested rule ("+rule+") is not in the grammar!");
 			double[][][] bscores = new double[numSubStates[rule.getLeftChildState()]][numSubStates[rule.getRightChildState()]][numSubStates[rule.getParentState()]];
-			ArrayUtil.fill(bscores,1.0);
+			ArrayUtil.fill(bscores,0.0);
 			return bscores;
 		}
 	}

@@ -285,7 +285,7 @@ public class GrammarTrainer {
     int startSplit = 0;
     if (splitGrammarFile!=null) {
     	System.out.println("Loading old grammar from "+splitGrammarFile);
-    	startSplit = 1; // we've already trained the grammar
+    	startSplit = 0; // we've already trained the grammar
     	ParserData pData = ParserData.Load(splitGrammarFile);
     	maxGrammar = pData.gr;
     	maxLexicon = pData.lex;
@@ -297,7 +297,7 @@ public class GrammarTrainer {
       System.out.println("Loading old grammar complete.");
       if (noSplit){
       	System.out.println("Will NOT split the loaded grammar.");
-      	startSplit=0;
+      	startSplit=1;
       }
     } 
     

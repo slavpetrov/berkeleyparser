@@ -362,8 +362,15 @@ public class ConditionalTrainer {
     if (validationTrees!=null) validationTrees = Corpus.filterTreesForConditional(validationTrees,opts.filterAllUnaries,opts.filterStupidFrickinWHNP,opts.collapseUnaries);
     int nTrees = trainTrees.size();
     System.out.println("There are "+nTrees+" trees in the training set.");
-    
-    
+
+//	List<Tree<String>> devTrees = Corpus.binarizeAndFilterTrees(corpus
+//			.getDevTestingTrees(), opts.verticalMarkovization,
+//			opts.horizontalMarkovization, maxSentenceLength, binarization, manualAnnotation,GrammarTrainer.VERBOSE, opts.markUnaryParents);
+//
+//    		for (Tree<String> t : devTrees){
+//	System.out.println(t);
+//}
+
 		double filter = opts.filter;
 
     short nSubstates = (short)opts.nSubStates;

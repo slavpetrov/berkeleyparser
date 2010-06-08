@@ -46,7 +46,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 //	protected double[][][][] iScore;
 	/** outside scores; start idx, end idx, state -> logProb	 */
 //	protected double[][][][] oScore;
-	protected short[] numSubStatesArray;
+//	protected short[] numSubStatesArray;
 	double[] maxThresholds;
 	double logLikelihood;
 	Tree<String> bestTree;
@@ -81,12 +81,22 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 //  double edgesTouched;
 //  int sentencesParsed;
   
+  CoarseToFineMaxRuleParser(){
+    grammarTags = null;
+    viterbiParse = false;
+    outputSub = false;
+    outputScore = false;
+    accurate = false;
+    useGoldPOS = false;
+    doVariational = false;
+  }
+	
   public CoarseToFineMaxRuleParser(Grammar gr, Lexicon lex, double unaryPenalty, int endL, 
   		boolean viterbi, boolean sub, boolean score, boolean accurate, boolean variational,
   		boolean useGoldPOS, boolean initializeCascade) {
 		grammar=gr;
 		lexicon=lex;
-  	this.numSubStatesArray = gr.numSubStates.clone();
+//  	this.numSubStatesArray = gr.numSubStates.clone();
     //System.out.println("The unary penalty for parsing is "+unaryPenalty+".");
     this.unaryPenalty = unaryPenalty;
     this.accurate = accurate;
@@ -112,7 +122,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
     }
     grammarTags[0] = true;
 
-    nLevels = (int)Math.ceil(Math.log(ArrayUtil.max(numSubStatesArray))/Math.log(2));
+    nLevels = (int)Math.ceil(Math.log(ArrayUtil.max(gr.numSubStates))/Math.log(2));
     this.grammarCascade = new Grammar[nLevels+3];
     this.lexiconCascade = new Lexicon[nLevels+3];
     this.maxThresholds = new double[nLevels+3];
@@ -195,7 +205,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 
 	void doConstrainedInsideScores(Grammar grammar, boolean viterbi, boolean logScores) {
   	if (!viterbi && logScores) throw new Error("This would require logAdds and is slow. Exponentiate the scores instead.");
-  	numSubStatesArray = grammar.numSubStates;
+  	short[] numSubStatesArray = grammar.numSubStates;
     double initVal = (logScores) ? Double.NEGATIVE_INFINITY : 0;
 
     for (int diff = 1; diff <= length; diff++) {
@@ -377,7 +387,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
    */
   
   void doConstrainedOutsideScores(Grammar grammar, boolean viterbi, boolean logScores) {
-  	numSubStatesArray = grammar.numSubStates;
+    short[] numSubStatesArray = grammar.numSubStates;
   	double initVal = (logScores) ? Double.NEGATIVE_INFINITY : 0.0;
   	for (int diff = length; diff >= 1; diff--) {
   		for (int start = 0; start + diff <= length; start++) {
@@ -546,7 +556,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
       if (useGoldPOS && posTags!=null) {
       	goldTag = tagNumberer.number(posTags.get(start));
       }
-				for (int tag=0; tag<numSubStatesArray.length; tag++){
+				for (int tag=0; tag<numStates; tag++){
           if (!noSubstates&&!allowedStates[start][end][tag]) continue;	
           if (grammarTags[tag]) continue;
           if (useGoldPOS  && posTags!=null && tag!=goldTag) continue;
@@ -822,6 +832,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 	  	Grammar curGrammar = null;
 	  	Lexicon curLexicon = null;
 	  	double[] accurateThresholds =  {-8,-12,-12,-11,-12,-12,-14,-14};
+//      double[] accurateThresholds =  {-10,-14,-14,-14,-14,-14,-16,-16};	  	
 	  	double[] fastThresholds =  {-8,-9.75,-10,-9.6,-9.66,-8.01,-7.4,-10,-10};
 //	  	double[] accurateThresholds =  {-8,-9,-9,-9,-9,-9,-10};
 //	  	double[] fastThresholds =      {-2,-8,-9,-8,-8,-7.5,-7,-8};
@@ -889,7 +900,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 		  		allowedSubStates[start][end] = new boolean[numStates][];
 	  		}*/
 	  		allowedStates[start][end][state]=true;
-	  		if (allowedSubStates[start][end]==null) allowedSubStates[start][end] = new boolean[numSubStatesArray.length][];
+	  		if (allowedSubStates[start][end]==null) allowedSubStates[start][end] = new boolean[numStates][];
 	  		allowedSubStates[start][end][state] = null; // will be taken care of in createArrays
 		  	//boolean[] newArray = new boolean[numSubStatesArray[state]+1];
 		  	//Arrays.fill(newArray, true);
@@ -957,10 +968,10 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 			allowedSubStates = allowedS;
 			for (int start = 0; start < length; start++) {
 				for (int end = start + 1; end <= length; end++) {
-					for (int state=0; state<numSubStatesArray.length;state++){
+					for (int state=0; state<numStates;state++){
 						boolean onePossible = false;
 						if (allowedSubStates[start][end][state]==null) continue;
-						for (int substate=0; substate<numSubStatesArray[state];substate++){
+						for (int substate=0; substate<grammar.numSubStates[state];substate++){
 							if (allowedSubStates[start][end][state][substate]) {
 								onePossible = true;
 								break;
@@ -1060,7 +1071,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 	  	ArrayList<Tree<String>> resultList = new ArrayList<Tree<String>>();
 	  	Tree<String> newTree = TreeAnnotations.processTree(tree,1,0,binarization,false);
 	    resultList.add(newTree);
-	  	StateSetTreeList resultStateSetTrees = new StateSetTreeList(resultList, numSubStatesArray, false, tagNumberer);
+	  	StateSetTreeList resultStateSetTrees = new StateSetTreeList(resultList, grammar.numSubStates, false, tagNumberer);
 	    if (llParser==null) llParser = new ArrayParser(grammar, lexicon);
 	    for (Tree<StateSet> t : resultStateSetTrees){
 				llParser.doInsideScores(t,false,false,null);  // Only inside scores are needed here
@@ -1088,7 +1099,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 	   *  In particular, the narrowRExtent and other arrays need not be updated.
 	   */
 	  void doConstrainedMaxCScores(List<String> sentence, Grammar grammar, Lexicon lexicon, final boolean scale) {
-	  	numSubStatesArray = grammar.numSubStates;
+	    short[] numSubStatesArray = grammar.numSubStates;
 	    double initVal = Double.NEGATIVE_INFINITY;
 	    maxcScore = new double[length][length + 1][numStates];
 	    maxcSplit = new int[length][length + 1][numStates];
@@ -1402,7 +1413,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 		 */
 		
 	  void doConstrainedViterbiInsideScores(Grammar grammar, boolean level0grammar) {
-	  	numSubStatesArray = grammar.numSubStates;
+	    short[] numSubStatesArray = grammar.numSubStates;
 	  	//double[] oldIScores = new double[maxNSubStates];
 	  	//int smallestScale = 10, largestScale = -10;
 	  	for (int diff = 1; diff <= length; diff++) {
@@ -1705,7 +1716,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 		for (int diff = length; diff >= 1; diff--) {
 			for (int start = 0; start + diff <= length; start++) {
 				int end = start + diff;
-				final int lastState = (level0grammar) ? 1 : numSubStatesArray.length;
+				final int lastState = (level0grammar) ? 1 : numStates;
 				for (int cState=0; cState<lastState; cState++){
 //					if (diff>1 && !grammar.isGrammarTag[cState]) continue;
   				if (!vAllowedStates[start][end]) continue;
@@ -2147,7 +2158,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 
 	  double sentenceProb = (level<1) ? viScore[0][length][0] : iScore[0][length][0][0];
     double maxThreshold = Double.NEGATIVE_INFINITY; 
-		for (int substate=0; substate < numSubStatesArray[state]; substate++){
+		for (int substate=0; substate < grammar.numSubStates[state]; substate++){
 			double iS = (level<1) ? viScore[start][end][state] : iScore[start][end][state][substate];
 			double oS = (level<1) ? voScore[start][end][state] : oScore[start][end][state][substate];
 			if (iS==Double.NEGATIVE_INFINITY||oS==Double.NEGATIVE_INFINITY) continue;
@@ -2165,7 +2176,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
   	Lexicon curLexicon = lexiconCascade[endLevel-startLevel+1];
 
   	//pruneChart(Double.POSITIVE_INFINITY/*pruningThreshold[level+1]*/, curGrammar.numSubStates, endLevel);
-  	allowedStates = new boolean[length][length+1][numSubStatesArray.length];
+  	allowedStates = new boolean[length][length+1][numStates];
     ensureGoldTreeSurvives(tree, endLevel);
 
     double initVal = 0;
@@ -2232,6 +2243,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 	
   void doScaledConstrainedInsideScores(Grammar grammar) {
     double initVal = 0;
+    short[] numSubStatesArray = grammar.numSubStates;
   	//int smallestScale = 10, largestScale = -10;
       for (int diff = 1; diff <= length; diff++) {
     	//smallestScale = 10; largestScale = -10;
@@ -2440,6 +2452,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 
   void doScaledConstrainedOutsideScores(Grammar grammar) {
   	double initVal = 0;
+  	short[] numSubStatesArray = grammar.numSubStates;
 //  	Arrays.fill(scoresToAdd,initVal);
     for (int diff = length; diff >= 1; diff--) {
   		for (int start = 0; start + diff <= length; start++) {
@@ -2658,7 +2671,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 		// scrub the iScores array
 		for (int start = 0; start < length; start++) {
 			for (int end = start + 1; end <= length; end++) {
-				for (int state=0; state<numSubStatesArray.length;state++){
+				for (int state=0; state<numStates; state++){
 					if (allowedStates[start][end][state]==true){// != null){
 						Arrays.fill(iScore[start][end][state],0);
 					}
@@ -2695,9 +2708,9 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser{
 //		System.out.println(Arrays.toString(iScore[start][end][0]));
 		double score = 0;
 		if (sumScores){
-    	for (int pState=0; pState<numSubStatesArray.length; pState++){
+    	for (int pState=0; pState<numStates; pState++){
         if (allowedStates[start][end+1][pState] == false) continue;
-        for (int cp=0; cp<numSubStatesArray[pState]; cp++){
+        for (int cp=0; cp<grammar.numSubStates[pState]; cp++){
         	score += (iScore[start][end+1][pState][cp]);
         }
     	}

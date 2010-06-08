@@ -111,6 +111,8 @@ public class BerkeleyParser  {
 		@Option(name = "-ec_format", usage = "Use Eugene Charniak's input and output format.")
 		public boolean ec_format;
 
+		@Option(name = "-nGrammars", usage = "Use a product model based on that many grammars")
+		public int nGrammars = 1;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -120,22 +122,41 @@ public class BerkeleyParser  {
 
 		double threshold = 1.0;
 
-		String inFileName = opts.grFileName;
-		ParserData pData = ParserData.Load(inFileName);
-		if (pData==null) {
-			System.out.println("Failed to load grammar from file"+inFileName+".");
-			System.exit(1);
-		}
-		Grammar grammar = pData.getGrammar();
-		Lexicon lexicon = pData.getLexicon();
-		Numberer.setNumberers(pData.getNumbs());
-
 		if (opts.chinese) Corpus.myTreebank = Corpus.TreeBankType.CHINESE;
 
 		CoarseToFineMaxRuleParser parser = null;
-		if (opts.kbest==1) parser = new CoarseToFineMaxRuleParser(grammar, lexicon, threshold,-1,opts.viterbi,opts.substates,opts.scores, opts.accurate, opts.variational, true, true);
-		else parser = new CoarseToFineNBestParser(grammar, lexicon, opts.kbest,threshold,-1,opts.viterbi,opts.substates,opts.scores, opts.accurate, opts.variational, false, true);
-		parser.binarization = pData.getBinarization();
+		if (opts.nGrammars != 1){
+			Grammar[] grammars = new Grammar[opts.nGrammars];
+			Lexicon[] lexicons = new Lexicon[opts.nGrammars];
+      Binarization bin = null;
+			for (int nGr = 0; nGr < opts.nGrammars; nGr++){
+				String inFileName = opts.grFileName+"."+nGr;
+				ParserData pData = ParserData.Load(inFileName);
+				if (pData==null) {
+					System.out.println("Failed to load grammar from file"+inFileName+".");
+					System.exit(1);
+				}
+				grammars[nGr] = pData.getGrammar();
+				lexicons[nGr] = pData.getLexicon();
+				Numberer.setNumberers(pData.getNumbs());
+        bin = pData.getBinarization();
+			}
+      parser = new CoarseToFineMaxRuleProductParser(grammars, lexicons, threshold,-1,opts.viterbi,opts.substates,opts.scores, opts.accurate, opts.variational, true, true);
+      parser.binarization = bin;
+		} else {
+			String inFileName = opts.grFileName;
+			ParserData pData = ParserData.Load(inFileName);
+			if (pData==null) {
+				System.out.println("Failed to load grammar from file"+inFileName+".");
+				System.exit(1);
+			}
+			Grammar grammar = pData.getGrammar();
+			Lexicon lexicon = pData.getLexicon();
+			Numberer.setNumberers(pData.getNumbs());
+			if (opts.kbest==1) parser = new CoarseToFineMaxRuleParser(grammar, lexicon, threshold,-1,opts.viterbi,opts.substates,opts.scores, opts.accurate, opts.variational, true, true);
+			else parser = new CoarseToFineNBestParser(grammar, lexicon, opts.kbest,threshold,-1,opts.viterbi,opts.substates,opts.scores, opts.accurate, opts.variational, false, true);
+			parser.binarization = pData.getBinarization();
+		}
 
 		if (opts.render) tjp = new TreeJPanel();
 
@@ -153,6 +174,7 @@ public class BerkeleyParser  {
 			String line = "";
 			String sentenceID = "";
 			while((line=inputData.readLine()) != null){
+			  if (opts.ec_format && line.equals("")) continue;  
 				List<String> sentence = null;
 				List<String> posTags = null;
 				if (opts.goldPOS){
@@ -249,13 +271,25 @@ public class BerkeleyParser  {
 			String line, String sentenceID) {
 		String delimiter = "\t";
 		if (opts.ec_format){
-			outputData.write(parseTrees.size() +"\t" + sentenceID + "\n");
-			delimiter = ",\t";
+		  List<Tree<String>> newList = new ArrayList<Tree<String>>(parseTrees.size());
+		  for (Tree<String> parsedTree : parseTrees){
+		    if (parsedTree.getChildren().isEmpty()) continue;
+		    if (parser.getLogLikelihood(parsedTree) != Double.NEGATIVE_INFINITY) {
+		      newList.add(parsedTree);
+		    }
+		  }
+		  parseTrees = newList;
 		}
+    if (opts.ec_format){
+      outputData.write(parseTrees.size() +"\t" + sentenceID + "\n");
+      delimiter = ",\t";
+    }
+		
 		for (Tree<String> parsedTree : parseTrees){
 			boolean addDelimiter = false;
 			if (opts.tree_likelihood){
 				double treeLL = (parsedTree.getChildren().isEmpty()) ? Double.NEGATIVE_INFINITY : parser.getLogLikelihood(parsedTree);
+				if (treeLL == Double.NEGATIVE_INFINITY) continue;
 				outputData.write(treeLL+"");
 				addDelimiter = true;
 			}
