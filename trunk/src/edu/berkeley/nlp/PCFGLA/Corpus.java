@@ -90,7 +90,7 @@ public class Corpus {
       System.out.println("Loading one dummy sentence into training set only.");
       Trees.PennTreeReader reader;
       Tree<String> tree;
-      int exampleNumber = 6;
+      int exampleNumber = 8;
       List<String> sentences = new ArrayList<String>();
       switch (exampleNumber) {
       case 0:
@@ -184,7 +184,8 @@ public class Corpus {
       	sentences.add("((Y (C (B b) (B b)) (D d)))");
       	sentences.add("((Y (C (B b) (B b)) (D d)))");
       	sentences.add("((Y (C (B b) (B b)) (D d)))");
-      	
+      case 8:
+        sentences.add("((S (NP (PRP We)) (VP (VBP 're) (RB about) (VP (TO to) (VP (VB see) (SBAR (IN if) (S (NP (NN advertising)) (VP (VBZ works))))))) (. .)))");
       	break;
       default:
       	

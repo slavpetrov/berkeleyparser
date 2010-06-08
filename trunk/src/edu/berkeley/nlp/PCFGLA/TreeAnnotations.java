@@ -483,6 +483,17 @@ public class TreeAnnotations implements java.io.Serializable {
     return unAnnotatedTree;
   }
 
+	public static Tree<String> debinarizeTree(Tree<String> annotatedTree) {
+	    // Remove intermediate nodes (labels beginning with "@"
+	    // Remove all material on node labels which follow their base symbol (cuts at the leftmost -, ^, or : character)
+	    // Examples: a node with label @NP->DT_JJ will be spliced out, and a node with label NP^S will be reduced to NP
+	    Tree<String> debinarizedTree = Trees.spliceNodes(annotatedTree, new Filter<String>() {
+	      public boolean accept(String s) {
+	        return s.startsWith("@") && !s.equals("@");
+	      }
+	    });
+	    return debinarizedTree;
+	}	
 	
 	public static Tree<String> unAnnotateTree(Tree<String> annotatedTree) {
     // Remove intermediate nodes (labels beginning with "@"
