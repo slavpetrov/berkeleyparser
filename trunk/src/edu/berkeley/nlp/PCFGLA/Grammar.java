@@ -511,7 +511,7 @@ public class Grammar implements java.io.Serializable {
 		unaryRuleCounter = new UnaryCounterTable(nSubStates);
 		binaryRuleCounter = new BinaryCounterTable(nSubStates);
 		symbolCounter = new CounterMap<Integer, Integer>();
-		numStates = (short)tagNumberer.total();
+		numStates = (short)nSubStates.length;
 		numSubStates = nSubStates;
 		bSearchRule = new BinaryRule((short)0,(short)0,(short)0);
 		uSearchRule = new UnaryRule((short)0,(short)0);
@@ -2719,7 +2719,7 @@ public class Grammar implements java.io.Serializable {
 	}
 
 	public Grammar projectGrammar(double[] condProbs, int[][] fromMapping, int[][] toSubstateMapping) {
-		short[] newNumSubStates = new short[numSubStates.length];
+	  short[] newNumSubStates = new short[numSubStates.length];
 		for (int state=0; state<numSubStates.length; state++){
 			newNumSubStates[state] = (short)toSubstateMapping[state][0];
 		}

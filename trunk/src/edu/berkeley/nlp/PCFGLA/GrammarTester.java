@@ -285,6 +285,7 @@ public class GrammarTester implements Callable{
           Smoother lexSmoother = new SmoothAcrossParentSubstate(0.01);
           lexicon.setSmoother(lexSmoother);
         }
+        Numberer.setNumberers(pData.getNumbs());
 
 
         if ("plain".equals(opts.parser)){
