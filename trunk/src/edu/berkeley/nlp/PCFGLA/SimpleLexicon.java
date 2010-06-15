@@ -862,7 +862,7 @@ public class SimpleLexicon implements java.io.Serializable, Lexicon {
 	}
 
 */
-	public class IntegerIndexer implements Serializable{
+	public static class IntegerIndexer implements Serializable{
 		private int[] indexTo;
 		private int[] indexFrom;
 		private int n;
