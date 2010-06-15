@@ -22,7 +22,7 @@ public abstract class CachingDifferentiableFunction implements DifferentiableFun
 		}
 	}
 	
-	private boolean isCached(double[] x) {
+	protected boolean isCached(double[] x) {
 		if (lastX == null) {
 			return false;
 		}
