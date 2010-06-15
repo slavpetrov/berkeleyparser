@@ -417,9 +417,9 @@ public class GrammarTrainer {
   			validationStateSetTrees = new StateSetTreeList(validationStateSetTrees, newNumSubStatesArray, false);
 
     		// retrain lexicon to finish the lexicon merge (updates the unknown words model)...
-        if(opts.featurizedLexicon)
-          lexicon = new FeaturizedLexicon(numSubStatesArray,feat,trainStateSetTrees);
-        else lexicon = (opts.simpleLexicon) ?
+        if(opts.featurizedLexicon) {
+          lexicon = new FeaturizedLexicon(newNumSubStatesArray,feat,trainStateSetTrees);
+        } else lexicon = (opts.simpleLexicon) ?
           new SimpleLexicon(newNumSubStatesArray,-1,smoothParams, maxLexicon.getSmoother() ,filter, trainStateSetTrees) :
           new SophisticatedLexicon(newNumSubStatesArray,SophisticatedLexicon.DEFAULT_SMOOTHING_CUTOFF, maxLexicon.getSmoothingParams(), maxLexicon.getSmoother(), maxLexicon.getPruningThreshold());
     		boolean updateOnlyLexicon = true;
@@ -458,7 +458,8 @@ public class GrammarTrainer {
   			System.out.print("Calculating training likelihood...");
   			grammar = new Grammar(grammar.numSubStates, grammar.findClosedPaths, grammar.smoother, grammar, grammar.threshold);
   			if(opts.featurizedLexicon)
-          lexicon = new FeaturizedLexicon(numSubStatesArray,feat,trainStateSetTrees);
+          lexicon = lexicon.copyLexicon();
+          //lexicon = new FeaturizedLexicon(numSubStatesArray,feat,trainStateSetTrees);
         else lexicon = (opts.simpleLexicon) ?
   					new SimpleLexicon(grammar.numSubStates,-1,smoothParams, lexicon.getSmoother() ,filter, trainStateSetTrees) :
   					new SophisticatedLexicon(grammar.numSubStates,	SophisticatedLexicon.DEFAULT_SMOOTHING_CUTOFF, lexicon.getSmoothingParams(), lexicon.getSmoother(), lexicon.getPruningThreshold());

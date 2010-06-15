@@ -19,8 +19,8 @@ public class SimpleFeaturizer implements Featurizer,Serializable {
     this.rareThreshold = rareThreshold;
   }
 
-  public List<String>[] featurize(String word, int tag, int numSubstates, int wordCount) {
-    List<String> templates = fillTemplates(word,wordCount);
+  public List<String>[] featurize(String word, int tag, int numSubstates, int wordCount, int tagWordCount) {
+    List<String> templates = fillTemplates(word,wordCount, tagWordCount);
 
     List<String>[] ret = new List[numSubstates];
     String coarsePrefix = "#"+tag+":";
@@ -36,10 +36,10 @@ public class SimpleFeaturizer implements Featurizer,Serializable {
     return ret;
   }
 
-  public List<String> fillTemplates(String word, int wordCount) {
+  public List<String> fillTemplates(String word, int wordCount, int tagWordCount) {
     ArrayList<String> templates = new ArrayList<String>();
     if(wordCount > rareThreshold) {
-      templates.add(word);
+      if(tagWordCount > 0) templates.add(word);
       if(wordCount > uncommonThreshold)
         return templates;
     }
@@ -48,6 +48,7 @@ public class SimpleFeaturizer implements Featurizer,Serializable {
     boolean hasDigit = false;
     boolean hasDash = false;
     boolean hasLower = false;
+    boolean hasLetter = false;
     for (int i = 0; i < wlen; i++) {
       char ch = word.charAt(i);
       if (Character.isDigit(ch)) {
@@ -55,6 +56,7 @@ public class SimpleFeaturizer implements Featurizer,Serializable {
       } else if (ch == '-') {
         hasDash = true;
       } else if (Character.isLetter(ch)) {
+        hasLetter = true;
         if (Character.isLowerCase(ch)) {
           hasLower = true;
         } else if (Character.isTitleCase(ch)) {
@@ -65,6 +67,10 @@ public class SimpleFeaturizer implements Featurizer,Serializable {
         }
       }
     }
+    if(hasLetter)
+      templates.add("shape:LETTER");
+    else
+      templates.add("shape:NOLETTER");
     char ch0 = word.charAt(0);
     String lowered = word.toLowerCase();
     if (Character.isUpperCase(ch0) || Character.isTitleCase(ch0)) {

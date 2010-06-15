@@ -298,6 +298,14 @@ public class DoubleArrays {
     return exponentiated;
   }
 
+  public static double[][][] exponentiate(double[][][] pUnexponentiated) {
+    double[][][] exponentiated = new double[pUnexponentiated.length][][];
+    for (int index = 0; index < pUnexponentiated.length; index++) {
+      exponentiated[index] = exponentiate(pUnexponentiated[index]);
+    }
+    return exponentiated;
+  }
+
 
 	public static void truncate(double[] x, double maxVal) {
 		for (int index = 0; index < x.length; index++) {
