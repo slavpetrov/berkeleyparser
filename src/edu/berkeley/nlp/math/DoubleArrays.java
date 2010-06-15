@@ -249,6 +249,12 @@ public class DoubleArrays {
     }
   }
 
+  public static void subtractInPlace(double[] x, double y) {
+    for (int i=0; i < x.length; ++i) {
+      x[i] -= y;
+    }
+  }
+
   /**
    * If a subtraction results in NaN (i.e -inf - (-inf))
    * does not perform the computation.
