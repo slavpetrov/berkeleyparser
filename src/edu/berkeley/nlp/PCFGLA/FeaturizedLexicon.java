@@ -68,7 +68,7 @@ public class FeaturizedLexicon implements Lexicon, Serializable {
     this.numStates = numSubStates.length;
     this.isLogarithmMode = false;
     this.featurizer = featurizer;
-    minimizer.setMaxIterations(50);
+    minimizer.setMaxIterations(20);
   }
   transient private LBFGSMinimizer minimizer = new LBFGSMinimizer();
 
@@ -84,7 +84,8 @@ public class FeaturizedLexicon implements Lexicon, Serializable {
     for (int tag = 0; tag < numStates; tag++) {
       thetas[tag] = new double[numSubStates[tag]][];
       normalizers[tag] = new double[numSubStates[tag]];
-      for (int substate = 0; substate < expectedCounts[tag].length; ++substate) {
+      final int expLength = expectedCounts[tag].length;
+      for (int substate = 0; substate < expLength; ++substate) {
         thetas[tag][substate] = new double[wordIndexer.size()];
         double[] importantThetas  = new double[tagWordsWithFeatures[tag].length];
         int j = 0;
@@ -129,28 +130,6 @@ public class FeaturizedLexicon implements Lexicon, Serializable {
 
     return new CachingDifferentiableFunction() {
 
-      public double[] derivativeAt(double[] x) {
-        double[] gradient = new double[x.length];
-        double[][][] thetas = projectWeightsToScores(x);
-        for (int tag = 0; tag < numStates; tag++) {
-          for (int substate = 0; substate < expectedCounts[tag].length; ++substate) {
-            double logTotal = eTotals[tag][substate];
-            for (int word: tagWordsWithFeatures[tag]) {
-              double e = expectedCounts[tag][substate][word];
-              double lT = Math.log(thetas[tag][substate][word]);
-              double margin = e - Math.exp(logTotal + lT);
-
-              for (int f : indexedFeatures[tag][substate][word]) {
-                // we're doing negative gradient because we're maximizing.
-                gradient[f] -= margin;
-              }
-            }
-          }
-        }
-
-        return DoubleArrays.add(gradient, regularizationGradient(x));
-      }
-
       public int dimension() {
         return featureWeights.length;
       }
@@ -161,7 +140,8 @@ public class FeaturizedLexicon implements Lexicon, Serializable {
         double[][][] thetas = projectWeightsToScores(x);
         double logProb = 0.0;
         for (int tag = 0; tag < numStates; tag++) {
-          for (int substate = 0; substate < expectedCounts[tag].length; ++substate) {
+          final int expLength = expectedCounts[tag].length;
+          for (int substate = 0; substate < expLength; ++substate) {
             for (int word: tagWordsWithFeatures[tag]) {
               if(expectedCounts[tag][substate][word] > 0)
                 logProb += expectedCounts[tag][substate][word] * Math.log(thetas[tag][substate][word]);
@@ -177,13 +157,13 @@ public class FeaturizedLexicon implements Lexicon, Serializable {
         double[][][] thetas = projectWeightsToScores(x);
         double logProb = 0.0;
         for (int tag = 0; tag < numStates; tag++) {
-          for (int substate = 0; substate < expectedCounts[tag].length; ++substate) {
+          final int expLength = expectedCounts[tag].length;
+          for (int substate = 0; substate < expLength; ++substate) {
             double logTotal = eTotals[tag][substate];
             for (int word: tagWordsWithFeatures[tag]) {
               double e = expectedCounts[tag][substate][word];
               double lT = Math.log(thetas[tag][substate][word]);
               double margin = e - Math.exp(logTotal + lT);
-
 
               if(e > 0)
                 logProb += expectedCounts[tag][substate][word] * Math.log(thetas[tag][substate][word]);
