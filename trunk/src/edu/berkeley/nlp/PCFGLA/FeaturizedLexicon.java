@@ -439,7 +439,6 @@ public class FeaturizedLexicon implements Lexicon, Serializable {
     double[][][] newScores = new double[scores.length][][];
     double[][][] newExpCounts = new double[scores.length][][];
     for (int tag = 1; tag < expectedCounts.length; tag++) {
-      if(newNumSubStates[tag] != 2 * numSubStates[tag]) throw new RuntimeException("What the mother-fucking fuck.");
       newScores[tag] = new double[newNumSubStates[tag]][wordIndexer.size()];
       newExpCounts[tag] = new double[newNumSubStates[tag]][wordIndexer.size()];
       for (int substate = 0; substate < numSubStates[tag]; substate++) {
