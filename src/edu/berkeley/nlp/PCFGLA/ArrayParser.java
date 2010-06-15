@@ -580,7 +580,7 @@ public class ArrayParser implements Parser {
     	StateSet wordStateSet = tree.getChildren().get(0).getLabel();
       double[] lexiconScores = lexicon.score(wordStateSet, pState, noSmoothing,false);
       if (lexiconScores.length!=nParentStates){
-      	System.out.println("Have more scores than substates!");// truncate the array
+      	System.out.println("Have more scores than substates!" + lexiconScores.length + " " + nParentStates);// truncate the array
       }
       parent.setIScores(lexiconScores);
       parent.scaleIScores(0);
