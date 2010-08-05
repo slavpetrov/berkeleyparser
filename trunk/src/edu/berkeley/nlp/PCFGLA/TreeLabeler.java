@@ -59,6 +59,19 @@ public class TreeLabeler {
 
 		@Option(name = "-getPOSandYield", usage = "Get POS and words in CoNLL format")
 		public boolean getPOSandYield;
+		
+    @Option(name = "-annotateTrees", usage = "Binarize and annotate trees")
+    public boolean annotateTrees;
+		
+    @Option(name = "-horizontalMarkovization", usage = "Level of horizontal Markovization (Default: 0, i.e. no sibling information)")
+    public int h_markov = 0;    
+    
+    @Option(name = "-verticalMarkovization", usage = "Level of vertical Markovization (Default: 1, i.e. no parent information)")
+    public int v_markov = 1;    
+    
+    @Option(name = "-b", usage = "LEFT/RIGHT Binarization (Default: RIGHT)")
+    public Binarization binarization = Binarization.RIGHT;
+
 	}
 
 
@@ -163,6 +176,9 @@ public class TreeLabeler {
 							outputData.write(word+" ");
 						}
 						outputData.write("\n");
+					} else if (opts.annotateTrees) {
+		        tree = TreeAnnotations.processTree(tree, opts.v_markov, opts.h_markov, opts.binarization, false);
+		        outputData.write(tree+"\n");
 					}
 					else {
 						Tree<String> normalizedTree = treeTransformer.transformTree(tree);
