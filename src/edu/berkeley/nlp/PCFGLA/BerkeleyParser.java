@@ -174,6 +174,7 @@ public class BerkeleyParser  {
 			String line = "";
 			String sentenceID = "";
 			while((line=inputData.readLine()) != null){
+			  line = line.trim();
 			  if (opts.ec_format && line.equals("")) continue;  
 				List<String> sentence = null;
 				List<String> posTags = null;
@@ -317,7 +318,11 @@ public class BerkeleyParser  {
 			if (opts.ec_format) outputData.write("\n");
 			else if (addDelimiter) outputData.write(delimiter);
 			if (!parsedTree.getChildren().isEmpty()) { 
-				String treeString = parsedTree.getChildren().get(0).toString();
+        String treeString = parsedTree.getChildren().get(0).toString();
+			  if (parsedTree.getChildren().size() != 1){
+			    System.err.println("ROOT has more than one child!");
+		       treeString = parsedTree.toString();
+			  }
 				if (opts.ec_format) outputData.write("(S1 "+treeString+" )\n"); 
 				else outputData.write("( "+treeString+" )\n");
 			} else {
