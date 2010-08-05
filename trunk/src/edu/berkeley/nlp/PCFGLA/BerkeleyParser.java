@@ -321,6 +321,7 @@ public class BerkeleyParser  {
         String treeString = parsedTree.getChildren().get(0).toString();
 			  if (parsedTree.getChildren().size() != 1){
 			    System.err.println("ROOT has more than one child!");
+			     parsedTree.setLabel("");
 		       treeString = parsedTree.toString();
 			  }
 				if (opts.ec_format) outputData.write("(S1 "+treeString+" )\n"); 
