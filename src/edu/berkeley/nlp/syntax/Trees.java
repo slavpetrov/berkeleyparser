@@ -696,7 +696,7 @@ public class Trees {
 			splicedChildren.addAll(splicedChildList);
 		}
 
-		if (filter.accept(tree.getLabel()))
+		if (filter.accept(tree.getLabel()) && !tree.isLeaf())
 			return splice ? splicedChildren : new ArrayList<Tree<L>>();
 		//		assert !(tree.getLabel().equals("NP") && splicedChildren.isEmpty());
 		final Tree<L> newTree = tree.shallowCloneJustRoot();
