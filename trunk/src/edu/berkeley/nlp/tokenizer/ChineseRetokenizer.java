@@ -37,16 +37,16 @@ public class ChineseRetokenizer implements LineTokenizer {
 
 	private String replaceChars(String line) {
 		String s = line;
-		s = s.replace('(', '（');
-		s = s.replace(')', '）');
-		s = s.replace('{', '〈');
-		s = s.replace('}', '〉');
-		s = s.replace(',', '、');
-		s = s.replace('-', '—');
-		s = s.replace('?', '？');
-		s = s.replace('!', '！');
-		s = s.replace(':', '：');
-		s = s.replace(';', '；');
+//		s = s.replace('(', '（');
+//		s = s.replace(')', '）');
+//		s = s.replace('{', '〈');
+//		s = s.replace('}', '〉');
+//		s = s.replace(',', '、');
+//		s = s.replace('-', '—');
+//		s = s.replace('?', '？');
+//		s = s.replace('!', '！');
+//		s = s.replace(':', '：');
+//		s = s.replace(';', '；');
 		return s;
 	}
 
