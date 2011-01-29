@@ -100,21 +100,21 @@ public class Lists {
 		return list;
 	}
 
-	public static int[] toPrimitiveArray(List<Integer> curList) {
-		int[] newArray = new int[curList.size()];
-		for(int i=0; i < newArray.length; i++) {
-			newArray[i] = curList.get(i);
-		}
-		return newArray;
-	}
-
-	public static double[] toPrimitiveArray(List<Double> curList) {
-		double[] newArray = new double[curList.size()];
-		for(int i=0; i < newArray.length; i++) {
-			newArray[i] = curList.get(i);
-		}
-		return newArray;
-	}
+//	public static int[] toPrimitiveArray(List<Integer> curList) {
+//		int[] newArray = new int[curList.size()];
+//		for(int i=0; i < newArray.length; i++) {
+//			newArray[i] = curList.get(i);
+//		}
+//		return newArray;
+//	}
+//
+//	public static double[] toPrimitiveArray(List<Double> curList) {
+//		double[] newArray = new double[curList.size()];
+//		for(int i=0; i < newArray.length; i++) {
+//			newArray[i] = curList.get(i);
+//		}
+//		return newArray;
+//	}
 
 	/**
 	 * Like Python
