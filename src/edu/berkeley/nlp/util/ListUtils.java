@@ -560,30 +560,30 @@ public class ListUtils {
     return newv;
   }
 
-  public static int[] toArray(List<Integer> list) {
-    int[] array = new int[list.size()];
-    for(int i = 0; i < array.length; i++)
-      array[i] = list.get(i);
-    return array;
-  }
-  public static double[] toArray(List<Double> list) {
-    double[] array = new double[list.size()];
-    for(int i = 0; i < array.length; i++)
-      array[i] = list.get(i);
-    return array;
-  }
-  public static String[] toArray(List<String> list) {
-    String[] data = new String[list.size()];
-    for(int i = 0; i < data.length; i++)
-      data[i] = list.get(i);
-    return data;
-  }
-  public static int[][] toArray(List<int[]> list) {
-    int[][] data = new int[list.size()][];
-    for(int i = 0; i < data.length; i++)
-      data[i] = list.get(i);
-    return data;
-  }
+//  public static int[] toArray(List<Integer> list) {
+//    int[] array = new int[list.size()];
+//    for(int i = 0; i < array.length; i++)
+//      array[i] = list.get(i);
+//    return array;
+//  }
+//  public static double[] toArray(List<Double> list) {
+//    double[] array = new double[list.size()];
+//    for(int i = 0; i < array.length; i++)
+//      array[i] = list.get(i);
+//    return array;
+//  }
+//  public static String[] toArray(List<String> list) {
+//    String[] data = new String[list.size()];
+//    for(int i = 0; i < data.length; i++)
+//      data[i] = list.get(i);
+//    return data;
+//  }
+//  public static int[][] toArray(List<int[]> list) {
+//    int[][] data = new int[list.size()][];
+//    for(int i = 0; i < data.length; i++)
+//      data[i] = list.get(i);
+//    return data;
+//  }
 
   public static double[] concat(double[] v1, double[] v2) {
     double[] v = new double[v1.length+v2.length];
