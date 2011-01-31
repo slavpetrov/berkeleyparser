@@ -141,12 +141,8 @@ public class GrammarTrainer {
 		@Option(name = "-skipBilingual", usage = "Skips the bilingual portion of the Chinese treebank (Needed for training the bilingual reranker")
 		public boolean skipBilingual = false;
 
-		//		@Option(name = "-grsm", usage = "Grammar smoothing parameter, in range [0,1].  (Default: 0.1)\n")
-//		public double grammarSmoothingParameter = 0.1;
-
-//	@Option(name = "-a", usage = "annotate (Default: true)\n")
-//	public boolean annotate = true;
-
+        @Option(name = "-keepFunctionLabels", usage = "Retain predicted function labels. Model must have been trained with function labels. (Default: false)")
+        public boolean keepFunctionLabels = false;
 	}
 
 
@@ -204,12 +200,10 @@ public class GrammarTrainer {
     double[] smoothParams = {opts.smoothingParameter1,opts.smoothingParameter2};
     System.out.println("Using smoothing parameters "+smoothParams[0]+" and "+smoothParams[1]);
     
-
-
     boolean allowMoreSubstatesThanCounts = false;
     boolean findClosedUnaryPaths = opts.findClosedUnaryPaths;
 
-    Corpus corpus = new Corpus(path,opts.treebank,trainingFractionToKeep,false, opts.skipSection, opts.skipBilingual);
+    Corpus corpus = new Corpus(path,opts.treebank,trainingFractionToKeep,false, opts.skipSection, opts.skipBilingual, opts.keepFunctionLabels);
     List<Tree<String>> trainTrees = Corpus.binarizeAndFilterTrees(corpus
 				.getTrainTrees(), VERTICAL_MARKOVIZATION,
 				HORIZONTAL_MARKOVIZATION, maxSentenceLength, binarization, manualAnnotation,VERBOSE);
@@ -218,9 +212,9 @@ public class GrammarTrainer {
 				HORIZONTAL_MARKOVIZATION, maxSentenceLength, binarization, manualAnnotation,VERBOSE);
     Numberer tagNumberer =  Numberer.getGlobalNumberer("tags");
 
-    //		for (Tree<String> t : trainTrees){
-//				System.out.println(t);
-//			}
+//	for (Tree<String> t : trainTrees){
+//		System.out.println(t);
+//	}
 		
     if (opts.trainOnDevSet){
     	System.out.println("Adding devSet to training data.");
@@ -237,11 +231,11 @@ public class GrammarTrainer {
 
     System.out.println("There are "+nTrees+" trees in the training set.");
     
-		double filter = opts.filter;
-		if(filter>0) System.out.println("Will remove rules with prob under "+filter+
-				".\nEven though only unlikely rules are pruned the training LL is not guaranteed to increase in every round anymore " +
-				"(especially when we are close to converging)." +
-				"\nFurthermore it increases the variance because 'good' rules can be pruned away in early stages.");
+	double filter = opts.filter;
+	if(filter>0) System.out.println("Will remove rules with prob under "+filter+
+			".\nEven though only unlikely rules are pruned the training LL is not guaranteed to increase in every round anymore " +
+			"(especially when we are close to converging)." +
+			"\nFurthermore it increases the variance because 'good' rules can be pruned away in early stages.");
 
     short nSubstates = opts.nSubStates;
     short[] numSubStatesArray = initializeSubStateArray(trainTrees, validationTrees, tagNumberer, nSubstates);

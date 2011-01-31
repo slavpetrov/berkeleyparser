@@ -354,7 +354,7 @@ public class GrammarTester implements Callable{
           if (kBestParsing){
             double bestFscore = -1;
             for (Tree<String> pTree : parsedTrees){
-              pTree = TreeAnnotations.unAnnotateTree(pTree);
+              pTree = TreeAnnotations.unAnnotateTree(pTree, false);
               double f1 = tmpEval.evaluate(pTree, tTree, false);
               if (f1>bestFscore) {
                 bestTree = pTree;
@@ -364,7 +364,7 @@ public class GrammarTester implements Callable{
           }
           else {
             bestTree = parsedTrees.get(0);
-            bestTree = TreeAnnotations.unAnnotateTree(bestTree);
+            bestTree = TreeAnnotations.unAnnotateTree(bestTree, false);
           }
           if (!bestTree.getChildren().isEmpty()) { 
             System.out.println(bestTree.getChildren().get(0));
@@ -381,7 +381,7 @@ public class GrammarTester implements Callable{
           if (kBestParsing){
             double bestFscore = -1;
             for (Tree<String> pTree : parsedTrees){
-              pTree = TreeAnnotations.unAnnotateTree(pTree);
+              pTree = TreeAnnotations.unAnnotateTree(pTree, false);
               if (opts.printAllKBest)
                 System.out.println("\t" + pTree);
               double f1 = tmpEval.evaluate(pTree, tTree, false);
@@ -393,7 +393,7 @@ public class GrammarTester implements Callable{
           }
           else {
             bestTree = parsedTrees.get(0);
-            bestTree = TreeAnnotations.unAnnotateTree(bestTree);
+            bestTree = TreeAnnotations.unAnnotateTree(bestTree, false);
           }
           if (!bestTree.getChildren().isEmpty()) { 
             System.out.println(bestTree.getChildren().get(0));
@@ -446,7 +446,7 @@ public class GrammarTester implements Callable{
           List<Tree<String>> list = parser.getKBestConstrainedParses(testSentence, posTags, opts.k);
           double bestFscore = 0;
           for (Tree<String> tree : list){
-            Tree<String> tmp = TreeAnnotations.unAnnotateTree(tree);
+            Tree<String> tmp = TreeAnnotations.unAnnotateTree(tree, false);
             if (opts.printAllKBest)
               System.out.println("\t"+tmp);
             double f1 = tmpEval.evaluate(tmp, testTree, false);
@@ -461,10 +461,10 @@ public class GrammarTester implements Callable{
           parsedTree = parser.getBestConstrainedParse(testSentence,posTags,allowedStates);
           if (opts.verbose) System.out.println("Annotated result:\n"+Trees.PennTreeRenderer.render(parsedTree));
 
-          parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
+          parsedTree = TreeAnnotations.unAnnotateTree(parsedTree, false);
           if (useGoldPOS && parsedTree.getChildren().isEmpty()){ // parse error when using goldPOS, try without
             parsedTree = parser.getBestConstrainedParse(testSentence,null,allowedStates);
-            parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
+            parsedTree = TreeAnnotations.unAnnotateTree(parsedTree, false);
           }
         }
 
@@ -664,7 +664,7 @@ public class GrammarTester implements Callable{
       String asString = (String)tagNumberer.object(state);
       String unannotatedLabel = asString;
       if (!isPreTerminal)
-        unannotatedLabel = TreeAnnotations.unAnnotateTree(new Tree<String>(asString, Collections.singletonList(new Tree<String>("FakeLabel")))).getLabel();
+        unannotatedLabel = TreeAnnotations.unAnnotateTree(new Tree<String>(asString, Collections.singletonList(new Tree<String>("FakeLabel"))), false).getLabel();
       if (unannotatedLabel.equals(label))
       {
         if (hasTrue(allowed))
@@ -757,7 +757,7 @@ public class GrammarTester implements Callable{
       Tree<String> parsedTree = null;
       boolean[][][][] con = (cons==null) ? null : cons[i];
       parsedTree = parser.getBestConstrainedParse(testSentence,null,con);
-      parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
+      parsedTree = TreeAnnotations.unAnnotateTree(parsedTree, false);
 
       eval.evaluate(parsedTree, testTree, false);
       i++;

@@ -43,7 +43,7 @@ public class TreeGenerator {
 		while (nGen < nTrees){
 			Tree<String> artTree = generateTree(0, 0);
 			System.out.println(artTree.getYield().toString());
-		  Tree<String> tree = TreeAnnotations.unAnnotateTree(artTree);
+		  Tree<String> tree = TreeAnnotations.unAnnotateTree(artTree, false);
 		  if (tree.getYield().size() > maxLength) continue;
 		  System.out.println("Generated tree of length "+tree.getYield().size()+".\n"+Trees.PennTreeRenderer.render(tree)+"\n");
 		  nGen++;

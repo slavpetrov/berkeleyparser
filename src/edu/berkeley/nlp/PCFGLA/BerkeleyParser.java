@@ -60,7 +60,10 @@ public class BerkeleyParser  {
 		@Option(name = "-scores", usage = "Output inside scores (only for binarized viterbi trees). (Default: false)")
 		public boolean scores;
 
-		@Option(name = "-substates", usage = "Output subcategories (only for binarized viterbi trees). (Default: false)")
+        @Option(name = "-keepFunctionLabels", usage = "Retain predicted function labels. Model must have been trained with function labels. (Default: false)")
+        public boolean keepFunctionLabels;
+
+        @Option(name = "-substates", usage = "Output subcategories (only for binarized viterbi trees). (Default: false)")
 		public boolean substates;
 
 		@Option(name = "-accurate", usage = "Set thresholds for accuracy. (Default: set thresholds for efficiency)")
@@ -301,7 +304,7 @@ public class BerkeleyParser  {
 				if (opts.ec_format) outputData.write("sentenceLikelihood ");
 				outputData.write(allLL+"");
 			}
-			if (!opts.binarize) parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
+			if (!opts.binarize) parsedTree = TreeAnnotations.unAnnotateTree(parsedTree, opts.keepFunctionLabels);
 			if (opts.confidence) {
 				double treeLL = (parsedTree.getChildren().isEmpty()) ? Double.NEGATIVE_INFINITY : parser.getConfidence(parsedTree);
 				if (addDelimiter) outputData.write(delimiter);

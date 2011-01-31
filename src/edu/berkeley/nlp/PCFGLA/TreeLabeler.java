@@ -220,7 +220,7 @@ public class TreeLabeler {
 				else {
 					if (opts.labelOnlyPOS){
 						List<Tree<String>> pos = tree.getPreTerminals();
-						tree = TreeAnnotations.unAnnotateTree(tree);
+						tree = TreeAnnotations.unAnnotateTree(tree, false);
 						for (Tree<String> tag : pos){
 							String t = tag.getLabel();
 							t = t + "-0";

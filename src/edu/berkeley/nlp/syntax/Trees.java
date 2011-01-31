@@ -259,6 +259,17 @@ public class Trees {
 		}
 	}
 
+	public static class FunctionLabelRetainingTreeNormalizer implements TreeTransformer<String> {
+		EmptyNodeStripper emptyNodeStripper = new EmptyNodeStripper();
+		XOverXRemover<String> xOverXRemover = new XOverXRemover<String>();
+
+		public Tree<String> transformTree(Tree<String> tree) {
+			tree = emptyNodeStripper.transformTree(tree);
+			tree = xOverXRemover.transformTree(tree);
+			return tree;
+		}
+	}
+
 	public static class PennTreeReader implements Iterator<Tree<String>> {
 		public static String ROOT_LABEL = "ROOT";
 
