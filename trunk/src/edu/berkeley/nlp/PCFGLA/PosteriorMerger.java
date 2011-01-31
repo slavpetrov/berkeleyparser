@@ -149,7 +149,7 @@ public class PosteriorMerger{
 				parser.maxcSplit = maxcSplit;
 				parser.allowedStates = allowedStates;
 				Tree<String> parsedTree = parser.extractBestMaxRuleParse(0, sentence.size(), sentence);
-				parsedTree = TreeAnnotations.unAnnotateTree(parsedTree);
+				parsedTree = TreeAnnotations.unAnnotateTree(parsedTree, false);
 				outputData.write(parsedTree+"\n");
 				outputData.flush();
 			}

@@ -495,7 +495,7 @@ public class TreeAnnotations implements java.io.Serializable {
 	    return debinarizedTree;
 	}	
 	
-	public static Tree<String> unAnnotateTree(Tree<String> annotatedTree) {
+	public static Tree<String> unAnnotateTree(Tree<String> annotatedTree, boolean keepFunctionLabel) {
     // Remove intermediate nodes (labels beginning with "@"
     // Remove all material on node labels which follow their base symbol (cuts at the leftmost -, ^, or : character)
     // Examples: a node with label @NP->DT_JJ will be spliced out, and a node with label NP^S will be reduced to NP
@@ -504,6 +504,7 @@ public class TreeAnnotations implements java.io.Serializable {
         return s.startsWith("@") && !s.equals("@");
       }
     });
+    if (keepFunctionLabel) return debinarizedTree;
     Tree<String> unAnnotatedTree = (new Trees.FunctionNodeStripper()).transformTree(debinarizedTree);
     return unAnnotatedTree;
   }
@@ -521,7 +522,7 @@ public class TreeAnnotations implements java.io.Serializable {
     		Tree<String> binarizedTree = binarizeTree(tree,binarization);
     		System.out.println(Trees.PennTreeRenderer.render(binarizedTree));
     		System.out.println("unbinarized");
-    		Tree<String> unBinarizedTree = unAnnotateTree(binarizedTree);
+    		Tree<String> unBinarizedTree = unAnnotateTree(binarizedTree, false);
     		System.out.println(Trees.PennTreeRenderer.render(unBinarizedTree));
     		System.out.println("------------");
     	} catch (Error e) {

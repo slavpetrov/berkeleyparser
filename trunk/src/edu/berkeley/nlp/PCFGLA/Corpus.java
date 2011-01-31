@@ -41,6 +41,7 @@ public class Corpus {
 	}
 	
 	public static TreeBankType myTreebank = TreeBankType.WSJ;
+    public static boolean keepFunctionLabels;
 	
 	ArrayList<Tree<String>> trainTrees = new ArrayList<Tree<String>>();	
 	ArrayList<Tree<String>> validationTrees = new ArrayList<Tree<String>>();	
@@ -57,11 +58,11 @@ public class Corpus {
 	 * @param fraction The fraction of training data to use.  In the range [0,1].
 	 */
 	public Corpus(String path, TreeBankType treebank, double fraction, boolean onlyTest) {
-		this(path, treebank, fraction, onlyTest, -1, false);
+		this(path, treebank, fraction, onlyTest, -1, false, false);
 	}
 	
-	public Corpus(String path, TreeBankType treebank, double fraction, boolean onlyTest, int skipSection, boolean skipBilingual) {
-		this(path, treebank, onlyTest, skipSection, skipBilingual);
+	public Corpus(String path, TreeBankType treebank, double fraction, boolean onlyTest, int skipSection, boolean skipBilingual, boolean keepFunctionLabels) {
+		this(path, treebank, onlyTest, skipSection, skipBilingual, keepFunctionLabels);
 		int beforeSize = trainTrees.size();
 		if (fraction < 0){
 			int startIndex = (int)Math.ceil(beforeSize * -1.0 * fraction);
@@ -83,9 +84,10 @@ public class Corpus {
 	 * is null, don't load it.  If all are null, use the dummy sentence.  Don't
 	 * load the English corpora if we load the Chinese one.
 	 */
-	private Corpus(String path, TreeBankType treebank, boolean onlyTest, int skipSection, boolean skipBilingual) {
+	private Corpus(String path, TreeBankType treebank, boolean onlyTest, int skipSection, boolean skipBilingual, boolean keepFunctionLabel) {
 		myTreebank = treebank;
 		boolean dummy = path==null;
+		keepFunctionLabels = keepFunctionLabel;
     if (dummy) {
       System.out.println("Loading one dummy sentence into training set only.");
       Trees.PennTreeReader reader;
@@ -185,7 +187,7 @@ public class Corpus {
       	sentences.add("((Y (C (B b) (B b)) (D d)))");
       	sentences.add("((Y (C (B b) (B b)) (D d)))");
       case 8:
-        sentences.add("((S (NP (PRP We)) (VP (VBP 're) (RB about) (VP (TO to) (VP (VB see) (SBAR (IN if) (S (NP (NN advertising)) (VP (VBZ works))))))) (. .)))");
+        sentences.add("((S-SBJ (NP (PRP We)) (VP (VBP 're) (RB about) (VP (TO to) (VP (VB see) (SBAR (IN if) (S (NP (NN advertising)) (VP (VBZ works))))))) (. .)))");
       	break;
       default:
       	
@@ -193,7 +195,9 @@ public class Corpus {
       for (String sentence : sentences) {
         reader = new Trees.PennTreeReader(new StringReader(sentence));
         tree = reader.next();
-        Trees.TreeTransformer<String> treeTransformer = new Trees.StandardTreeNormalizer();
+        Trees.TreeTransformer<String> treeTransformer = (keepFunctionLabels) ? 
+                new Trees.FunctionLabelRetainingTreeNormalizer() :
+                new Trees.StandardTreeNormalizer();
         Tree<String> normalizedTree = treeTransformer.transformTree(tree);
         tree = normalizedTree;
         trainTrees.add(tree);
@@ -317,7 +321,9 @@ public class Corpus {
 	  	trainTrees.add(treeReader.next());
 		}
 		
-    Trees.TreeTransformer<String> treeTransformer = new Trees.StandardTreeNormalizer();
+	    Trees.TreeTransformer<String> treeTransformer = (keepFunctionLabels) ? 
+	            new Trees.FunctionLabelRetainingTreeNormalizer() :
+	            new Trees.StandardTreeNormalizer();
     ArrayList<Tree<String>> normalizedTreeList = new ArrayList<Tree<String>>();
     for (Tree<String> tree : trainTrees) {
       Tree<String> normalizedTree = treeTransformer.transformTree(tree);
@@ -434,7 +440,9 @@ public class Corpus {
     Collection<Tree<String>> trees = PennTreebankReader.readTrees(basePath, low, high, charset);
 //    System.out.println("in readTrees");
     // normalize trees
-    Trees.TreeTransformer<String> treeTransformer = new Trees.StandardTreeNormalizer();
+    Trees.TreeTransformer<String> treeTransformer = (keepFunctionLabels) ? 
+            new Trees.FunctionLabelRetainingTreeNormalizer() :
+            new Trees.StandardTreeNormalizer();
     List<Tree<String>> normalizedTreeList = new ArrayList<Tree<String>>();
     for (Tree<String> tree : trees) {
       Tree<String> normalizedTree = treeTransformer.transformTree(tree);
