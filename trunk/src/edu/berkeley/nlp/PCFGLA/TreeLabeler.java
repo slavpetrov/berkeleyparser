@@ -4,6 +4,7 @@
 package edu.berkeley.nlp.PCFGLA;
 
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
@@ -59,18 +60,24 @@ public class TreeLabeler {
 
 		@Option(name = "-getPOSandYield", usage = "Get POS and words in CoNLL format")
 		public boolean getPOSandYield;
-		
-    @Option(name = "-annotateTrees", usage = "Binarize and annotate trees")
-    public boolean annotateTrees;
-		
-    @Option(name = "-horizontalMarkovization", usage = "Level of horizontal Markovization (Default: 0, i.e. no sibling information)")
-    public int h_markov = 0;    
-    
-    @Option(name = "-verticalMarkovization", usage = "Level of vertical Markovization (Default: 1, i.e. no parent information)")
-    public int v_markov = 1;    
-    
-    @Option(name = "-b", usage = "LEFT/RIGHT Binarization (Default: RIGHT)")
-    public Binarization binarization = Binarization.RIGHT;
+
+		@Option(name = "-annotateTrees", usage = "Binarize and annotate trees")
+		public boolean annotateTrees;
+
+		@Option(name = "-escapeChars", usage = "Escape parantheses and backslashes")
+		public boolean escapeChars;
+
+		@Option(name = "-keepFunctionLabels", usage = "Retain function labels")
+		public boolean keepFunctionLabels;
+
+		@Option(name = "-horizontalMarkovization", usage = "Level of horizontal Markovization (Default: 0, i.e. no sibling information)")
+		public int h_markov = 0;    
+
+		@Option(name = "-verticalMarkovization", usage = "Level of vertical Markovization (Default: 1, i.e. no parent information)")
+		public int v_markov = 1;    
+
+		@Option(name = "-b", usage = "LEFT/RIGHT Binarization (Default: RIGHT)")
+		public Binarization binarization = Binarization.RIGHT;
 
 	}
 
@@ -120,7 +127,6 @@ public class TreeLabeler {
 		// provide feedback on command-line arguments
 		System.err.println("Calling with " + optParser.getPassedInOptions());
 
-
 		String inFileName = opts.inFileName;
 		Grammar grammar = null;
 		SophisticatedLexicon lexicon = null;
@@ -154,15 +160,28 @@ public class TreeLabeler {
 		}
 		Numberer tagNumberer =  Numberer.getGlobalNumberer("tags");
 
-		Trees.TreeTransformer<String> treeTransformer = new Trees.StandardTreeNormalizer();
+		Trees.TreeTransformer<String> treeTransformer = (opts.keepFunctionLabels) ? new Trees.FunctionLabelRetainingTreeNormalizer() : new Trees.StandardTreeNormalizer();
 		try{
-			InputStreamReader inputData = (opts.inputFile==null) ? new InputStreamReader(System.in) : new InputStreamReader(new FileInputStream(opts.inputFile), "UTF-8");
-			PennTreeReader treeReader = new PennTreeReader(inputData);
+	    	BufferedReader inputData = (opts.inputFile==null) ? new BufferedReader(new InputStreamReader(System.in)) : new BufferedReader(new InputStreamReader(new FileInputStream(opts.inputFile), "UTF-8"));
 			PrintWriter outputData = (opts.outputFile==null) ? new PrintWriter(new OutputStreamWriter(System.out)) : new PrintWriter(new OutputStreamWriter(new FileOutputStream(opts.outputFile), "UTF-8"), true);
 
 			Tree<String> tree = null;
-			while(treeReader.hasNext()){
-				tree = treeReader.next(); 
+	    	String line = "";
+	    	while((line=inputData.readLine()) != null){
+	    		if (line.equals("")) {
+	    			outputData.write("\n");
+	    			continue;
+	    		}
+	    		if (line.equals("(())")) {
+	    			outputData.write("(())\n");
+	    			continue;
+	    		}
+	    		tree = PennTreeReader.parseEasy(line);
+	    		if (tree==null) continue;
+	    		if (tree.getYield().get(0).equals("")){ // empty tree -> parse failure
+	    			outputData.write("(())\n");
+	    			continue;
+	    		}
 				if (tree.getChildren().size() == 0 || tree.getChildren().get(0).getLabel().equals("(") || tree.getYield().get(0).equals("")){ // empty tree -> parse failure
 					outputData.write("(())\n");
 					continue;
@@ -177,8 +196,8 @@ public class TreeLabeler {
 						}
 						outputData.write("\n");
 					} else if (opts.annotateTrees) {
-		        tree = TreeAnnotations.processTree(tree, opts.v_markov, opts.h_markov, opts.binarization, false);
-		        outputData.write(tree+"\n");
+						tree = TreeAnnotations.processTree(tree, opts.v_markov, opts.h_markov, opts.binarization, false);
+						outputData.write(tree+"\n");
 					}
 					else {
 						Tree<String> normalizedTree = treeTransformer.transformTree(tree);
@@ -189,7 +208,13 @@ public class TreeLabeler {
 							}
 							outputData.write("\n");
 						}
-						else outputData.write(normalizedTree+"\n");
+						else {
+							if (opts.escapeChars) {
+								outputData.write(normalizedTree.toEscapedString()+"\n");
+							} else {
+								outputData.write(normalizedTree+"\n");
+							}
+						}
 					}
 					continue;
 				}
@@ -214,19 +239,28 @@ public class TreeLabeler {
 						if (opts.labelOnlyPOS){
 							labeledTree = TreeAnnotations.debinarizeTree(labeledTree);
 						}
-						outputData.write("( "+labeledTree.getChildren().get(0)+")\n");
+						if (opts.escapeChars) {
+							outputData.write("( "+labeledTree.getChildren().get(0).toEscapedString()+")\n");
+						} else {
+							outputData.write("( "+labeledTree.getChildren().get(0)+")\n");
+						}
+
 					}
 				}
 				else {
 					if (opts.labelOnlyPOS){
 						List<Tree<String>> pos = tree.getPreTerminals();
-						tree = TreeAnnotations.unAnnotateTree(tree, false);
+						tree = TreeAnnotations.unAnnotateTree(tree, opts.keepFunctionLabels);
 						for (Tree<String> tag : pos){
 							String t = tag.getLabel();
 							t = t + "-0";
 							tag.setLabel(t);
 						}
-						outputData.write("( "+tree.getChildren().get(0)+")\n");
+						if (opts.escapeChars) {
+							outputData.write("( "+tree.getChildren().get(0).toEscapedString()+")\n");
+						} else {
+							outputData.write("( "+tree.getChildren().get(0)+")\n");
+						}
 					} else {
 						outputData.write("(())\n");
 					}

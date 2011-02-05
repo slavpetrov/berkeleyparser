@@ -336,6 +336,42 @@ public class Tree<L> implements Serializable, Comparable<Tree<L>>, Iterable<Tree
 		}
 	}
 
+	/**
+	 * Same as toString(), but escapes terminals like so:
+	 * ( becomes -LRB-
+	 * ) becomes -RRB-
+	 * \ becomes -BACKSLASH- ("\" does not occur in PTB; this is our own convention)
+	 * This is useful because otherwise it's hard to tell a "(" terminal from the tree's bracket
+	 * structure, or tell an escaping \ from a literal.
+	 */
+	public String toEscapedString() {
+		StringBuilder sb = new StringBuilder();
+		toStringBuilderEscaped(sb);
+		return sb.toString();
+	}
+
+	public void toStringBuilderEscaped(StringBuilder sb) {
+		if (!isLeaf()) sb.append('(');
+		if (getLabel() != null) {
+			if (isLeaf()) {
+				String escapedLabel = getLabel().toString();
+				escapedLabel = escapedLabel.replaceAll("\\(", "-LRB-");
+				escapedLabel = escapedLabel.replaceAll("\\)", "-RRB-");
+				escapedLabel = escapedLabel.replaceAll("\\\\", "-BACKSLASH-");
+				sb.append(escapedLabel);
+			} else {
+				sb.append(getLabel());
+			}
+		}
+		if (!isLeaf()) {
+			for (Tree<L> child : getChildren()) {
+				sb.append(' ');
+				child.toStringBuilderEscaped(sb);
+			}
+			sb.append(')');
+		}
+	}
+
 	public Tree(L label, List<Tree<L>> children) {
 		this.label = label;
 		this.children = children;
