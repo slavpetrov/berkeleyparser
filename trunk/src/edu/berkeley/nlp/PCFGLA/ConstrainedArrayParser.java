@@ -25,7 +25,7 @@ public class ConstrainedArrayParser extends ArrayParser implements Callable{
 //the chart is now using scaled probabilities, NOT log-probs.
   protected int[][][] iScale;  // for each (start,end) span there is a scaling factor
   protected int[][][] oScale;  
-	Binarization binarization;
+	public Binarization binarization;
 
 	Counter<String> stateCounter = new Counter<String>();
 	Counter<String> ruleCounter = new Counter<String>();
