@@ -161,8 +161,6 @@ public class BerkeleyParser  {
 			parser.binarization = pData.getBinarization();
 		}
 
-		if (opts.render) tjp = new TreeJPanel();
-
 		MultiThreadedParserWrapper m_parser = null;
 		if (opts.nThreads > 1){
 			System.err.println("Parsing with "+opts.nThreads+" threads in parallel.");
@@ -353,6 +351,7 @@ public class BerkeleyParser  {
 
 
 	public static void writeTreeToImage(Tree<String> tree, String fileName) throws IOException{
+		if (tjp == null) tjp = new TreeJPanel();
 		tjp.setTree(tree);
 
 		BufferedImage bi =new BufferedImage(tjp.width(),tjp.height(),BufferedImage.TYPE_INT_ARGB);
