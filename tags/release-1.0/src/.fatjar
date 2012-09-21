@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue Jun 08 15:13:02 EDT 2010
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=BerkeleyParser_fat4.jar
+manifest.mergeall=true
+manifest.mainclass=edu.berkeley.nlp.PCFGLA.BerkeleyParser
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<po|BerkeleyParser>~.settings/;<po|BerkeleyParser>~src/;<po|BerkeleyParser>~.classpath;<po|BerkeleyParser>~.fatjar;<po|BerkeleyParser>~.project;<po|BerkeleyParser>~baseline.gr;<po|BerkeleyParser>~BerkeleyParser_fat.jar;<po|BerkeleyParser>~BerkeleyParser_fat2.jar;<po|BerkeleyParser>~BerkeleyParser_fat3.jar;<po|BerkeleyParser>~BerkeleyParser_fat4.jar;<po|BerkeleyParser>~BerkeleyParser_fat_accurate.jar;<po|BerkeleyParser>~grammar.0;<po|BerkeleyParser>~grammar.1;<po|BerkeleyParser>~grammar.2;<po|BerkeleyParser>~grammar.3;<po|BerkeleyParser>~split.gr.0;<po|BerkeleyParser>~split.gr.1;<po|BerkeleyParser>~split.gr.2;<po|BerkeleyParser>~tmp.0.grammar;<po|BerkeleyParser>~tmp.0.lexicon;<po|BerkeleyParser>~tmp.0.splits;<po|BerkeleyParser>~tmp.0.words;<po|BerkeleyParser>~tmp.1.grammar;<po|BerkeleyParser>~tmp.1.lexicon;<po|BerkeleyParser>~tmp.1.splits;<po|BerkeleyParser>~tmp.1.words;<po|BerkeleyParser>~tmp.2.grammar;<po|BerkeleyParser>~tmp.2.lexicon;<po|BerkeleyParser>~tmp.2.splits;<po|BerkeleyParser>~tmp.2.words;<po|BerkeleyParser>~tmp.grammar;<po|BerkeleyParser>~tmp.lexicon;<po|BerkeleyParser>~tmp.splits;<po|BerkeleyParser>~tmp.words
+includes=
