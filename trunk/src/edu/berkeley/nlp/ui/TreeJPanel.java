@@ -5,10 +5,6 @@ package edu.berkeley.nlp.ui;
 
 import javax.swing.*;
 
-//import com.sun.image.codec.jpeg.JPEGCodec;
-//import com.sun.image.codec.jpeg.JPEGEncodeParam;
-//import com.sun.media.jai.codecimpl.JPEGImageEncoder;
-
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -22,8 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
-import java.awt.*;
-
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
@@ -31,7 +25,6 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.image.*;
-import com.sun.image.codec.jpeg.*;
 
 import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.syntax.Trees;
