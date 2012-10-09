@@ -66,6 +66,7 @@ public class HierarchicalLexicon extends SimpleLexicon {
 		}
 	}
 
+	@Override
 	public void explicitlyComputeScores(int finalLevel) {
 		this.scores = new double[numStates][][];
 		int nSubstates = (int) Math.pow(2, finalLevel);
@@ -98,6 +99,7 @@ public class HierarchicalLexicon extends SimpleLexicon {
 		}
 	}
 
+	@Override
 	public HierarchicalLexicon splitAllStates(int[] counts,
 			boolean moreSubstatesThanCounts, int mode) {
 		short[] newNumSubStates = new short[numSubStates.length];
@@ -199,6 +201,7 @@ public class HierarchicalLexicon extends SimpleLexicon {
 		return hierarchicalScores[tag][word].get(finalLevels[tag][word]);
 	}
 
+	@Override
 	public HierarchicalLexicon copyLexicon() {
 		HierarchicalLexicon copy = newInstance();
 		copy.expectedCounts = new double[numStates][][];
@@ -222,6 +225,7 @@ public class HierarchicalLexicon extends SimpleLexicon {
 		return copy;
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		Numberer tagNumberer = Numberer.getGlobalNumberer("tags");

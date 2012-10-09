@@ -1,8 +1,15 @@
 package edu.berkeley.nlp.util;
 
-import java.util.*;
-import java.util.regex.*;
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StrUtils {
 	public static String[] split(String s) {

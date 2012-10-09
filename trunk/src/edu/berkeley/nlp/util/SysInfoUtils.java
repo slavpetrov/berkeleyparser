@@ -1,8 +1,9 @@
 package edu.berkeley.nlp.util;
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Date;
 
 public class SysInfoUtils {
 	public static String getCurrentDateStr() {

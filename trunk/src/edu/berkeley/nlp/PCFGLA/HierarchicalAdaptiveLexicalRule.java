@@ -182,6 +182,7 @@ public class HierarchicalAdaptiveLexicalRule implements Serializable {
 		}
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		compactifyHierarchy(hierarchy);

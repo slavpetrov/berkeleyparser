@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.berkeley.nlp.util.IOUtils;
+import edu.berkeley.nlp.util.Option;
 import edu.berkeley.nlp.util.StrUtils;
 import edu.berkeley.nlp.util.Utils;
-import edu.berkeley.nlp.util.Option;
 
 public class IntegerProgram {
 

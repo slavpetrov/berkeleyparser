@@ -1,9 +1,6 @@
 package edu.berkeley.nlp.classify;
 
-import edu.berkeley.nlp.classify.LabeledFeatureVector;
 import edu.berkeley.nlp.util.Counter;
-
-import java.util.List;
 
 /**
  * A minimal implementation of a labeled datum, wrapping a list of features and
@@ -24,6 +21,7 @@ public class BasicLabeledFeatureVector<F, L> implements
 		return features;
 	}
 
+	@Override
 	public String toString() {
 		return "<" + getLabel() + " : " + getFeatures().toString() + ">";
 	}

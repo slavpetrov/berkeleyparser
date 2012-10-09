@@ -49,6 +49,7 @@ public class PennTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return The punctuation tags
 	 */
+	@Override
 	public String[] punctuationTags() {
 		return pennPunctTags;
 	}
@@ -58,6 +59,7 @@ public class PennTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return The punctuation words
 	 */
+	@Override
 	public String[] punctuationWords() {
 		return pennPunctWords;
 	}
@@ -68,6 +70,7 @@ public class PennTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return The sentence final punctuation tags
 	 */
+	@Override
 	public String[] sentenceFinalPunctuationTags() {
 		return pennSFPunctTags;
 	}
@@ -90,6 +93,7 @@ public class PennTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return Whether this is a EVALB-ignored punctuation tag
 	 */
+	@Override
 	public String[] evalBIgnoredPunctuationTags() {
 		return collinsPunctTags;
 	}
@@ -104,6 +108,7 @@ public class PennTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return An array of characters that set off label name suffixes
 	 */
+	@Override
 	public char[] labelAnnotationIntroducingCharacters() {
 		return annotationIntroducingChars;
 	}
@@ -113,6 +118,7 @@ public class PennTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return The start symbols
 	 */
+	@Override
 	public String[] startSymbols() {
 		return pennStartSymbols;
 	}

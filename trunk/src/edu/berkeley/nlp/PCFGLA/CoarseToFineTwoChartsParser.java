@@ -39,6 +39,7 @@ public class CoarseToFineTwoChartsParser extends CoarseToFineMaxRuleParser {
 				false, false, true);
 	}
 
+	@Override
 	void doConstrainedInsideScores(Grammar grammar, boolean viterbi,
 			boolean logScores) {
 		if (!viterbi && logScores)
@@ -362,6 +363,7 @@ public class CoarseToFineTwoChartsParser extends CoarseToFineMaxRuleParser {
 		}
 	}
 
+	@Override
 	void doConstrainedOutsideScores(Grammar grammar, boolean viterbi,
 			boolean logScores) {
 		numSubStatesArray = grammar.numSubStates;
@@ -719,6 +721,7 @@ public class CoarseToFineTwoChartsParser extends CoarseToFineMaxRuleParser {
 		}
 	}
 
+	@Override
 	protected void createArrays(boolean firstTime, int numStates,
 			short[] numSubStatesArray, int level, double initVal,
 			boolean justInit) {
@@ -846,6 +849,7 @@ public class CoarseToFineTwoChartsParser extends CoarseToFineMaxRuleParser {
 		}
 	}
 
+	@Override
 	protected void clearArrays() {
 		iScorePreU = iScorePostU = oScorePreU = oScorePostU = null;
 		viScore = voScore = null;
@@ -1359,6 +1363,7 @@ public class CoarseToFineTwoChartsParser extends CoarseToFineMaxRuleParser {
 		return logLikelihood;
 	}
 
+	@Override
 	protected void pruneChart(double threshold, short[] numSubStatesArray,
 			int level) {
 		int totalStates = 0, previouslyPossible = 0, nowPossible = 0;

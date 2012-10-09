@@ -92,6 +92,7 @@ public class HierarchicalBinaryRule extends BinaryRule {
 		return this.scoreHierarchy.get(lastLevel);
 	}
 
+	@Override
 	public HierarchicalBinaryRule splitRule(short[] numSubStates,
 			short[] newNumSubStates, Random random, double randomness,
 			boolean doNotNormalize, int mode) {
@@ -142,6 +143,7 @@ public class HierarchicalBinaryRule extends BinaryRule {
 		return 0;
 	}
 
+	@Override
 	public String toString() {
 		Numberer n = Numberer.getGlobalNumberer("tags");
 		String lState = (String) n.object(leftChildState);

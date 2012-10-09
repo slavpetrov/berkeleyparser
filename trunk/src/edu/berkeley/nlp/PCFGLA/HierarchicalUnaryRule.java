@@ -84,6 +84,7 @@ public class HierarchicalUnaryRule extends UnaryRule {
 		return this.scoreHierarchy.get(lastLevel);
 	}
 
+	@Override
 	public HierarchicalUnaryRule splitRule(short[] numSubStates,
 			short[] newNumSubStates, Random random, double randomness,
 			boolean doNotNormalize, int mode) {
@@ -129,6 +130,7 @@ public class HierarchicalUnaryRule extends UnaryRule {
 		return 0;
 	}
 
+	@Override
 	public String toString() {
 		Numberer n = Numberer.getGlobalNumberer("tags");
 		String cState = (String) n.object(childState);

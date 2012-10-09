@@ -45,11 +45,13 @@ public class HierarchicalFullyConnectedLexicon extends HierarchicalLexicon {
 		this.knownWordCount = knownWordCount;
 	}
 
+	@Override
 	public HierarchicalFullyConnectedLexicon newInstance() {
 		return new HierarchicalFullyConnectedLexicon(this.numSubStates,
 				this.knownWordCount);
 	}
 
+	@Override
 	public void init(StateSetTreeList trainTrees) {
 		for (Tree<StateSet> tree : trainTrees) {
 			List<StateSet> words = tree.getYield();
@@ -147,6 +149,7 @@ public class HierarchicalFullyConnectedLexicon extends HierarchicalLexicon {
 		return res;
 	}
 
+	@Override
 	public double[] score(StateSet stateSet, short tag, boolean noSmoothing,
 			boolean isSignature) {
 		if (stateSet.wordIndex == -2) {
@@ -176,6 +179,7 @@ public class HierarchicalFullyConnectedLexicon extends HierarchicalLexicon {
 				noSmoothing, isSignature);
 	}
 
+	@Override
 	public void labelTrees(StateSetTreeList trainTrees) {
 		for (Tree<StateSet> tree : trainTrees) {
 			List<StateSet> words = tree.getYield();

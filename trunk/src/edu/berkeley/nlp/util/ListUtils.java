@@ -1,7 +1,16 @@
 package edu.berkeley.nlp.util;
 
-import java.util.*;
-import java.lang.reflect.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Random;
 
 public class ListUtils {
 	public static ArrayList<Double> toList(double[] xs) {
@@ -380,13 +389,13 @@ public class ListUtils {
 	public static boolean[] shallowClone(boolean[] v) {
 		if (v == null)
 			return null;
-		return (boolean[]) v.clone();
+		return v.clone();
 	}
 
 	public static int[] shallowClone(int[] v) {
 		if (v == null)
 			return null;
-		return (int[]) v.clone();
+		return v.clone();
 	}
 
 	public static double[][] shallowClone(double[][] v) {
@@ -401,7 +410,7 @@ public class ListUtils {
 	public static double[] shallowClone(double[] v) {
 		if (v == null)
 			return null;
-		return (double[]) v.clone();
+		return v.clone();
 	}
 
 	public static <T> T[][] shallowClone(T[][] v) {
@@ -860,7 +869,7 @@ public class ListUtils {
 			return null;
 		int[] newv = new int[v.length];
 		for (int i = 0; i < v.length; i++)
-			newv[i] = (int) ((Integer) v[i]);
+			newv[i] = ((Integer) v[i]);
 		return newv;
 	}
 

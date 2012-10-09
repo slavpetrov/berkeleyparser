@@ -3,28 +3,28 @@
  */
 package edu.berkeley.nlp.ui;
 
-import javax.swing.*;
-
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
-import java.awt.image.BufferedImage;
-import java.io.*;
 import javax.imageio.ImageIO;
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.image.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.syntax.Trees;
@@ -116,7 +116,7 @@ public class TreeJPanel extends JPanel {
 		double nodeCenter = 0.0;
 		double childTab = 0.0;
 		for (int i = 0; i < tree.getChildren().size(); i++) {
-			WidthResult subWR = widthResult((Tree<String>) tree.getChildren()
+			WidthResult subWR = widthResult(tree.getChildren()
 					.get(i), fM);
 			if (i == 0) {
 				nodeCenter += (sub + subWR.nodeCenter) / 2.0;
@@ -208,7 +208,7 @@ public class TreeJPanel extends JPanel {
 		double lineEndY = lineStartY + nodeHeight * parentSkip;
 		// recursively draw children
 		for (int i = 0; i < t.getChildren().size(); i++) {
-			Tree<String> child = (Tree<String>) t.getChildren().get(i);
+			Tree<String> child = t.getChildren().get(i);
 			double cWidth = paintTree(child, new Point2D.Double(childStartX,
 					childStartY), g2, fM);
 			// draw connectors
@@ -316,6 +316,7 @@ public class TreeJPanel extends JPanel {
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(tjp, BorderLayout.CENTER);
 		frame.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}

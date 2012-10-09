@@ -1,8 +1,13 @@
 package edu.berkeley.nlp.util;
 
-import static edu.berkeley.nlp.util.LogInfo.*;
-import java.io.*;
-import java.util.*;
+import static edu.berkeley.nlp.util.LogInfo.errors;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Maps (object, object) pairs to doubles. Based on TDoubleMap. It's useful when
@@ -81,6 +86,7 @@ public class T2DoubleMap<S, T> extends AbstractT2Map implements
 		map.incr(key2, dValue);
 	}
 
+	@Override
 	public int size() {
 		return maps.size();
 	}
@@ -156,11 +162,13 @@ public class T2DoubleMap<S, T> extends AbstractT2Map implements
 		return newMap;
 	}
 
+	@Override
 	public void lock() {
 		for (TDoubleMap<T> map : maps.values())
 			map.lock();
 	}
 
+	@Override
 	public void switchToSortedList() {
 		for (TDoubleMap<T> map : maps.values())
 			map.switchToSortedList();

@@ -10,9 +10,7 @@ import edu.berkeley.nlp.PCFGLA.BinaryCounterTable;
 import edu.berkeley.nlp.PCFGLA.BinaryRule;
 import edu.berkeley.nlp.PCFGLA.UnaryCounterTable;
 import edu.berkeley.nlp.PCFGLA.UnaryRule;
-
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.Numberer;
 
 /**

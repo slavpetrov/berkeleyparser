@@ -1,16 +1,28 @@
 package edu.berkeley.nlp.PCFGLA;
 
-import edu.berkeley.nlp.PCFGLA.smoothing.*;
-import edu.berkeley.nlp.math.SloppyMath;
-import edu.berkeley.nlp.syntax.StateSet;
-import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.util.*;
-import edu.berkeley.nlp.util.PriorityQueue;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+
+import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
+import edu.berkeley.nlp.math.SloppyMath;
+import edu.berkeley.nlp.syntax.StateSet;
+import edu.berkeley.nlp.syntax.Tree;
+import edu.berkeley.nlp.util.ArrayUtil;
+import edu.berkeley.nlp.util.CollectionUtils;
+import edu.berkeley.nlp.util.CounterMap;
+import edu.berkeley.nlp.util.Numberer;
+import edu.berkeley.nlp.util.PriorityQueue;
+import edu.berkeley.nlp.util.ScalingTools;
 
 /**
  * Simple implementation of a PCFG grammar, offering the ability to look up
@@ -224,6 +236,7 @@ public class Grammar implements java.io.Serializable {
 		out.flush();
 	}
 
+	@Override
 	public String toString() {
 		// splitRules();
 		StringBuilder sb = new StringBuilder();
@@ -294,7 +307,7 @@ public class Grammar implements java.io.Serializable {
 		for (int state1 = 0; state1 < numStates; state1++) {
 			List<UnaryRule> unaries = this.getUnaryRulesByParent(state1);
 			for (UnaryRule uRule : unaries) {
-				UnaryRule uRule2 = (UnaryRule) unaryRuleMap.get(uRule);
+				UnaryRule uRule2 = unaryRuleMap.get(uRule);
 				if (!uRule.getScores2().equals(uRule2.getScores2()))
 					System.out.print("BY PARENT:\n" + uRule + "" + uRule2
 							+ "\n");
@@ -307,7 +320,7 @@ public class Grammar implements java.io.Serializable {
 			for (int r = 0; r < unaries.length; r++) {
 				UnaryRule uRule = unaries[r];
 				// System.out.print(uRule);
-				UnaryRule uRule2 = (UnaryRule) unaryRuleMap.get(uRule);
+				UnaryRule uRule2 = unaryRuleMap.get(uRule);
 				if (unariesAreNotEqual(uRule, uRule2))
 					System.out.print("VITERBI CLOSED:\n" + uRule + "" + uRule2
 							+ "\n");
@@ -325,7 +338,7 @@ public class Grammar implements java.io.Serializable {
 			BinaryRule[] parentRules = this.splitRulesWithP(state1);
 			for (int i = 0; i < parentRules.length; i++) {
 				BinaryRule bRule = parentRules[i];
-				BinaryRule bRule2 = (BinaryRule) binaryRuleMap.get(bRule);
+				BinaryRule bRule2 = binaryRuleMap.get(bRule);
 				if (!bRule.getScores2().equals(bRule2.getScores2()))
 					System.out.print("BINARY: " + bRule + "" + bRule2 + "\n");
 			}
@@ -1344,13 +1357,13 @@ public class Grammar implements java.io.Serializable {
 		closedViterbiRulesWithC = new UnaryRule[numStates][];
 
 		for (int i = 0; i < numStates; i++) {
-			closedSumRulesWithP[i] = (UnaryRule[]) closedSumRulesWithParent[i]
+			closedSumRulesWithP[i] = closedSumRulesWithParent[i]
 					.toArray(new UnaryRule[0]);
-			closedSumRulesWithC[i] = (UnaryRule[]) closedSumRulesWithChild[i]
+			closedSumRulesWithC[i] = closedSumRulesWithChild[i]
 					.toArray(new UnaryRule[0]);
-			closedViterbiRulesWithP[i] = (UnaryRule[]) closedViterbiRulesWithParent[i]
+			closedViterbiRulesWithP[i] = closedViterbiRulesWithParent[i]
 					.toArray(new UnaryRule[0]);
-			closedViterbiRulesWithC[i] = (UnaryRule[]) closedViterbiRulesWithChild[i]
+			closedViterbiRulesWithC[i] = closedViterbiRulesWithChild[i]
 					.toArray(new UnaryRule[0]);
 		}
 	}
@@ -1451,11 +1464,11 @@ public class Grammar implements java.io.Serializable {
 		double[][] uScores = ur.getScores2();
 		// do all sum rules
 		for (int i = 0; i < closedSumRulesWithChild[pState].size(); i++) {
-			UnaryRule pr = (UnaryRule) closedSumRulesWithChild[pState].get(i);
+			UnaryRule pr = closedSumRulesWithChild[pState].get(i);
 			for (int j = 0; j < closedSumRulesWithParent[cState].size(); j++) {
 				short parentState = pr.parentState;
 				int nParentSubStates = numSubStates[parentState];
-				UnaryRule cr = (UnaryRule) closedSumRulesWithParent[cState]
+				UnaryRule cr = closedSumRulesWithParent[cState]
 						.get(j);
 				UnaryRule resultR = new UnaryRule(parentState,
 						cr.getChildState());
@@ -1481,10 +1494,10 @@ public class Grammar implements java.io.Serializable {
 		}
 		// do viterbi rules also
 		for (short i = 0; i < closedViterbiRulesWithChild[pState].size(); i++) {
-			UnaryRule pr = (UnaryRule) closedViterbiRulesWithChild[pState]
+			UnaryRule pr = closedViterbiRulesWithChild[pState]
 					.get(i);
 			for (short j = 0; j < closedViterbiRulesWithParent[cState].size(); j++) {
-				UnaryRule cr = (UnaryRule) closedViterbiRulesWithParent[cState]
+				UnaryRule cr = closedViterbiRulesWithParent[cState]
 						.get(j);
 				short parentState = pr.parentState;
 				int nParentSubStates = numSubStates[parentState];
@@ -1566,7 +1579,7 @@ public class Grammar implements java.io.Serializable {
 				short bestSumIntermed = -1;
 				short bestMaxIntermed = -2;
 				for (int i = 0; i < unaryRulesWithParent[parentState].size(); i++) {
-					UnaryRule pr = (UnaryRule) unaryRulesWithParent[parentState]
+					UnaryRule pr = unaryRulesWithParent[parentState]
 							.get(i);
 					short state = pr.getChildState();
 					if (state == childState) {
@@ -1592,7 +1605,7 @@ public class Grammar implements java.io.Serializable {
 						}
 					} else {
 						for (int j = 0; j < unaryRulesWithC[childState].size(); j++) {
-							UnaryRule cr = (UnaryRule) unaryRulesWithC[childState]
+							UnaryRule cr = unaryRulesWithC[childState]
 									.get(j);
 							if (state != cr.getParentState())
 								continue;
@@ -3249,9 +3262,9 @@ public class Grammar implements java.io.Serializable {
 			closedSumRulesWithC = new UnaryRule[numStates][];
 		}
 		for (int i = 0; i < numStates; i++) {
-			closedSumRulesWithP[i] = (UnaryRule[]) closedSumRulesWithParent[i]
+			closedSumRulesWithP[i] = closedSumRulesWithParent[i]
 					.toArray(new UnaryRule[0]);
-			closedSumRulesWithC[i] = (UnaryRule[]) closedSumRulesWithChild[i]
+			closedSumRulesWithC[i] = closedSumRulesWithChild[i]
 					.toArray(new UnaryRule[0]);
 		}
 

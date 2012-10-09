@@ -2,7 +2,9 @@ package edu.berkeley.nlp.PCFGLA;
 
 import java.util.Random;
 
-import edu.berkeley.nlp.util.*;
+import edu.berkeley.nlp.util.ArrayUtil;
+import edu.berkeley.nlp.util.Numberer;
+import edu.berkeley.nlp.util.StringUtils;
 
 /**
  * Unary Rules (with ints for parent and child)
@@ -52,14 +54,17 @@ public class UnaryRule extends Rule implements java.io.Serializable, Comparable 
 		this.scores = new double[cSubStates][pSubStates];
 	}
 
+	@Override
 	public boolean isUnary() {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
-		return ((int) parentState << 18) ^ ((int) childState);
+		return (parentState << 18) ^ (childState);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
@@ -92,6 +97,7 @@ public class UnaryRule extends Rule implements java.io.Serializable, Comparable 
 
 	private static final char[] charsToEscape = new char[] { '\"' };
 
+	@Override
 	public String toString() {
 		Numberer n = Numberer.getGlobalNumberer("tags");
 		String cState = (String) n.object(childState);

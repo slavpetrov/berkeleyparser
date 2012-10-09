@@ -24,6 +24,7 @@ public class LexiconFeature {
 		this.actualWord = actualWord;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof LexiconFeature))
 			return false;
@@ -31,10 +32,12 @@ public class LexiconFeature {
 		return toString().equals(rhs.toString());
 	}
 
+	@Override
 	public int hashCode() {
 		return toString().hashCode();
 	}
 
+	@Override
 	public String toString() {
 		if (actualWord != null)
 			return actualWord;

@@ -12,18 +12,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import edu.berkeley.nlp.PCFGLA.Binarization;
 import edu.berkeley.nlp.PCFGLA.Grammar;
 import edu.berkeley.nlp.PCFGLA.StateSetTreeList;
-import edu.berkeley.nlp.PCFGLA.TreeAnnotations;
 import edu.berkeley.nlp.PCFGLA.smoothing.NoSmoothing;
-import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.syntax.StateSet;
-import edu.berkeley.nlp.syntax.Trees;
-import edu.berkeley.nlp.syntax.Trees.PennTreeReader;
 import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.parser.EnglishPennTreebankParseEvaluator;
-import edu.berkeley.nlp.util.ArrayUtil;
+import edu.berkeley.nlp.syntax.StateSet;
+import edu.berkeley.nlp.syntax.Tree;
+import edu.berkeley.nlp.syntax.Trees;
+import edu.berkeley.nlp.syntax.Trees.PennTreeReader;
 import edu.berkeley.nlp.util.Filter;
 import edu.berkeley.nlp.util.Numberer;
 

@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import edu.berkeley.nlp.discPCFG.Linearizer;
+import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.ScalingTools;

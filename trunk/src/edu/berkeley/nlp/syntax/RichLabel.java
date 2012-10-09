@@ -1,12 +1,12 @@
 package edu.berkeley.nlp.syntax;
 
-import edu.berkeley.nlp.ling.HeadFinder;
-import edu.berkeley.nlp.ling.CollinsHeadFinder;
-import edu.berkeley.nlp.util.Pair;
-
-import java.util.List;
-import java.util.ArrayList;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.berkeley.nlp.ling.CollinsHeadFinder;
+import edu.berkeley.nlp.ling.HeadFinder;
+import edu.berkeley.nlp.util.Pair;
 
 /**
  * Created by IntelliJ IDEA. User: aria42 Date: Oct 25, 2008 Time: 4:04:53 PM

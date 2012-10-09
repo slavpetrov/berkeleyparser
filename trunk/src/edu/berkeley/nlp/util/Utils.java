@@ -1,7 +1,14 @@
 package edu.berkeley.nlp.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Properties;
+import java.util.Random;
 
 public class Utils {
 	// Create a random from another mother random.
@@ -182,7 +189,7 @@ public class Utils {
 		if (o instanceof Double)
 			return (Double) o;
 		if (o instanceof Integer)
-			return (double) ((Integer) o);
+			return ((Integer) o);
 		throw Exceptions.bad("Can't convert to double: " + o);
 	}
 

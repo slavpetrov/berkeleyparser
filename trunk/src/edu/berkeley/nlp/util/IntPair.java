@@ -13,14 +13,17 @@ public class IntPair implements Serializable {
 		this.second = second;
 	}
 
+	@Override
 	public String toString() {
 		return first + "," + second;
 	}
 
+	@Override
 	public int hashCode() {
 		return 29 * first + second;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		IntPair p = (IntPair) o;
 		return first == p.first && second == p.second;

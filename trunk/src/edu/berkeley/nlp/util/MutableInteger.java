@@ -14,6 +14,7 @@ public final class MutableInteger extends Number implements Comparable {
 		this.i = i;
 	}
 
+	@Override
 	public int hashCode() {
 		return i;
 	}
@@ -30,6 +31,7 @@ public final class MutableInteger extends Number implements Comparable {
 	 * @return <code>true</code> if the objects are the same; <code>false</code>
 	 *         otherwise.
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof MutableInteger) {
 			return i == ((MutableInteger) obj).i;
@@ -37,6 +39,7 @@ public final class MutableInteger extends Number implements Comparable {
 		return false;
 	}
 
+	@Override
 	public String toString() {
 		return Integer.toString(i);
 	}
@@ -81,28 +84,34 @@ public final class MutableInteger extends Number implements Comparable {
 	}
 
 	// Number interface
+	@Override
 	public int intValue() {
 		return i;
 	}
 
+	@Override
 	public long longValue() {
-		return (long) i;
+		return i;
 	}
 
+	@Override
 	public short shortValue() {
 		return (short) i;
 	}
 
+	@Override
 	public byte byteValue() {
 		return (byte) i;
 	}
 
+	@Override
 	public float floatValue() {
-		return (float) i;
+		return i;
 	}
 
+	@Override
 	public double doubleValue() {
-		return (double) i;
+		return i;
 	}
 
 	public MutableInteger() {

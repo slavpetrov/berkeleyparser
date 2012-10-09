@@ -1,7 +1,7 @@
 package edu.berkeley.nlp.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * A generic-typed pair of objects.
@@ -34,6 +34,7 @@ public class Pair<F, S> implements Serializable {
 		return new Pair<S, F>(second, first);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -50,6 +51,7 @@ public class Pair<F, S> implements Serializable {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (first != null ? first.hashCode() : 0);
@@ -57,6 +59,7 @@ public class Pair<F, S> implements Serializable {
 		return result;
 	}
 
+	@Override
 	public String toString() {
 		return "(" + getFirst() + ", " + getSecond() + ")";
 	}

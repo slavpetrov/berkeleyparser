@@ -1,8 +1,13 @@
 package edu.berkeley.nlp.util;
 
-import static edu.berkeley.nlp.util.LogInfo.*;
-import java.io.*;
-import java.util.*;
+import static edu.berkeley.nlp.util.LogInfo.errors;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Maps (object, object) pairs to objects. Based on T2VMap. It's useful when the
@@ -79,6 +84,7 @@ public class T2VMap<S, T, V> extends AbstractT2Map implements
 		map.put(key2, value);
 	}
 
+	@Override
 	public int size() {
 		return maps.size();
 	}
@@ -152,11 +158,13 @@ public class T2VMap<S, T, V> extends AbstractT2Map implements
 		return newMap;
 	}
 
+	@Override
 	public void lock() {
 		for (TVMap<T, V> map : maps.values())
 			map.lock();
 	}
 
+	@Override
 	public void switchToSortedList() {
 		for (TVMap<T, V> map : maps.values())
 			map.switchToSortedList();

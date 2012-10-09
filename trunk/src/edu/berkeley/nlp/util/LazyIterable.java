@@ -1,9 +1,14 @@
 package edu.berkeley.nlp.util;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+
 import edu.berkeley.nlp.util.functional.Function;
 import edu.berkeley.nlp.util.functional.Predicate;
-
-import java.util.*;
 
 /**
  * Created by IntelliJ IDEA. User: aria42 Date: Dec 30, 2008

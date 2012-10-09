@@ -1,11 +1,15 @@
 package edu.berkeley.nlp.parser;
 
-import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.syntax.Trees;
-
-import java.util.*;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import edu.berkeley.nlp.syntax.Tree;
+import edu.berkeley.nlp.syntax.Trees;
 
 /**
  * Evaluates precision and recall for English Penn Treebank parse trees. NOTE:
@@ -29,6 +33,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return end;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
@@ -45,6 +50,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return true;
 		}
 
+		@Override
 		public int hashCode() {
 			int result;
 
@@ -53,6 +59,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return result;
 		}
 
+		@Override
 		public String toString() {
 			return "[" + start + "," + end + "]";
 		}
@@ -238,6 +245,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return end;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
@@ -257,6 +265,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return true;
 		}
 
+		@Override
 		public int hashCode() {
 			int result;
 			result = (label != null ? label.hashCode() : 0);
@@ -265,6 +274,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return result;
 		}
 
+		@Override
 		public String toString() {
 			return label + "[" + start + "," + end + "]";
 		}
@@ -327,6 +337,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return new Tree<L>(tree.getLabel(), children);
 		}
 
+		@Override
 		Set<Object> makeObjects(Tree<L> tree) {
 			Tree<L> noLeafTree = stripLeaves(tree);
 			Set<Object> set = new HashSet<Object>();
@@ -409,6 +420,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return new Tree<L>(tree.getLabel(), children);
 		}
 
+		@Override
 		Set<Object> makeObjects(Tree<L> tree) {
 			Tree<L> noLeafTree = stripLeaves(tree);
 			Set<Object> set = new HashSet<Object>();
@@ -467,6 +479,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return end;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			if (this == o)
 				return true;
@@ -492,6 +505,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return true;
 		}
 
+		@Override
 		public int hashCode() {
 			int result;
 			result = (label != null ? label.hashCode() : 0) + 17
@@ -502,6 +516,7 @@ public class EnglishPennTreebankParseEvaluator<L> {
 			return result;
 		}
 
+		@Override
 		public String toString() {
 			String rChildStr = (rChild == null) ? "" : rChild.toString();
 			return label + "->" + lChild + " " + rChildStr + "[" + start + ","

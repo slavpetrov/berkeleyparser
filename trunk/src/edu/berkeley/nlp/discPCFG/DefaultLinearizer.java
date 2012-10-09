@@ -4,21 +4,17 @@
 package edu.berkeley.nlp.discPCFG;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 import edu.berkeley.nlp.PCFGLA.BinaryRule;
 import edu.berkeley.nlp.PCFGLA.ConditionalTrainer;
 import edu.berkeley.nlp.PCFGLA.Grammar;
-import edu.berkeley.nlp.PCFGLA.Rule;
 import edu.berkeley.nlp.PCFGLA.SimpleLexicon;
 import edu.berkeley.nlp.PCFGLA.SpanPredictor;
 import edu.berkeley.nlp.PCFGLA.UnaryRule;
-import edu.berkeley.nlp.syntax.StateSet;
-import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.math.SloppyMath;
+import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.util.ArrayUtil;
-import edu.berkeley.nlp.util.Indexer;
 
 /**
  * @author petrov

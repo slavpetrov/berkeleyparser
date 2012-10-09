@@ -1,7 +1,5 @@
 package edu.berkeley.nlp.util;
 
-import java.io.*;
-import java.util.*;
 
 /**
  * Just a dummy template right now. TODO: move functionality in here.

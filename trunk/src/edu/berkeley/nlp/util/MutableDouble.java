@@ -14,6 +14,7 @@ public final class MutableDouble extends Number implements Comparable {
 		this.d = d;
 	}
 
+	@Override
 	public int hashCode() {
 		long bits = Double.doubleToLongBits(d);
 		return (int) (bits ^ (bits >>> 32));
@@ -31,6 +32,7 @@ public final class MutableDouble extends Number implements Comparable {
 	 * @return <code>true</code> if the objects are the same; <code>false</code>
 	 *         otherwise.
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof MutableDouble) {
 			return d == ((MutableDouble) obj).d;
@@ -38,6 +40,7 @@ public final class MutableDouble extends Number implements Comparable {
 		return false;
 	}
 
+	@Override
 	public String toString() {
 		return Double.toString(d);
 	}
@@ -82,26 +85,32 @@ public final class MutableDouble extends Number implements Comparable {
 	}
 
 	// Number interface
+	@Override
 	public int intValue() {
 		return (int) d;
 	}
 
+	@Override
 	public long longValue() {
 		return (long) d;
 	}
 
+	@Override
 	public short shortValue() {
 		return (short) d;
 	}
 
+	@Override
 	public byte byteValue() {
 		return (byte) d;
 	}
 
+	@Override
 	public float floatValue() {
 		return (float) d;
 	}
 
+	@Override
 	public double doubleValue() {
 		return d;
 	}

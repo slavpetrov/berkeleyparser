@@ -1,19 +1,5 @@
 package edu.berkeley.nlp.PCFGLA;
 
-import edu.berkeley.nlp.PCFGLA.GrammarTrainer.Options;
-import edu.berkeley.nlp.PCFGLA.smoothing.SmoothAcrossParentBits;
-import edu.berkeley.nlp.PCFGLA.smoothing.SmoothAcrossParentSubstate;
-import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
-import edu.berkeley.nlp.io.PTBLineLexer;
-import edu.berkeley.nlp.io.PTBTokenizer;
-import edu.berkeley.nlp.io.PTBLexer;
-import edu.berkeley.nlp.syntax.StateSet;
-import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.syntax.Trees;
-import edu.berkeley.nlp.ui.TreeJPanel;
-import edu.berkeley.nlp.util.CommandLineUtils;
-import edu.berkeley.nlp.util.Numberer;
-
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -32,6 +18,11 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+
+import edu.berkeley.nlp.io.PTBLineLexer;
+import edu.berkeley.nlp.syntax.Tree;
+import edu.berkeley.nlp.ui.TreeJPanel;
+import edu.berkeley.nlp.util.Numberer;
 
 /**
  * Reads in the Penn Treebank and generates N_GRAMMARS different grammars.

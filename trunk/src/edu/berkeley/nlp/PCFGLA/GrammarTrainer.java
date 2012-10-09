@@ -1,18 +1,17 @@
 package edu.berkeley.nlp.PCFGLA;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
 import edu.berkeley.nlp.PCFGLA.Corpus.TreeBankType;
 import edu.berkeley.nlp.PCFGLA.smoothing.NoSmoothing;
 import edu.berkeley.nlp.PCFGLA.smoothing.SmoothAcrossParentBits;
-import edu.berkeley.nlp.PCFGLA.smoothing.SmoothAcrossParentSubstate;
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.syntax.Trees;
 import edu.berkeley.nlp.util.Numberer;
-import edu.berkeley.nlp.util.CommandLineUtils;
-
-import java.io.File;
-import java.util.*;
 
 /**
  * Reads in the Penn Treebank and generates N_GRAMMARS different grammars.

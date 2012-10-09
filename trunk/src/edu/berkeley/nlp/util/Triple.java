@@ -72,6 +72,7 @@ public class Triple<S, T, U> {
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		return String.format("(%s,%s,%s)", first, second, third);
 	}

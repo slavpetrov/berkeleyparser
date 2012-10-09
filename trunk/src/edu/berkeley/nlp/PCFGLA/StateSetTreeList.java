@@ -4,11 +4,12 @@
 package edu.berkeley.nlp.PCFGLA;
 
 import java.util.AbstractCollection;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
-import edu.berkeley.nlp.syntax.Tree;
+
 import edu.berkeley.nlp.syntax.StateSet;
+import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.util.Numberer;
 
 /**
@@ -133,6 +134,7 @@ public class StateSetTreeList extends AbstractCollection<Tree<StateSet>> {
 		this.trees = new ArrayList<Tree<StateSet>>();
 	}
 
+	@Override
 	public boolean add(Tree<StateSet> tree) {
 		return trees.add(tree);
 	}
@@ -141,10 +143,12 @@ public class StateSetTreeList extends AbstractCollection<Tree<StateSet>> {
 		return trees.get(i);
 	}
 
+	@Override
 	public int size() {
 		return trees.size();
 	}
 
+	@Override
 	public boolean isEmpty() {
 		return trees.isEmpty();
 	}
@@ -152,6 +156,7 @@ public class StateSetTreeList extends AbstractCollection<Tree<StateSet>> {
 	/*
 	 * An iterator over the StateSet trees (which are re-built on the fly)
 	 */
+	@Override
 	public Iterator<Tree<StateSet>> iterator() {
 		return new StateSetTreeListIterator();
 	}

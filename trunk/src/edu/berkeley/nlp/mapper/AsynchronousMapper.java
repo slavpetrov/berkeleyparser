@@ -1,12 +1,16 @@
 package edu.berkeley.nlp.mapper;
 
-import edu.berkeley.nlp.util.functional.FunctionalUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import edu.berkeley.nlp.util.functional.FunctionalUtils;
 
 /**
  * User: aria42 Date: Feb 19, 2009

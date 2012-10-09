@@ -4,7 +4,6 @@
 package edu.berkeley.nlp.PCFGLA;
 
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
-import edu.berkeley.nlp.syntax.Trees.PennTreeRenderer;
 import edu.berkeley.nlp.util.PriorityQueue;
 
 /**
@@ -44,11 +43,13 @@ public class HierarchicalAdaptiveGrammar extends HierarchicalGrammar {
 		isGrammarTag = gr.isGrammarTag;
 	}
 
+	@Override
 	public HierarchicalAdaptiveGrammar newInstance(short[] newNumSubStates) {
 		return new HierarchicalAdaptiveGrammar(newNumSubStates,
 				this.findClosedPaths, this.smoother, this, this.threshold);
 	}
 
+	@Override
 	void printLevelCounts() {
 		int nBinaryParams = 0, nUnaryParams = 0, nBinaryFringeParams = 0, nUnaryFringeParams = 0;
 		PriorityQueue<HierarchicalAdaptiveBinaryRule> pQb = new PriorityQueue<HierarchicalAdaptiveBinaryRule>();

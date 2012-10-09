@@ -5,13 +5,11 @@ package edu.berkeley.nlp.PCFGLA;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.syntax.Trees.PennTreeRenderer;
 import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.Pair;
 
@@ -43,6 +41,7 @@ public class HierarchicalAdaptiveUnaryRule extends HierarchicalUnaryRule {
 		return new Pair<Integer, Integer>(maxDepth, nParam);
 	}
 
+	@Override
 	public HierarchicalAdaptiveUnaryRule splitRule(short[] numSubStates,
 			short[] newNumSubStates, Random random, double randomness,
 			boolean doNotNormalize, int mode) {
@@ -55,6 +54,7 @@ public class HierarchicalAdaptiveUnaryRule extends HierarchicalUnaryRule {
 		return this;
 	}
 
+	@Override
 	public int mergeRule() {
 		int paramBefore = nParam;
 		compactifyHierarchy(hierarchy);
@@ -115,6 +115,7 @@ public class HierarchicalAdaptiveUnaryRule extends HierarchicalUnaryRule {
 		}
 	}
 
+	@Override
 	public void explicitlyComputeScores(int finalLevel, short[] newNumSubStates) {
 		// int nSubstates = (int)Math.pow(2, finalLevel);
 		// scores = new double[nSubstates][nSubstates];
@@ -211,6 +212,7 @@ public class HierarchicalAdaptiveUnaryRule extends HierarchicalUnaryRule {
 		return (pState + " -> " + cState);
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		Numberer n = Numberer.getGlobalNumberer("tags");
@@ -236,6 +238,7 @@ public class HierarchicalAdaptiveUnaryRule extends HierarchicalUnaryRule {
 		return sb.toString();
 	}
 
+	@Override
 	public int countNonZeroFeatures() {
 		int total = 0;
 		for (Tree<Double> d : hierarchy.getPreOrderTraversal()) {
@@ -299,6 +302,7 @@ public class HierarchicalAdaptiveUnaryRule extends HierarchicalUnaryRule {
 			score = s;
 		}
 
+		@Override
 		public String toString() {
 			String s = "[" + parent + "] \t -> \t [" + child + "] \t " + score;
 			return s;

@@ -879,6 +879,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser {
 
 	}
 
+	@Override
 	protected void clearArrays() {
 		iScore = oScore = null;
 		viScore = voScore = null;
@@ -1149,6 +1150,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser {
 		lexiconCascade[endLevel - startLevel] = null;// tmpLexicon;
 	}
 
+	@Override
 	public Tree<String> getBestParse(List<String> sentence) {
 		return getBestConstrainedParse(sentence, null, false);
 	}
@@ -1157,6 +1159,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser {
 		return logLikelihood;
 	}
 
+	@Override
 	public Tree<String> getBestConstrainedParse(List<String> sentence,
 			List<String> posTags, boolean[][][][] allowedS) {// List<Integer>[][]
 																// pStates) {
@@ -1286,6 +1289,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser {
 
 	}
 
+	@Override
 	public double getLogLikelihood(Tree<String> tree) {
 		if (logLikelihood == Double.NEGATIVE_INFINITY)
 			return logLikelihood;
@@ -2398,6 +2402,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser {
 	// }
 	// }
 
+	@Override
 	public void printUnaryStats() {
 		System.out.println("Touched " + touchedRules + " rules.");
 		System.out.println("Used a total of " + totalUsedUnaries + " unaries.");
@@ -3365,6 +3370,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser {
 
 	}
 
+	@Override
 	public synchronized Object call() {
 		Tree<String> parse = getBestParse(nextSentence);
 		nextSentence = null;
@@ -3377,6 +3383,7 @@ public class CoarseToFineMaxRuleParser extends ConstrainedArrayParser {
 		return null;
 	}
 
+	@Override
 	public CoarseToFineMaxRuleParser newInstance() {
 		CoarseToFineMaxRuleParser newParser = new CoarseToFineMaxRuleParser(
 				grammar, lexicon, unaryPenalty, endLevel, viterbiParse,

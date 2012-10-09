@@ -6,24 +6,18 @@ package edu.berkeley.nlp.discPCFG;
 import java.util.List;
 
 import edu.berkeley.nlp.PCFGLA.BinaryRule;
-import edu.berkeley.nlp.PCFGLA.ConditionalTrainer;
 import edu.berkeley.nlp.PCFGLA.Grammar;
 import edu.berkeley.nlp.PCFGLA.HierarchicalAdaptiveBinaryRule;
 import edu.berkeley.nlp.PCFGLA.HierarchicalAdaptiveGrammar;
 import edu.berkeley.nlp.PCFGLA.HierarchicalAdaptiveLexicalRule;
 import edu.berkeley.nlp.PCFGLA.HierarchicalAdaptiveUnaryRule;
-import edu.berkeley.nlp.PCFGLA.HierarchicalBinaryRule;
 import edu.berkeley.nlp.PCFGLA.HierarchicalFullyConnectedAdaptiveLexicon;
-import edu.berkeley.nlp.PCFGLA.HierarchicalGrammar;
-import edu.berkeley.nlp.PCFGLA.HierarchicalUnaryRule;
 import edu.berkeley.nlp.PCFGLA.SimpleLexicon;
 import edu.berkeley.nlp.PCFGLA.SpanPredictor;
 import edu.berkeley.nlp.PCFGLA.UnaryRule;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.StateSetWithFeatures;
 import edu.berkeley.nlp.util.ArrayUtil;
-import edu.berkeley.nlp.math.DoubleArrays;
-import edu.berkeley.nlp.math.SloppyMath;
 
 /**
  * @author petrov
@@ -53,14 +47,17 @@ public class HiearchicalAdaptiveLinearizer extends HierarchicalLinearizer {
 
 	}
 
+	@Override
 	public SimpleLexicon getLexicon() {
 		return lexicon;
 	}
 
+	@Override
 	public Grammar getGrammar() {
 		return grammar;
 	}
 
+	@Override
 	public double[] getLinearizedLexicon(boolean update) {
 		if (update) {
 			nLexiconWeights = 0;
@@ -104,6 +101,7 @@ public class HiearchicalAdaptiveLinearizer extends HierarchicalLinearizer {
 		}
 	}
 
+	@Override
 	public void delinearizeLexicon(double[] logProbs) {
 		for (short tag = 0; tag < lexicon.rules.length; tag++) {
 			for (int word = 0; word < lexicon.rules[tag].length; word++) {
@@ -114,6 +112,7 @@ public class HiearchicalAdaptiveLinearizer extends HierarchicalLinearizer {
 		}
 	}
 
+	@Override
 	public void increment(double[] counts, StateSet stateSet, int tag,
 			double[] weights, boolean isGold) {
 		if (!(stateSet instanceof StateSetWithFeatures)) {
@@ -177,6 +176,7 @@ public class HiearchicalAdaptiveLinearizer extends HierarchicalLinearizer {
 		}
 	}
 
+	@Override
 	public void increment(double[] counts, BinaryRule rule, double[] weights,
 			boolean isGold) {
 		HierarchicalAdaptiveBinaryRule hr = (HierarchicalAdaptiveBinaryRule) rule;
@@ -212,6 +212,7 @@ public class HiearchicalAdaptiveLinearizer extends HierarchicalLinearizer {
 		}
 	}
 
+	@Override
 	public void increment(double[] counts, UnaryRule rule, double[] weights,
 			boolean isGold) {
 		HierarchicalAdaptiveUnaryRule hr = (HierarchicalAdaptiveUnaryRule) rule;
@@ -266,6 +267,7 @@ public class HiearchicalAdaptiveLinearizer extends HierarchicalLinearizer {
 		}
 	}
 
+	@Override
 	public void delinearizeGrammar(double[] probs) {
 		int nDangerous = 0;
 		for (BinaryRule bRule : grammar.binaryRuleMap.keySet()) {
@@ -298,6 +300,7 @@ public class HiearchicalAdaptiveLinearizer extends HierarchicalLinearizer {
 		// return grammar;
 	}
 
+	@Override
 	public double[] getLinearizedGrammar(boolean update) {
 		if (update) {
 			// int nRules = grammar.binaryRuleMap.size() +

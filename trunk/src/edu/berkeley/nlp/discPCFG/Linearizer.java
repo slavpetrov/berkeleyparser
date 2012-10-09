@@ -7,7 +7,6 @@ import java.util.List;
 
 import edu.berkeley.nlp.PCFGLA.BinaryRule;
 import edu.berkeley.nlp.PCFGLA.Grammar;
-import edu.berkeley.nlp.PCFGLA.Rule;
 import edu.berkeley.nlp.PCFGLA.SimpleLexicon;
 import edu.berkeley.nlp.PCFGLA.SpanPredictor;
 import edu.berkeley.nlp.PCFGLA.UnaryRule;

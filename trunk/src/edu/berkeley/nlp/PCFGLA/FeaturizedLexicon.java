@@ -1,5 +1,9 @@
 package edu.berkeley.nlp.PCFGLA;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Random;
+
 import edu.berkeley.nlp.PCFGLA.SimpleLexicon.IntegerIndexer;
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
 import edu.berkeley.nlp.math.CachingDifferentiableFunction;
@@ -12,12 +16,8 @@ import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.Counter;
 import edu.berkeley.nlp.util.Indexer;
-import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.Pair;
 import edu.berkeley.nlp.util.ScalingTools;
-
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * 
@@ -142,6 +142,7 @@ public class FeaturizedLexicon implements Lexicon, Serializable {
 
 		return new CachingDifferentiableFunction() {
 
+			@Override
 			public int dimension() {
 				return featureWeights.length;
 			}

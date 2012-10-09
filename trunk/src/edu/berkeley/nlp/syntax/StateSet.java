@@ -1,8 +1,5 @@
 package edu.berkeley.nlp.syntax;
 
-import java.text.NumberFormat;
-
-import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.ScalingTools;
 

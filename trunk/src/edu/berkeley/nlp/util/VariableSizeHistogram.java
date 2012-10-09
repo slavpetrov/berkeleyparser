@@ -1,8 +1,8 @@
 package edu.berkeley.nlp.util;
 
 import java.text.NumberFormat;
-import java.util.SortedSet;
 import java.util.Map.Entry;
+import java.util.SortedSet;
 
 public class VariableSizeHistogram {
 

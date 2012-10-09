@@ -1,7 +1,8 @@
 package edu.berkeley.nlp.util;
 
-import java.util.*;
-import java.lang.ThreadLocal;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * 4/2/09: StopWatchSet should be re-entrant (can call begin("foo") twice) and
@@ -14,6 +15,7 @@ public class StopWatchSet {
 
 	// A stack of stop-watches (one per thread)
 	private static ThreadLocal<LinkedList<Pair<String, StopWatch>>> lastStopWatches = new ThreadLocal() {
+		@Override
 		protected LinkedList<Pair<String, StopWatch>> initialValue() {
 			return new LinkedList();
 		}

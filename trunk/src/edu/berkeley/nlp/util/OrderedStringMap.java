@@ -1,7 +1,9 @@
 package edu.berkeley.nlp.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
 /**
  * An OrderedMap for mapping strings to strings.

@@ -3,8 +3,8 @@ package edu.berkeley.nlp.ling;
 //import edu.berkeley.nlp.ling.CategoryWordTag;
 
 import java.io.StringReader;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
 import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.syntax.Trees;

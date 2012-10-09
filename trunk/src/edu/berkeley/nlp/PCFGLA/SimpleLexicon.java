@@ -1,5 +1,10 @@
 package edu.berkeley.nlp.PCFGLA;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
@@ -8,9 +13,6 @@ import edu.berkeley.nlp.util.Counter;
 import edu.berkeley.nlp.util.Indexer;
 import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.ScalingTools;
-
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * Simple default implementation of a lexicon, which scores word, tag pairs with
@@ -697,6 +699,7 @@ public class SimpleLexicon implements java.io.Serializable, Lexicon {
 		return sb.toString();
 	} // end getSignature()
 
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		Numberer tagNumberer = Numberer.getGlobalNumberer("tags");

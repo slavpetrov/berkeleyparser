@@ -30,6 +30,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return Name of Charset
 	 */
+	@Override
 	public String getEncoding() {
 		return ENCODING;
 	}
@@ -40,6 +41,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return Whether this is a punctuation tag
 	 */
+	@Override
 	public boolean isPunctuationTag(String str) {
 		return str.equals("PU");
 	}
@@ -51,6 +53,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return Whether this is a punctuation word
 	 */
+	@Override
 	public boolean isPunctuationWord(String str) {
 		return chineseCommaAcceptFilter().accept(str)
 				|| chineseEndSentenceAcceptFilter().accept(str)
@@ -69,6 +72,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return Whether this is a sentence final punctuation tag
 	 */
+	@Override
 	public boolean isSentenceFinalPunctuationTag(String str) {
 		return chineseEndSentenceAcceptFilter().accept(str);
 	}
@@ -78,6 +82,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return The punctuation tags
 	 */
+	@Override
 	public String[] punctuationTags() {
 		return tags;
 	}
@@ -87,6 +92,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return The punctuation words
 	 */
+	@Override
 	public String[] punctuationWords() {
 		return punctWords;
 	}
@@ -97,6 +103,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return The sentence final punctuation tags
 	 */
+	@Override
 	public String[] sentenceFinalPunctuationTags() {
 		return tags;
 	}
@@ -119,6 +126,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return Whether this is a EVALB-ignored punctuation tag
 	 */
+	@Override
 	public boolean isEvalBIgnoredPunctuationTag(String str) {
 		return Filters.collectionAcceptFilter(tags).accept(str);
 	}
@@ -141,6 +149,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return An array of characters that set off label name suffixes
 	 */
+	@Override
 	public char[] labelAnnotationIntroducingCharacters() {
 		return annotationIntroducingChars;
 	}
@@ -156,6 +165,7 @@ public class ChineseTreebankLanguagePack extends AbstractTreebankLanguagePack
 	 * 
 	 * @return The start symbols
 	 */
+	@Override
 	public String[] startSymbols() {
 		return startSymbols;
 	}

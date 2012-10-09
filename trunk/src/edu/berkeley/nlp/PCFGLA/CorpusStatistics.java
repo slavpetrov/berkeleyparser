@@ -4,12 +4,12 @@
 package edu.berkeley.nlp.PCFGLA;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.util.*;
+import edu.berkeley.nlp.util.Counter;
+import edu.berkeley.nlp.util.CounterMap;
+import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.PriorityQueue;
 
 /**

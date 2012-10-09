@@ -17,6 +17,7 @@ public class LabeledInstance<I, L> {
 		return label;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -35,6 +36,7 @@ public class LabeledInstance<I, L> {
 		return true;
 	}
 
+	@Override
 	public int hashCode() {
 		int result;
 		result = (instance != null ? instance.hashCode() : 0);

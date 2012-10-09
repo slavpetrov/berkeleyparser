@@ -1,9 +1,9 @@
 package edu.berkeley.nlp.treebank;
 
+import java.io.Serializable;
+
 import edu.berkeley.nlp.util.Filter;
 import edu.berkeley.nlp.util.Filters;
-
-import java.io.Serializable;
 
 /**
  * This provides an implementation of parts of the TreebankLanguagePack API to

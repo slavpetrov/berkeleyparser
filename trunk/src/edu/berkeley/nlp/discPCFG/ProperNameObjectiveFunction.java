@@ -1,6 +1,5 @@
 package edu.berkeley.nlp.discPCFG;
 
-import edu.berkeley.nlp.math.DifferentiableFunction;
 import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.math.SloppyMath;
 import edu.berkeley.nlp.util.Pair;

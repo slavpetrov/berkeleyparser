@@ -3,8 +3,8 @@
  */
 package edu.berkeley.nlp.tokenizer;
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract tokenizer. Tokenizers extending AbstractTokenizer need only
