@@ -12,14 +12,12 @@ import java.util.Set;
  * 
  * @param <K>
  */
-public class ConcatenationSet<K> extends AbstractSet<K>
-{
+public class ConcatenationSet<K> extends AbstractSet<K> {
 	@Override
-	public boolean contains(Object arg0)
-	{
-		for (Set<K> set : sets)
-		{
-			if (set.contains(arg0)) return true;
+	public boolean contains(Object arg0) {
+		for (Set<K> set : sets) {
+			if (set.contains(arg0))
+				return true;
 		}
 		return false;
 	}
@@ -28,25 +26,21 @@ public class ConcatenationSet<K> extends AbstractSet<K>
 
 	private int size = 0;
 
-	public ConcatenationSet(Collection<Set<K>> sets)
-	{
+	public ConcatenationSet(Collection<Set<K>> sets) {
 		this.sets = sets;
-		for (Set<K> set : sets)
-		{
+		for (Set<K> set : sets) {
 
 			size += set.size();
 		}
 	}
 
 	@Override
-	public Iterator<K> iterator()
-	{
+	public Iterator<K> iterator() {
 		return new ConcatenationIterable<K>(sets).iterator();
 	}
 
 	@Override
-	public int size()
-	{
+	public int size() {
 		return size;
 
 	}

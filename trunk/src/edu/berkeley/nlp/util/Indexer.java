@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Maintains a two-way map between a set of objects and contiguous integers from
  * 0 to the number of objects. Use get(i) to look up object i, and
@@ -17,8 +16,7 @@ import java.util.Map;
  * 
  * @author Dan Klein
  */
-public class Indexer<E> extends AbstractList<E> implements Serializable
-{
+public class Indexer<E> extends AbstractList<E> implements Serializable {
 	private static final long serialVersionUID = -8769544079136550516L;
 
 	protected List<E> objects;
@@ -28,19 +26,16 @@ public class Indexer<E> extends AbstractList<E> implements Serializable
 	protected boolean locked = false;
 
 	@Override
-	public void clear()
-	{
+	public void clear() {
 		objects.clear();
 		indexes.clear();
 	}
 
-	public void lock()
-	{
+	public void lock() {
 		this.locked = true;
 	}
 
-	public void unlock()
-	{
+	public void unlock() {
 		this.locked = false;
 	}
 
@@ -51,13 +46,11 @@ public class Indexer<E> extends AbstractList<E> implements Serializable
 	 */
 	@Override
 	@Deprecated
-	public E get(int index)
-	{
+	public E get(int index) {
 		return objects.get(index);
 	}
 
-	public E getObject(int index)
-	{
+	public E getObject(int index) {
 		return objects.get(index);
 	}
 
@@ -65,10 +58,12 @@ public class Indexer<E> extends AbstractList<E> implements Serializable
 	 * @author aria42
 	 */
 	@Override
-	public boolean add(E elem)
-	{
-		if (locked) throw new IllegalStateException("Tried to add to locked indexer");
-		if (contains(elem)) { return false; }
+	public boolean add(E elem) {
+		if (locked)
+			throw new IllegalStateException("Tried to add to locked indexer");
+		if (contains(elem)) {
+			return false;
+		}
 		indexes.put(elem, size());
 		objects.add(elem);
 		return true;
@@ -78,8 +73,7 @@ public class Indexer<E> extends AbstractList<E> implements Serializable
 	 * Returns the number of objects indexed.
 	 */
 	@Override
-	public int size()
-	{
+	public int size() {
 		return objects.size();
 	}
 
@@ -91,10 +85,10 @@ public class Indexer<E> extends AbstractList<E> implements Serializable
 	 * @return
 	 */
 	@Override
-	public int indexOf(Object o)
-	{
+	public int indexOf(Object o) {
 		Integer index = indexes.get(o);
-		if (index == null) return -1;
+		if (index == null)
+			return -1;
 		return index;
 	}
 
@@ -102,20 +96,19 @@ public class Indexer<E> extends AbstractList<E> implements Serializable
 	 * Constant time override for contains.
 	 */
 	@Override
-	public boolean contains(Object o)
-	{
+	public boolean contains(Object o) {
 		return indexes.keySet().contains(o);
 	}
 
 	// Return the index of the element
 	// If doesn't exist, add it.
-	public int getIndex(E e)
-	{
-		if (e == null) return -1;
+	public int getIndex(E e) {
+		if (e == null)
+			return -1;
 		Integer index = indexes.get(e);
-		if (index == null)
-		{
-			if (locked) return -1;
+		if (index == null) {
+			if (locked)
+				return -1;
 			index = size();
 			objects.add(e);
 			indexes.put(e, index);
@@ -123,28 +116,25 @@ public class Indexer<E> extends AbstractList<E> implements Serializable
 		return index;
 	}
 
-	public Indexer()
-	{
+	public Indexer() {
 		objects = new ArrayList<E>();
 		indexes = new HashMap<E, Integer>();
 	}
 
-	public Indexer(Collection<? extends E> c)
-	{
+	public Indexer(Collection<? extends E> c) {
 		this();
 		for (E a : c)
 			getIndex(a);
 	}
 
 	// Not really safe; trust them not to modify it
-	public List<E> getObjects()
-	{
+	public List<E> getObjects() {
 		return objects;
 	}
 
-	public E[] getObjects(int[] is)
-	{
-		if (size() == 0) return null; //throw Exceptions.bad("Can't instantiate array");
+	public E[] getObjects(int[] is) {
+		if (size() == 0)
+			return null; // throw Exceptions.bad("Can't instantiate array");
 		int n = is.length;
 		Class c = objects.get(0).getClass();
 		E[] os = (E[]) Array.newInstance(c, n);

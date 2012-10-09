@@ -66,7 +66,8 @@ public class ParserConstrainer implements Callable {
 	}
 
 	public static void main(String[] args) {
-		OptionParser optParser = new OptionParser(ConditionalTrainer.Options.class);
+		OptionParser optParser = new OptionParser(
+				ConditionalTrainer.Options.class);
 		ConditionalTrainer.Options opts = (ConditionalTrainer.Options) optParser
 				.parse(args, false);
 
@@ -76,8 +77,8 @@ public class ParserConstrainer implements Callable {
 
 		String path = opts.path;
 		// int lang = opts.lang;
-		System.out.println("Loading trees from " + path + " and using language "
-				+ opts.treebank);
+		System.out.println("Loading trees from " + path
+				+ " and using language " + opts.treebank);
 		String testSetString = opts.section;
 		boolean devTestSet = testSetString.equals("dev");
 		boolean finalTestSet = testSetString.equals("final");
@@ -94,18 +95,17 @@ public class ParserConstrainer implements Callable {
 		if (trainTestSet)
 			testTrees = corpus.getTrainTrees();
 
-		
-			boolean manualAnnotation = false;
-			testTrees = Corpus.binarizeAndFilterTrees(testTrees,
-					opts.verticalMarkovization, opts.horizontalMarkovization, opts.maxL,
-					opts.binarization, manualAnnotation, GrammarTrainer.VERBOSE,
-					opts.markUnaryParents);
-	
+		boolean manualAnnotation = false;
+		testTrees = Corpus.binarizeAndFilterTrees(testTrees,
+				opts.verticalMarkovization, opts.horizontalMarkovization,
+				opts.maxL, opts.binarization, manualAnnotation,
+				GrammarTrainer.VERBOSE, opts.markUnaryParents);
+
 		if (!devTestSet && opts.collapseUnaries)
 			System.out.println("Collpasing unary chains.");
 		testTrees = Corpus.filterTreesForConditional(testTrees,
-				opts.filterAllUnaries, opts.filterStupidFrickinWHNP, !devTestSet
-						&& opts.collapseUnaries);
+				opts.filterAllUnaries, opts.filterStupidFrickinWHNP,
+				!devTestSet && opts.collapseUnaries);
 
 		boolean keepGoldAlive = opts.keepGoldTreeAlive || trainTestSet;
 
@@ -113,8 +113,8 @@ public class ParserConstrainer implements Callable {
 		System.out.println("Loading grammar from " + inFileName + ".");
 		ParserData pData = ParserData.Load(inFileName);
 		if (pData == null) {
-			System.out
-					.println("Failed to load grammar from file " + inFileName + ".");
+			System.out.println("Failed to load grammar from file " + inFileName
+					+ ".");
 			System.exit(1);
 		}
 		Grammar grammar = pData.getGrammar();
@@ -172,8 +172,8 @@ public class ParserConstrainer implements Callable {
 			inBlock++;
 		}
 		for (int i = 0; i < nChunks; i++) {
-			System.out.println("Process " + i + " has " + trainingTrees[i].size()
-					+ " trees.");
+			System.out.println("Process " + i + " has "
+					+ trainingTrees[i].size() + " trees.");
 		}
 		stateSetTrees = null;
 		ExecutorService pool = Executors.newFixedThreadPool(nChunks);
@@ -181,14 +181,15 @@ public class ParserConstrainer implements Callable {
 
 		ParserConstrainer thisThreadConstrainer = null;
 		if (nChunks == 1)
-			thisThreadConstrainer = new ParserConstrainer(trainingTrees[0], grammar,
-					lexicon, spanPredictor, outBaseName, threshold, keepGoldAlive, 0,
-					opts.cons, opts.hierarchicalChart);
+			thisThreadConstrainer = new ParserConstrainer(trainingTrees[0],
+					grammar, lexicon, spanPredictor, outBaseName, threshold,
+					keepGoldAlive, 0, opts.cons, opts.hierarchicalChart);
 		else {
 			for (int i = 0; i < nChunks; i++) {
-				ParserConstrainer constrainer = new ParserConstrainer(trainingTrees[i],
-						grammar, lexicon, spanPredictor, outBaseName, threshold,
-						keepGoldAlive, i, opts.cons, opts.hierarchicalChart);
+				ParserConstrainer constrainer = new ParserConstrainer(
+						trainingTrees[i], grammar, lexicon, spanPredictor,
+						outBaseName, threshold, keepGoldAlive, i, opts.cons,
+						opts.hierarchicalChart);
 				submits[i] = pool.submit(constrainer);
 			}
 
@@ -204,9 +205,10 @@ public class ParserConstrainer implements Callable {
 		}
 		try {
 			PrintWriter outputData = (opts.outputLog == null) ? new PrintWriter(
-					new OutputStreamWriter(System.out))
-					: new PrintWriter(new OutputStreamWriter(new FileOutputStream(
-							opts.outputLog), "UTF-8"), true);
+					new OutputStreamWriter(System.out)) : new PrintWriter(
+					new OutputStreamWriter(
+							new FileOutputStream(opts.outputLog), "UTF-8"),
+					true);
 
 			for (int i = 0; i < nChunks; i++) {
 				StringBuilder sb = null;
@@ -247,7 +249,8 @@ public class ParserConstrainer implements Callable {
 	public StringBuilder call() {
 		ConstrainedTwoChartsParser parser = (grammar instanceof HierarchicalAdaptiveGrammar) ? new ConstrainedHierarchicalTwoChartParser(
 				grammar, lexicon, spanPredictor, grammar.finalLevel)
-				: new ConstrainedTwoChartsParser(grammar, lexicon, spanPredictor);
+				: new ConstrainedTwoChartsParser(grammar, lexicon,
+						spanPredictor);
 
 		StringBuilder sb = new StringBuilder();
 		int recentHistoryIndex = 0;
@@ -271,9 +274,9 @@ public class ParserConstrainer implements Callable {
 			sb.append("\n" + (myID * treesPerBlock + recentHistoryIndex + 1)
 					+ ". Length " + testSentence.size());
 
-		
 			if (useCons) {
-				parser.projectConstraints(myConstraints[recentHistoryIndex], false);
+				parser.projectConstraints(myConstraints[recentHistoryIndex],
+						false);
 				cons = myConstraints[recentHistoryIndex];
 			}
 
@@ -282,8 +285,8 @@ public class ParserConstrainer implements Callable {
 				// System.out.println("keeping gold tree alive");
 				sTree = testTree;
 			}
-			boolean[][][][] possibleStates = parser.getPossibleStates(testSentence,
-					sTree, threshold, cons, sb);
+			boolean[][][][] possibleStates = parser.getPossibleStates(
+					testSentence, sTree, threshold, cons, sb);
 			assert sTree == null || contains(possibleStates, sTree);
 
 			if (useCons)
@@ -293,7 +296,8 @@ public class ParserConstrainer implements Callable {
 			if (recentHistoryIndex % 1000 == 0)
 				System.out.print(".");
 			// sentenceNumber++;
-			// if (recentHistoryIndex>0 && (recentHistoryIndex % treesPerBlock == 0))
+			// if (recentHistoryIndex>0 && (recentHistoryIndex % treesPerBlock
+			// == 0))
 			// {
 			// String fileName = outBaseName+"-"+blockIndex+".data";
 			// saveData(recentHistory, fileName);
@@ -321,7 +325,7 @@ public class ParserConstrainer implements Callable {
 	private boolean contains(boolean[][][][] possibleStates, Tree<StateSet> tree) {
 		boolean[] bs = possibleStates[tree.getLabel().from][tree.getLabel().to][tree
 				.getLabel().getState()];
-		
+
 		if (tree.isLeaf())
 			return true;
 		if (bs == null) {
@@ -348,9 +352,11 @@ public class ParserConstrainer implements Callable {
 			// there's a whole explanation at
 			// http://www.ecst.csuchico.edu/~amk/foo/advjava/notes/serial.html
 			// Create the necessary output streams to save the scribble.
-			FileOutputStream fos = new FileOutputStream(fileName); // Save to file
+			FileOutputStream fos = new FileOutputStream(fileName); // Save to
+																	// file
 			GZIPOutputStream gzos = new GZIPOutputStream(fos); // Compressed
-			ObjectOutputStream out = new ObjectOutputStream(gzos); // Save objects
+			ObjectOutputStream out = new ObjectOutputStream(gzos); // Save
+																	// objects
 			out.writeObject(data); // Write the mix of grammars
 			out.flush(); // Always flush the output.
 			out.close(); // And close the stream.
@@ -387,7 +393,8 @@ public class ParserConstrainer implements Callable {
 		if (!reachable) {
 
 			System.out.println("Cannot reach state " + gold.getLabel()
-					+ " spanning from " + gold.getStart() + " to " + gold.getEnd() + ".");
+					+ " spanning from " + gold.getStart() + " to "
+					+ gold.getEnd() + ".");
 
 		}
 
@@ -426,10 +433,12 @@ public class ParserConstrainer implements Callable {
 	public static boolean[][][][][] loadData(String fileName) {
 		boolean[][][][][] data = null;
 		try {
-			FileInputStream fis = new FileInputStream(fileName); // Load from file
+			FileInputStream fis = new FileInputStream(fileName); // Load from
+																	// file
 			GZIPInputStream gzis = new GZIPInputStream(fis); // Compressed
 			ObjectInputStream in = new ObjectInputStream(gzis); // Load objects
-			data = (boolean[][][][][]) in.readObject(); // Read the mix of grammars
+			data = (boolean[][][][][]) in.readObject(); // Read the mix of
+														// grammars
 			in.close(); // And close the stream.
 			gzis.close();
 			fis.close();

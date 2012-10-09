@@ -1,9 +1,8 @@
 package edu.berkeley.nlp.mapper;
 
 /**
- * User: aria42
-* Date: Feb 19, 2009
-*/
+ * User: aria42 Date: Feb 19, 2009
+ */
 public interface SimpleMapper<T> {
-  public void map(T elem);
+	public void map(T elem);
 }

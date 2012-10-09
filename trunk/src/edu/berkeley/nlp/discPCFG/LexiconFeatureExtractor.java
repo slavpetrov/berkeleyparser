@@ -18,10 +18,11 @@ public class LexiconFeatureExtractor implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see edu.berkeley.nlp.classify.FeatureExtractor#extractFeatures(java.lang.Object)
+	 * @see
+	 * edu.berkeley.nlp.classify.FeatureExtractor#extractFeatures(java.lang.
+	 * Object)
 	 */
-	public Counter<LexiconFeature> extractFeatures(
-			WordInSentence sentence) {
+	public Counter<LexiconFeature> extractFeatures(WordInSentence sentence) {
 
 		int loc = sentence.getSecond();
 		String word = sentence.getFirst().get(loc);
@@ -59,30 +60,37 @@ public class LexiconFeatureExtractor implements
 		String lowered = word.toLowerCase();
 		if (Character.isUpperCase(ch0) || Character.isTitleCase(ch0)) {
 			if (loc == 0 && numCaps == 1) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.INIT_CAP), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.INIT_CAP), 1.0);
 				// if (isKnown(lowered)) {
 				// sb.incrementCount(LexiconFeature.KNOWNLC, 1.0);
 				// }
 			} else {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.ALL_CAPS), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.ALL_CAPS), 1.0);
 			}
 		} else if (!Character.isLetter(ch0) && numCaps > 0) {
-			counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.ALL_CAPS), 1.0);
+			counter.incrementCount(new LexiconFeature(
+					LexiconFeature.MorphFeature.ALL_CAPS), 1.0);
 		} else if (hasLower) { // (Character.isLowerCase(ch0)) {
-			counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.LOWER_CASE), 1.0);
+			counter.incrementCount(new LexiconFeature(
+					LexiconFeature.MorphFeature.LOWER_CASE), 1.0);
 		}
 		if (hasDigit) {
-			counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.HAS_DIGIT), 1.0);
+			counter.incrementCount(new LexiconFeature(
+					LexiconFeature.MorphFeature.HAS_DIGIT), 1.0);
 		}
 		if (hasDash) {
-			counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.HAS_DASH), 1.0);
+			counter.incrementCount(new LexiconFeature(
+					LexiconFeature.MorphFeature.HAS_DASH), 1.0);
 		}
 		if (lowered.endsWith("s") && wlen >= 3) {
 			// here length 3, so you don't miss out on ones like 80s
 			char ch2 = lowered.charAt(wlen - 2);
 			// not -ess suffixes or greek/latin -us, -is
 			if (ch2 != 's' && ch2 != 'i' && ch2 != 'u') {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_S), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_S), 1.0);
 			}
 		} else if (word.length() >= 5 && !hasDash && !(hasDigit && numCaps > 0)) {
 			// don't do for very short words;
@@ -92,23 +100,32 @@ public class LexiconFeatureExtractor implements
 			 * sb.append(lowered.substring(lowered.length()-1)); }else{
 			 */
 			if (lowered.endsWith("ed")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_ED), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_ED), 1.0);
 			} else if (lowered.endsWith("ing")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_ING), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_ING), 1.0);
 			} else if (lowered.endsWith("ion")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_ION), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_ION), 1.0);
 			} else if (lowered.endsWith("er")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_ER), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_ER), 1.0);
 			} else if (lowered.endsWith("est")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_EST), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_EST), 1.0);
 			} else if (lowered.endsWith("ly")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_LY), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_LY), 1.0);
 			} else if (lowered.endsWith("ity")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_ITY), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_ITY), 1.0);
 			} else if (lowered.endsWith("y")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_Y), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_Y), 1.0);
 			} else if (lowered.endsWith("al")) {
-				counter.incrementCount(new LexiconFeature(LexiconFeature.MorphFeature.SUFF_AL), 1.0);
+				counter.incrementCount(new LexiconFeature(
+						LexiconFeature.MorphFeature.SUFF_AL), 1.0);
 				// } else if (lowered.endsWith("ble")) {
 				// sb.append("-ble");
 				// } else if (lowered.endsWith("e")) {

@@ -4,7 +4,6 @@ import java.util.List;
 
 public class NamedTree<L> extends Tree<L>
 
-
 {
 	/**
 	 * 
@@ -16,9 +15,8 @@ public class NamedTree<L> extends Tree<L>
 	 * @param label
 	 * @param children
 	 */
-	public NamedTree(L label, List<Tree<L>> children, String name)
-	{
-		
+	public NamedTree(L label, List<Tree<L>> children, String name) {
+
 		super(label, children);
 		this.name = name;
 		// TODO Auto-generated constructor stub
@@ -27,16 +25,14 @@ public class NamedTree<L> extends Tree<L>
 	/**
 	 * @param label
 	 */
-	public NamedTree(L label, String name)
-	{
-		
+	public NamedTree(L label, String name) {
+
 		super(label);
 		this.name = name;
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 

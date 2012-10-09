@@ -5,10 +5,7 @@ import java.util.List;
 public class TreePath<L> {
 
 	public enum Direction {
-		UP,
-		DOWN,
-		DOWN_LEFT,
-		DOWN_RIGHT;
+		UP, DOWN, DOWN_LEFT, DOWN_RIGHT;
 	}
 
 	public static class Transition<L> {
@@ -42,11 +39,12 @@ public class TreePath<L> {
 
 	public TreePath(List<Transition<L>> transitions) {
 		if (transitions == null || transitions.size() == 0) {
-			throw new IllegalArgumentException("Cannot have empty transitions list");
+			throw new IllegalArgumentException(
+					"Cannot have empty transitions list");
 		}
 		this.transitions = transitions;
 		startNode = transitions.get(0).fromNode;
-		endNode = transitions.get(transitions.size()-1).toNode;
+		endNode = transitions.get(transitions.size() - 1).toNode;
 	}
 
 	public Tree<L> getStartNode() {
@@ -69,7 +67,8 @@ public class TreePath<L> {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[ ");
 			for (Transition<L> transition : transitions) {
-				sb.append(transition.fromNode.getLabel() + " " + transition.direction + " ");
+				sb.append(transition.fromNode.getLabel() + " "
+						+ transition.direction + " ");
 			}
 			sb.append(endNode.getLabel() + " ]");
 			cacheStr = sb.toString();
@@ -77,4 +76,3 @@ public class TreePath<L> {
 		return cacheStr;
 	}
 }
-

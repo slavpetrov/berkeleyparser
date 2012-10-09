@@ -9,7 +9,7 @@ public class LogAdder {
 		super();
 		this.superSloppy = superSloppy;
 	}
-	
+
 	public LogAdder() {
 		this(false);
 	}
@@ -39,7 +39,9 @@ public class LogAdder {
 			return max;
 		} else {
 			if (superSloppy) {
-				return max + SloppyMath.approxLog(1.0 + SloppyMath.approxExp(negDiff));
+				return max
+						+ SloppyMath.approxLog(1.0 + SloppyMath
+								.approxExp(negDiff));
 			}
 			return max + Math.log(1.0 + Math.exp(negDiff));
 		}

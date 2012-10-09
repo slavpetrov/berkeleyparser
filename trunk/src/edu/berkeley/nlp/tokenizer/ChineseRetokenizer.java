@@ -10,14 +10,12 @@ public class ChineseRetokenizer implements LineTokenizer {
 		boolean rightDoubleQuote = false;
 		boolean rightSingleQuote = false;
 		LinkedList<String> newTokens = new LinkedList<String>();
-		for (int i = 0; i<tokens.length; i++) 
-		{
+		for (int i = 0; i < tokens.length; i++) {
 			String tok = tokens[i];
 			if (tok.equals("\"")) {
 				newTokens.add(rightDoubleQuote ? "”" : "“");
 				rightDoubleQuote = !rightDoubleQuote;
-			}
-			else if (tok.equals("'")) {
+			} else if (tok.equals("'")) {
 				newTokens.add(rightSingleQuote ? "’" : "‘");
 				rightSingleQuote = !rightSingleQuote;
 			} else if (tok.equals(".")) {
@@ -26,27 +24,26 @@ public class ChineseRetokenizer implements LineTokenizer {
 				} else {
 					newTokens.add("，");
 				}
-			}
-			else {
+			} else {
 				newTokens.add(tok);
 			}
 		}
-		
+
 		return newTokens;
 	}
 
 	private String replaceChars(String line) {
 		String s = line;
-//		s = s.replace('(', '（');
-//		s = s.replace(')', '）');
-//		s = s.replace('{', '〈');
-//		s = s.replace('}', '〉');
-//		s = s.replace(',', '、');
-//		s = s.replace('-', '—');
-//		s = s.replace('?', '？');
-//		s = s.replace('!', '！');
-//		s = s.replace(':', '：');
-//		s = s.replace(';', '；');
+		// s = s.replace('(', '（');
+		// s = s.replace(')', '）');
+		// s = s.replace('{', '〈');
+		// s = s.replace('}', '〉');
+		// s = s.replace(',', '、');
+		// s = s.replace('-', '—');
+		// s = s.replace('?', '？');
+		// s = s.replace('!', '！');
+		// s = s.replace(':', '：');
+		// s = s.replace(';', '；');
 		return s;
 	}
 

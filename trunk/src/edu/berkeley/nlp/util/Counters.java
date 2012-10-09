@@ -17,26 +17,29 @@ public class Counters {
 		return normalizedCounter;
 	}
 
-  public static <T> Counter<T> counterFromCollection(Iterable<T> iterable) {
-    Counter<T> counts = new Counter<T>();
-    for (T t : iterable) {
-      counts.incrementCount(t,1.0);
-    }
-    return counts;
-  }
+	public static <T> Counter<T> counterFromCollection(Iterable<T> iterable) {
+		Counter<T> counts = new Counter<T>();
+		for (T t : iterable) {
+			counts.incrementCount(t, 1.0);
+		}
+		return counts;
+	}
 
-	public static<E,C extends Iterable<?>> Counter<E> counterFromData(Iterable<? extends Collection<E>> iterable) {
+	public static <E, C extends Iterable<?>> Counter<E> counterFromData(
+			Iterable<? extends Collection<E>> iterable) {
 		Counter<E> counts = new Counter<E>();
-		for (Collection<E> coll: iterable) {
+		for (Collection<E> coll : iterable) {
 			counts.incrementAll(coll, 1.0);
 		}
 		return counts;
 	}
-  
-	public static <K,V> CounterMap<K,V> conditionalNormalize(CounterMap<K,V> counterMap) {
-		CounterMap<K,V> normalizedCounterMap = new CounterMap<K,V>();
+
+	public static <K, V> CounterMap<K, V> conditionalNormalize(
+			CounterMap<K, V> counterMap) {
+		CounterMap<K, V> normalizedCounterMap = new CounterMap<K, V>();
 		for (K key : counterMap.keySet()) {
-			Counter<V> normalizedSubCounter = normalize(counterMap.getCounter(key));
+			Counter<V> normalizedSubCounter = normalize(counterMap
+					.getCounter(key));
 			for (V value : normalizedSubCounter.keySet()) {
 				double count = normalizedSubCounter.getCount(value);
 				normalizedCounterMap.setCount(key, value, count);
@@ -44,7 +47,7 @@ public class Counters {
 		}
 		return normalizedCounterMap;
 	}
-	
+
 	public static <K> double l2Norm(Counter<K> counts) {
 		double sum = 0.0;
 		for (Map.Entry<K, Double> entry : counts.getEntrySet()) {
@@ -65,9 +68,9 @@ public class Counters {
 		if (norm == 0.0) {
 			return normalizedCounts;
 		}
-		for (K key: counts.keySet()) {
-			double count = counts.getCount(key);		  
-			normalizedCounts.setCount(key, count/norm);
+		for (K key : counts.keySet()) {
+			double count = counts.getCount(key);
+			normalizedCounts.setCount(key, count / norm);
 		}
 		return normalizedCounts;
 	}
@@ -79,8 +82,12 @@ public class Counters {
 
 			public int compare(L arg0, L arg1) {
 				double diff = counts.getCount(arg1) - counts.getCount(arg0);
-				if (diff < 0) { return -1; }
-				if (diff == 0.0) { return 0; }
+				if (diff < 0) {
+					return -1;
+				}
+				if (diff == 0.0) {
+					return 0;
+				}
 				return 1;
 			}
 
@@ -88,40 +95,38 @@ public class Counters {
 		return keys;
 	}
 
-  public static <K> Counter<K> exponentiate(Counter<K> counts) {
-    Counter<K> exponentiated = new Counter<K>();
-    for (Map.Entry<K, Double> entry : counts.entrySet()) {
-      exponentiated.setCount(entry.getKey(),Math.exp(entry.getValue()));
-    }
-    return exponentiated;
-  }
+	public static <K> Counter<K> exponentiate(Counter<K> counts) {
+		Counter<K> exponentiated = new Counter<K>();
+		for (Map.Entry<K, Double> entry : counts.entrySet()) {
+			exponentiated.setCount(entry.getKey(), Math.exp(entry.getValue()));
+		}
+		return exponentiated;
+	}
 
-  public static <K> void exponentiateInPlace(Counter<K> counts) {
-    for (Map.Entry<K, Double> entry : counts.entrySet()) {
-      entry.setValue(Math.exp(entry.getValue()));
-    }
-  }
+	public static <K> void exponentiateInPlace(Counter<K> counts) {
+		for (Map.Entry<K, Double> entry : counts.entrySet()) {
+			entry.setValue(Math.exp(entry.getValue()));
+		}
+	}
 
-  public static <K> void logInPlace(Counter<K> counts)
-  {
-    for (Map.Entry<K, Double> entry : counts.entrySet()) {
-      entry.setValue(Math.log(entry.getValue()));
-    }    
-  }
+	public static <K> void logInPlace(Counter<K> counts) {
+		for (Map.Entry<K, Double> entry : counts.entrySet()) {
+			entry.setValue(Math.log(entry.getValue()));
+		}
+	}
 
-  /**
-   * 
-   * @param logScores
-   * @param <K>
-   */
-  public static <K> void makeProbsFromLogScoresInPlace(Counter<K> logScores)
-  {
-    double logSum = SloppyMath.logAdd(logScores);
-    for (Map.Entry<K, Double> entry : logScores.entrySet()) {
-      double logScore = entry.getValue();
-      double prob = Math.exp(logScore-logSum);
-      entry.setValue(prob);
-    }
-    logScores.setDirty(true);
-  }
+	/**
+	 * 
+	 * @param logScores
+	 * @param <K>
+	 */
+	public static <K> void makeProbsFromLogScoresInPlace(Counter<K> logScores) {
+		double logSum = SloppyMath.logAdd(logScores);
+		for (Map.Entry<K, Double> entry : logScores.entrySet()) {
+			double logScore = entry.getValue();
+			double prob = Math.exp(logScore - logSum);
+			entry.setValue(prob);
+		}
+		logScores.setDirty(true);
+	}
 }

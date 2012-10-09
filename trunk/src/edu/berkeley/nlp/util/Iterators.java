@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ArrayBlockingQueue;
 
-
 public class Iterators {
 
 	public static <T> void fillList(Iterator<? extends T> it, List<T> lst) {
@@ -81,7 +80,8 @@ public class Iterators {
 			boolean used = false;
 
 			public Iterator<T> iterator() {
-				if (used) throw new RuntimeException("One use iterable");
+				if (used)
+					throw new RuntimeException("One use iterable");
 				used = true;
 				return it;
 			}
@@ -120,7 +120,8 @@ public class Iterators {
 			}
 
 			public T next() {
-				if (!running) thread.start();
+				if (!running)
+					thread.start();
 				running = true;
 				try {
 					return els.take();
@@ -135,7 +136,8 @@ public class Iterators {
 		};
 	}
 
-	public static <S, T> Iterator<Pair<S, T>> zip(final Iterator<S> s, final Iterator<T> t) {
+	public static <S, T> Iterator<Pair<S, T>> zip(final Iterator<S> s,
+			final Iterator<T> t) {
 		return new Iterator<Pair<S, T>>() {
 			public boolean hasNext() {
 				return s.hasNext() && t.hasNext();
@@ -154,7 +156,8 @@ public class Iterators {
 	/**
 	 * Provides a max number of elements for an underlying base iterator.
 	 */
-	public static <T> Iterator<T> maxLengthIterator(final Iterator<T> base, final int max) {
+	public static <T> Iterator<T> maxLengthIterator(final Iterator<T> base,
+			final int max) {
 		return new Iterator<T>() {
 			int count = 0;
 
@@ -163,7 +166,8 @@ public class Iterators {
 			}
 
 			public T next() {
-				if (!hasNext()) throw new NoSuchElementException("No more elements");
+				if (!hasNext())
+					throw new NoSuchElementException("No more elements");
 				count++;
 				return base.next();
 			}
@@ -197,9 +201,11 @@ public class Iterators {
 		private Iterator<T> getNextIterator() {
 			Iterator<T> next = null;
 			while (next == null) {
-				if (!keys.hasNext()) break;
+				if (!keys.hasNext())
+					break;
 				next = iterFactory.newInstance(keys.next());
-				if (!next.hasNext()) next = null;
+				if (!next.hasNext())
+					next = null;
 			}
 			return next;
 		}
@@ -210,7 +216,8 @@ public class Iterators {
 
 		public T next() {
 			T next = current.next();
-			if (!current.hasNext()) current = getNextIterator();
+			if (!current.hasNext())
+				current = getNextIterator();
 			return next;
 		}
 
@@ -246,7 +253,8 @@ public class Iterators {
 			next = null;
 			while (next == null && base.hasNext()) {
 				next = base.next();
-				if (!filter.accept(next)) next = null;
+				if (!filter.accept(next))
+					next = null;
 			}
 		}
 
@@ -270,7 +278,8 @@ public class Iterators {
 		private MyMethod<I, O> transformer;
 		private Iterator<I> inputIterator;
 
-		public TransformingIterator(Iterator<I> inputIterator, MyMethod<I, O> transformer) {
+		public TransformingIterator(Iterator<I> inputIterator,
+				MyMethod<I, O> transformer) {
 			this.inputIterator = inputIterator;
 			this.transformer = transformer;
 		}
@@ -364,7 +373,8 @@ public class Iterators {
 		return items;
 	}
 
-	public static Iterator<Object> objectIterator(final ObjectInputStream instream) {
+	public static Iterator<Object> objectIterator(
+			final ObjectInputStream instream) {
 		return new Iterator<Object>() {
 			Object next = softRead();
 

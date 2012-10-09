@@ -54,8 +54,8 @@ public class SparseFloatArray implements Serializable {
 	}
 
 	public void setCount(int index0, float x) {
-		//		float x = (float) x0;
-		//		short index = (short) index0;
+		// float x = (float) x0;
+		// short index = (short) index0;
 		int res = Arrays.binarySearch(indices, index0);
 		// Greater than everything
 		if (res >= 0 && res < length) {
@@ -65,15 +65,15 @@ public class SparseFloatArray implements Serializable {
 		if (length + 1 >= data.length) {
 			grow();
 		}
-		// In the middle		
+		// In the middle
 		int insertionPoint = -(res + 1);
 		assert insertionPoint >= 0 && insertionPoint <= length : String.format(
 				"length: %d insertion: %d", length, insertionPoint);
 		// Shift The Stuff After
 		System.arraycopy(data, insertionPoint, data, insertionPoint + 1, length
 				- insertionPoint);
-		System.arraycopy(indices, insertionPoint, indices, insertionPoint + 1, length
-				- insertionPoint);
+		System.arraycopy(indices, insertionPoint, indices, insertionPoint + 1,
+				length - insertionPoint);
 		indices[insertionPoint] = index0;
 		data[insertionPoint] = x;
 		length++;
@@ -110,8 +110,8 @@ public class SparseFloatArray implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append("{ ");
 		for (int i = 0; i < length; ++i) {
-			builder.append(String.format("%s : %.5f", indexer.getObject(indices[i]),
-					data[i]));
+			builder.append(String.format("%s : %.5f",
+					indexer.getObject(indices[i]), data[i]));
 			builder.append(" ");
 		}
 		builder.append(" }");

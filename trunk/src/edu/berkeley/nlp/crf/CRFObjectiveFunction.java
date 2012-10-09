@@ -20,13 +20,17 @@ public class CRFObjectiveFunction<V, E, F, L> implements DifferentiableFunction 
 	double lastValue;
 	double[] lastDerivative;
 	double[] lastX;
-	
-	public CRFObjectiveFunction(List<? extends LabeledInstanceSequence<V, E, L>> trainingData, Encoding<F, L> encoding,
-			FeatureExtractor<V, F> vertexExtractor, FeatureExtractor<E, F> edgeExtractor, double sigma) {
+
+	public CRFObjectiveFunction(
+			List<? extends LabeledInstanceSequence<V, E, L>> trainingData,
+			Encoding<F, L> encoding, FeatureExtractor<V, F> vertexExtractor,
+			FeatureExtractor<E, F> edgeExtractor, double sigma) {
 		this.trainingData = trainingData;
 		this.encoding = encoding;
-		this.counts = new Counts<V, E, F, L>(encoding, vertexExtractor, edgeExtractor);
-		this.il = new IndexLinearizer(encoding.getNumFeatures(), encoding.getNumLabels());
+		this.counts = new Counts<V, E, F, L>(encoding, vertexExtractor,
+				edgeExtractor);
+		this.il = new IndexLinearizer(encoding.getNumFeatures(),
+				encoding.getNumLabels());
 		this.sigma = sigma;
 	}
 
@@ -52,32 +56,38 @@ public class CRFObjectiveFunction<V, E, F, L> implements DifferentiableFunction 
 			lastX = x;
 		}
 	}
-	
+
 	private boolean requiresUpdate(double[] lastX, double[] x) {
-		if (lastX == null) return true;
+		if (lastX == null)
+			return true;
 		for (int i = 0; i < x.length; i++) {
-			if (lastX[i] != x[i]) return true;
+			if (lastX[i] != x[i])
+				return true;
 		}
 		return false;
 	}
-	
+
 	private Pair<Double, double[]> calculate(double[] x) {
 		double objective = 0.0;
 		double[] derivatives = new double[dimension()];
-		List<Counter<F>> empiricalCounts = counts.getEmpiricalCounts(trainingData);
-		for (int l=0; l<empiricalCounts.size(); l++) {
+		List<Counter<F>> empiricalCounts = counts
+				.getEmpiricalCounts(trainingData);
+		for (int l = 0; l < empiricalCounts.size(); l++) {
 			for (Map.Entry<F, Double> entry : empiricalCounts.get(l).entrySet()) {
-				int index = il.getLinearIndex(encoding.getFeatureIndex(entry.getKey()), l);
+				int index = il.getLinearIndex(
+						encoding.getFeatureIndex(entry.getKey()), l);
 				objective -= entry.getValue() * x[index];
 				derivatives[index] -= entry.getValue();
 			}
 		}
-		Pair<Double, List<Counter<F>>> results = counts.getLogNormalizationAndExpectedCounts(trainingData, x);
+		Pair<Double, List<Counter<F>>> results = counts
+				.getLogNormalizationAndExpectedCounts(trainingData, x);
 		objective += results.getFirst();
 		List<Counter<F>> expectedCounts = results.getSecond();
-		for (int l=0; l<expectedCounts.size(); l++) {
+		for (int l = 0; l < expectedCounts.size(); l++) {
 			for (Map.Entry<F, Double> entry : expectedCounts.get(l).entrySet()) {
-				int index = il.getLinearIndex(encoding.getFeatureIndex(entry.getKey()), l);
+				int index = il.getLinearIndex(
+						encoding.getFeatureIndex(entry.getKey()), l);
 				derivatives[index] += entry.getValue();
 			}
 		}
