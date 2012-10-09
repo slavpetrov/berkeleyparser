@@ -8,13 +8,11 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import edu.berkeley.nlp.PCFGLA.Option;
 import edu.berkeley.nlp.PCFGLA.OptionParser;
-import edu.berkeley.nlp.PCFGLA.GrammarTrainer.Options;
 import edu.berkeley.nlp.syntax.Tree;
 
 /**

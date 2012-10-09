@@ -1,7 +1,16 @@
 package edu.berkeley.nlp.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A container for mapping objects to objects. Keep track of the order of the
@@ -93,18 +102,22 @@ public class OrderedMap<S, T> {
 	}
 
 	public class ValueCollection extends AbstractCollection<T> {
+		@Override
 		public Iterator<T> iterator() {
 			return new ValueIterator();
 		}
 
+		@Override
 		public int size() {
 			return size();
 		}
 
+		@Override
 		public boolean contains(Object o) {
 			throw new UnsupportedOperationException();
 		}
 
+		@Override
 		public void clear() {
 			throw new UnsupportedOperationException();
 		}
@@ -187,6 +200,7 @@ public class OrderedMap<S, T> {
 		}
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (S key : keys) {

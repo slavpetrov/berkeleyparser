@@ -1,17 +1,16 @@
 package edu.berkeley.nlp.math;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+
 import edu.berkeley.nlp.mapper.AsynchronousMapper;
 import edu.berkeley.nlp.mapper.SimpleMapper;
 import edu.berkeley.nlp.util.CallbackFunction;
 import edu.berkeley.nlp.util.CollectionUtils;
 import edu.berkeley.nlp.util.Logger;
-//import edu.berkeley.nlp.util.optionparser.GlobalOptionParser;
 import edu.berkeley.nlp.util.Option;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
 
 /**
  * User: aria42 Date: Mar 10, 2009

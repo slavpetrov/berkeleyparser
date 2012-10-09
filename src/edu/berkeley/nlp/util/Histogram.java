@@ -163,6 +163,7 @@ public class Histogram {
 		outfile.close();
 	}
 
+	@Override
 	public String toString() {
 		setBuckets();
 		fillHistogram();
@@ -254,7 +255,7 @@ public class Histogram {
 	public static void main(String[] args) {
 		Histogram h = new Histogram();
 		for (double i = 1; i < 43400; i *= 1.2) {
-			h.add((double) i);
+			h.add(i);
 		}
 		System.out.println(h);
 		double[] lowers = new double[3];

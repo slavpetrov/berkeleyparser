@@ -1,7 +1,5 @@
 package edu.berkeley.nlp.PCFGLA;
 
-import java.text.NumberFormat;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,8 +8,6 @@ import java.util.Map;
 import edu.berkeley.nlp.PCFGLA.Corpus.TreeBankType;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.syntax.Trees;
-import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.CommandLineUtils;
 import edu.berkeley.nlp.util.Numberer;

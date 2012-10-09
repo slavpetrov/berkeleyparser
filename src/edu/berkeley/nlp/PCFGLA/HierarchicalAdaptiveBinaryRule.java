@@ -5,14 +5,11 @@ package edu.berkeley.nlp.PCFGLA;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import edu.berkeley.nlp.PCFGLA.HierarchicalAdaptiveUnaryRule.SubRule;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.syntax.Trees.PennTreeRenderer;
 import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.Pair;
 
@@ -44,6 +41,7 @@ public class HierarchicalAdaptiveBinaryRule extends HierarchicalBinaryRule {
 		return new Pair<Integer, Integer>(maxDepth, nParam);
 	}
 
+	@Override
 	public HierarchicalAdaptiveBinaryRule splitRule(short[] numSubStates,
 			short[] newNumSubStates, Random random, double randomness,
 			boolean doNotNormalize, int mode) {
@@ -111,6 +109,7 @@ public class HierarchicalAdaptiveBinaryRule extends HierarchicalBinaryRule {
 		}
 	}
 
+	@Override
 	public void explicitlyComputeScores(int finalLevel, short[] newNumSubStates) {
 		// int nSubstates = (int)Math.pow(2, finalLevel);
 		// scores = new double[nSubstates][nSubstates][nSubstates];
@@ -187,6 +186,7 @@ public class HierarchicalAdaptiveBinaryRule extends HierarchicalBinaryRule {
 		return nextSubstate;
 	}
 
+	@Override
 	public int mergeRule() {
 		int paramBefore = nParam;
 		compactifyHierarchy(hierarchy);
@@ -229,6 +229,7 @@ public class HierarchicalAdaptiveBinaryRule extends HierarchicalBinaryRule {
 		return (pState + " -> " + lState + " " + rState);
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		Numberer n = Numberer.getGlobalNumberer("tags");
@@ -253,6 +254,7 @@ public class HierarchicalAdaptiveBinaryRule extends HierarchicalBinaryRule {
 		return sb.toString();
 	}
 
+	@Override
 	public int countNonZeroFeatures() {
 		int total = 0;
 		for (Tree<Double> d : hierarchy.getPreOrderTraversal()) {
@@ -314,6 +316,7 @@ public class HierarchicalAdaptiveBinaryRule extends HierarchicalBinaryRule {
 			score = s;
 		}
 
+		@Override
 		public String toString() {
 			String s = "[" + parent + "] \t -> \t [" + lChild + "] \t ["
 					+ rChild + "] \t " + score;

@@ -3,8 +3,6 @@
  */
 package edu.berkeley.nlp.discPCFG;
 
-import java.util.List;
-
 import edu.berkeley.nlp.classify.FeatureExtractor;
 import edu.berkeley.nlp.util.Counter;
 

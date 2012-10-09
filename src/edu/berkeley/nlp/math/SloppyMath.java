@@ -1,9 +1,9 @@
 package edu.berkeley.nlp.math;
 
-import edu.berkeley.nlp.util.Counter;
-
 import java.util.List;
 import java.util.Map;
+
+import edu.berkeley.nlp.util.Counter;
 
 /**
  * The class <code>SloppyMath</code> contains methods for performing basic

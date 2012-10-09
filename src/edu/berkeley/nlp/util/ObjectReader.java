@@ -10,8 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import edu.berkeley.nlp.util.Logger;
-
 /**
  * @author dburkett
  * 

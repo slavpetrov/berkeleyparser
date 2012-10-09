@@ -3,8 +3,6 @@
  */
 package edu.berkeley.nlp.PCFGLA.smoothing;
 
-import java.io.Serializable;
-
 import edu.berkeley.nlp.PCFGLA.BinaryCounterTable;
 import edu.berkeley.nlp.PCFGLA.BinaryRule;
 import edu.berkeley.nlp.PCFGLA.UnaryCounterTable;

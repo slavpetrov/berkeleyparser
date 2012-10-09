@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.ScalingTools;
 
 /**
@@ -38,6 +37,7 @@ public class CoarseToFineMaxRuleDerivationParser extends
 				variational, useGoldPOS, initializeCascade);
 	}
 
+	@Override
 	void doConstrainedMaxCScores(List<String> sentence, Grammar grammar,
 			Lexicon lexicon, final boolean scale) {
 		numSubStatesArray = grammar.numSubStates;
@@ -397,6 +397,7 @@ public class CoarseToFineMaxRuleDerivationParser extends
 		}
 	}
 
+	@Override
 	public Tree<String> extractBestMaxRuleParse(int start, int end,
 			List<String> sentence) {
 		return extractBestMaxRuleParse1(start, end, 0, 0, sentence);

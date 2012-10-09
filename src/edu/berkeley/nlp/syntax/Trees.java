@@ -1,16 +1,24 @@
 package edu.berkeley.nlp.syntax;
 
-import edu.berkeley.nlp.util.CollectionUtils;
-import edu.berkeley.nlp.util.Filter;
-import edu.berkeley.nlp.util.Logger;
-import edu.berkeley.nlp.util.Pair;
-import edu.berkeley.nlp.util.StrUtils;
-
 import java.io.IOException;
 import java.io.PushbackReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import edu.berkeley.nlp.util.CollectionUtils;
+import edu.berkeley.nlp.util.Filter;
+import edu.berkeley.nlp.util.Pair;
+import edu.berkeley.nlp.util.StrUtils;
 
 /**
  * Tools for displaying, reading, and modifying trees.

@@ -1,6 +1,10 @@
 package edu.berkeley.nlp.util;
 
-import java.util.*;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Maintains a two-way map between a set of (objects, substate) pairs and
@@ -27,6 +31,7 @@ public class SubIndexer<E> extends AbstractList<E> {
 	 * 
 	 * @param index
 	 */
+	@Override
 	public E get(int index) {
 		return objects.get(index);
 	}
@@ -34,6 +39,7 @@ public class SubIndexer<E> extends AbstractList<E> {
 	/**
 	 * Returns the number of objects indexed (not the total number of substates)
 	 */
+	@Override
 	public int size() {
 		return objects.size();
 	}
@@ -52,6 +58,7 @@ public class SubIndexer<E> extends AbstractList<E> {
 	 * @param o
 	 * @return
 	 */
+	@Override
 	public int indexOf(Object o) {
 		Integer index = indexes.get(o);
 		if (index == null)
@@ -70,6 +77,7 @@ public class SubIndexer<E> extends AbstractList<E> {
 	/**
 	 * Constant time override for contains.
 	 */
+	@Override
 	public boolean contains(Object o) {
 		return indexes.keySet().contains(o);
 	}

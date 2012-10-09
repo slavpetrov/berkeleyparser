@@ -1,13 +1,13 @@
 package edu.berkeley.nlp.math;
 
-import edu.berkeley.nlp.mapper.AsynchronousMapper;
-import edu.berkeley.nlp.mapper.SimpleMapper;
-import edu.berkeley.nlp.util.Pair;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import edu.berkeley.nlp.mapper.AsynchronousMapper;
+import edu.berkeley.nlp.mapper.SimpleMapper;
+import edu.berkeley.nlp.util.Pair;
 
 /**
  * User: aria42 Date: Mar 10, 2009
@@ -57,6 +57,7 @@ public class CachingObjectiveDifferentiableFunction<I> extends
 		return mappers;
 	}
 
+	@Override
 	protected Pair<Double, double[]> calculate(double[] x) {
 		for (ObjectiveItemDifferentiableFunction<I> itemFn : itemFns) {
 			itemFn.setWeights(x);
@@ -75,6 +76,7 @@ public class CachingObjectiveDifferentiableFunction<I> extends
 		return Pair.newPair(objVal, grad);
 	}
 
+	@Override
 	public int dimension() {
 		return itemFns.get(0).dimension();
 	}

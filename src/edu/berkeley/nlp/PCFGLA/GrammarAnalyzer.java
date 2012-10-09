@@ -5,7 +5,6 @@ package edu.berkeley.nlp.PCFGLA;
 
 import java.util.HashMap;
 
-import edu.berkeley.nlp.PCFGLA.BerkeleyParser.Options;
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.Numberer;
 

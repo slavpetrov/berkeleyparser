@@ -1,11 +1,20 @@
 package edu.berkeley.nlp.treebank;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
 import edu.berkeley.nlp.syntax.Tree;
 import edu.berkeley.nlp.syntax.Trees;
 import edu.berkeley.nlp.util.ConcatenationIterator;
-
-import java.util.*;
-import java.io.*;
 
 /**
  * @author Dan Klein
@@ -53,11 +62,13 @@ public class PennTreebankReader {
 			}
 		}
 
+		@Override
 		public Iterator<Tree<String>> iterator() {
 			return new ConcatenationIterator<Tree<String>>(
 					new TreeIteratorIterator(files));
 		}
 
+		@Override
 		public int size() {
 			int size = 0;
 			Iterator i = iterator();

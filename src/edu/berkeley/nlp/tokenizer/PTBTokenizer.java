@@ -3,8 +3,12 @@
  */
 package edu.berkeley.nlp.tokenizer;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Iterator;
+import java.util.List;
 
 import edu.berkeley.nlp.util.StringUtils;
 
@@ -62,6 +66,7 @@ public class PTBTokenizer extends AbstractTokenizer {
 	/**
 	 * Get the next valid Word from the lexer if possible.
 	 */
+	@Override
 	protected Object getNext() {
 		if (lexer == null) {
 			return null;
@@ -70,7 +75,7 @@ public class PTBTokenizer extends AbstractTokenizer {
 		try {
 			token = lexer.next();
 			// get rid of CRs if necessary
-			while (!tokenizeCRs && PTBLexer.cr.equals((String) token))
+			while (!tokenizeCRs && PTBLexer.cr.equals(token))
 				token = lexer.next();
 		} catch (Exception e) {
 			nextToken = null;
@@ -141,7 +146,7 @@ public class PTBTokenizer extends AbstractTokenizer {
 	public static String ptb2Text(List ptbWords) {
 		for (int i = 0; i < ptbWords.size(); i++)
 			if (ptbWords.get(i) instanceof String)
-				ptbWords.set(i, ((String) ptbWords.get(i)));
+				ptbWords.set(i, (ptbWords.get(i)));
 
 		return (ptb2Text(StringUtils.join(ptbWords)));
 	}

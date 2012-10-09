@@ -73,6 +73,7 @@ public class Stats {
 		return sumSquared / count - Math.pow(getAverage(), 2.0);
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(String.format(

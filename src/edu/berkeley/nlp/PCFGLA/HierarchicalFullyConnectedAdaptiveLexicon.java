@@ -5,12 +5,9 @@ package edu.berkeley.nlp.PCFGLA;
 
 import java.util.Arrays;
 
-import edu.berkeley.nlp.PCFGLA.SimpleLexicon.IntegerIndexer;
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
-import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.Numberer;
-import edu.berkeley.nlp.util.PriorityQueue;
 
 /**
  * @author petrov
@@ -53,6 +50,7 @@ public class HierarchicalFullyConnectedAdaptiveLexicon extends
 
 	}
 
+	@Override
 	public double[] score(int globalWordIndex, int globalSigIndex, short tag,
 			int loc, boolean noSmoothing, boolean isSignature) {
 		double[] res = new double[numSubStates[tag]];
@@ -106,6 +104,7 @@ public class HierarchicalFullyConnectedAdaptiveLexicon extends
 		return res;
 	}
 
+	@Override
 	public HierarchicalLexicon copyLexicon() {
 		// HierarchicalLexicon copy = newInstance();
 		// copy.expectedCounts = new double[numStates][][];
@@ -130,6 +129,7 @@ public class HierarchicalFullyConnectedAdaptiveLexicon extends
 		return this;
 	}
 
+	@Override
 	public HierarchicalLexicon splitAllStates(int[] counts,
 			boolean moreSubstatesThanCounts, int mode) {
 		int finalLevel = (int) (Math.log((int) ArrayUtil.max(numSubStates)) / Math
@@ -144,6 +144,7 @@ public class HierarchicalFullyConnectedAdaptiveLexicon extends
 		return this;
 	}
 
+	@Override
 	public void mergeLexicon() {
 		int removedParam = 0;
 		for (int tag = 0; tag < numStates; tag++) {
@@ -155,6 +156,7 @@ public class HierarchicalFullyConnectedAdaptiveLexicon extends
 				+ " parameters from the lexicon.");
 	}
 
+	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		Numberer tagNumberer = Numberer.getGlobalNumberer("tags");
@@ -181,6 +183,7 @@ public class HierarchicalFullyConnectedAdaptiveLexicon extends
 		return sb.toString();
 	}
 
+	@Override
 	public void explicitlyComputeScores(int finalLevel) {
 		for (short tag = 0; tag < rules.length; tag++) {
 			for (int word = 0; word < rules[tag].length; word++) {

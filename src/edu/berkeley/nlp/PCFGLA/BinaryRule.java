@@ -1,8 +1,11 @@
 package edu.berkeley.nlp.PCFGLA;
 
-import edu.berkeley.nlp.util.*;
 import java.io.Serializable;
 import java.util.Random;
+
+import edu.berkeley.nlp.util.ArrayUtil;
+import edu.berkeley.nlp.util.Numberer;
+import edu.berkeley.nlp.util.StringUtils;
 
 /**
  * Binary rules (ints for parent, left and right children)
@@ -68,11 +71,13 @@ public class BinaryRule extends Rule implements Serializable,
 	// this.scores = new double[lSubStates][rSubStates][pSubStates];
 	// }
 
+	@Override
 	public int hashCode() {
-		return ((int) parentState << 16) ^ ((int) leftChildState << 8)
-				^ ((int) rightChildState);
+		return (parentState << 16) ^ (leftChildState << 8)
+				^ (rightChildState);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
@@ -90,6 +95,7 @@ public class BinaryRule extends Rule implements Serializable,
 
 	private static final char[] charsToEscape = new char[] { '\"' };
 
+	@Override
 	public String toString() {
 		Numberer n = Numberer.getGlobalNumberer("tags");
 		String lState = (String) n.object(leftChildState);

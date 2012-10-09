@@ -242,6 +242,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		}
 	}
 
+	@Override
 	void doConstrainedInsideScores(Grammar grammar, boolean viterbi,
 			boolean logScores) {
 		if (!viterbi && logScores)
@@ -508,6 +509,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	 * outside scores.
 	 */
 
+	@Override
 	void doConstrainedOutsideScores(Grammar grammar, boolean viterbi,
 			boolean logScores) {
 		short[] numSubStatesArray = grammar.numSubStates;
@@ -730,6 +732,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		}
 	}
 
+	@Override
 	void initializeChart(List<String> sentence, Lexicon lexicon,
 			boolean noSubstates, boolean noSmoothing, List<String> posTags,
 			boolean scale) {
@@ -919,6 +922,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		}
 	}
 
+	@Override
 	protected void clearArrays() {
 		iScore = oScore = null;
 		viScore = voScore = null;
@@ -929,6 +933,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		narrowRExtent = wideRExtent = narrowLExtent = wideLExtent = null;
 	}
 
+	@Override
 	protected void pruneChart(double threshold, short[] numSubStatesArray,
 			int level) {
 		int totalStates = 0, previouslyPossible = 0, nowPossible = 0;
@@ -1064,6 +1069,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 
 	int level;
 
+	@Override
 	public void doPreParses(List<String> sentence, Tree<StateSet> tree,
 			boolean noSmoothing, List<String> posTags) {
 		boolean keepGoldAlive = (tree != null); // we are given the gold tree ->
@@ -1194,6 +1200,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		}
 	}
 
+	@Override
 	protected void ensureGoldTreeSurvives(Tree<StateSet> tree, int level) {
 		List<Tree<StateSet>> children = tree.getChildren();
 		for (Tree<StateSet> child : children) {
@@ -1250,10 +1257,12 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	// lexiconCascade[endLevel-startLevel] = null;//tmpLexicon;
 	// }
 
+	@Override
 	public Tree<String> getBestParse(List<String> sentence) {
 		return getBestConstrainedParse(sentence, null, false);
 	}
 
+	@Override
 	public double getLogInsideScore() {
 		return logLikelihood;
 	}
@@ -1297,6 +1306,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	// }
 	// }
 
+	@Override
 	public Tree<String> getBestConstrainedParse(List<String> sentence,
 			List<String> posTags, boolean noPreparse) {
 		if (sentence.size() == 0)
@@ -1325,12 +1335,14 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		return bestTree;
 	}
 
+	@Override
 	public double getModelScore(Tree<String> parsedTree) {
 		if (viterbiParse)
 			return logLikelihood;
 		return savedScore;
 	}
 
+	@Override
 	public double getConfidence(Tree<String> tree) {
 		if (logLikelihood == Double.NEGATIVE_INFINITY)
 			return logLikelihood;
@@ -1345,6 +1357,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 
 	}
 
+	@Override
 	public double getLogLikelihood(Tree<String> tree) {
 		// if (logLikelihood == Double.NEGATIVE_INFINITY) return logLikelihood;
 		//
@@ -1371,6 +1384,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		return Double.NEGATIVE_INFINITY;
 	}
 
+	@Override
 	public double getLogLikelihood() {
 		if (logLikelihood == Double.NEGATIVE_INFINITY)
 			return logLikelihood;
@@ -1391,6 +1405,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	 * been computed. In particular, the narrowRExtent and other arrays need not
 	 * be updated.
 	 */
+	@Override
 	void doConstrainedMaxCScores(List<String> sentence, Grammar grammar,
 			Lexicon lexicon, final boolean scale) {
 		short[] numSubStatesArray = grammar.numSubStates;
@@ -1742,6 +1757,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	 * Returns the best parse, the one with maximum expected labelled recall.
 	 * Assumes that the maxc* arrays have been filled.
 	 */
+	@Override
 	public Tree<String> extractBestMaxRuleParse(int start, int end,
 			List<String> sentence) {
 		return extractBestMaxRuleParse1(start, end, 0, sentence);
@@ -1751,6 +1767,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	 * Returns the best parse for state "state", potentially starting with a
 	 * unary rule
 	 */
+	@Override
 	public Tree<String> extractBestMaxRuleParse1(int start, int end, int state,
 			List<String> sentence) {
 		// System.out.println(start+", "+end+";");
@@ -1789,6 +1806,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	/**
 	 * Returns the best parse for state "state", but cannot start with a unary
 	 */
+	@Override
 	public Tree<String> extractBestMaxRuleParse2(int start, int end, int state,
 			List<String> sentence) {
 		List<Tree<String>> children = new ArrayList<Tree<String>>();
@@ -1841,6 +1859,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	 * more.
 	 */
 
+	@Override
 	void doConstrainedViterbiInsideScores(Grammar grammar, boolean level0grammar) {
 		short[] numSubStatesArray = grammar.numSubStates;
 		// double[] oldIScores = new double[maxNSubStates];
@@ -2203,6 +2222,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	// }
 	// }
 
+	@Override
 	void doConstrainedViterbiOutsideScores(Grammar grammar,
 			boolean level0grammar) {
 		for (int diff = length; diff >= 1; diff--) {
@@ -2458,6 +2478,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	// }
 	// }
 
+	@Override
 	public void printUnaryStats() {
 		System.out.println("Touched " + touchedRules + " rules.");
 		System.out.println("Used a total of " + totalUsedUnaries + " unaries.");
@@ -2470,6 +2491,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	 * intermediate nodes in a unary chain because it parses with a unary-closed
 	 * grammar.
 	 */
+	@Override
 	public Tree<String> extractBestViterbiParse(int gState, int gp, int start,
 			int end, List<String> sentence) {
 		// find sources of inside score
@@ -2821,6 +2843,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		return closedScores;
 	}
 
+	@Override
 	void doScaledConstrainedInsideScores(Grammar grammar) {
 		double initVal = 0;
 		short[] numSubStatesArray = grammar.numSubStates;
@@ -3109,6 +3132,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		}
 	}
 
+	@Override
 	void doScaledConstrainedOutsideScores(Grammar grammar) {
 		double initVal = 0;
 		short[] numSubStatesArray = grammar.numSubStates;
@@ -3386,6 +3410,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		}
 	}
 
+	@Override
 	protected void setupScaling() {
 		// create arrays for scaling coefficients
 		iScale = new int[length][length + 1][];
@@ -3412,6 +3437,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 
 	}
 
+	@Override
 	public synchronized Object call() {
 		Tree<String> parse = getBestParse(nextSentence);
 		nextSentence = null;
@@ -3433,6 +3459,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 	// return newParser;
 	// }
 
+	@Override
 	public double getSentenceProbability(int start, int end, boolean sumScores) {
 		// System.out.println((allowedStates[start][end][0]));
 		// System.out.println((allowedSubStates[start][end][0][0]));
@@ -3453,6 +3480,7 @@ public class CoarseToFineMaxRuleProductParser extends CoarseToFineMaxRuleParser 
 		return Math.log(score);
 	}
 
+	@Override
 	public boolean[][][] getAllowedStates() {
 		return allowedStates;
 	}

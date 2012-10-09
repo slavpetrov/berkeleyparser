@@ -1,11 +1,11 @@
 package edu.berkeley.nlp.io;
 
-import edu.berkeley.nlp.util.IntPair;
-import edu.berkeley.nlp.util.MapFactory;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
+
+import edu.berkeley.nlp.util.IntPair;
+import edu.berkeley.nlp.util.MapFactory;
 
 /**
  * An abstract class for Label objects which store attributes in a Map. Also

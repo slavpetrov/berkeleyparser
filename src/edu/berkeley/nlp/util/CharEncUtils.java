@@ -1,6 +1,12 @@
 package edu.berkeley.nlp.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class CharEncUtils {
 	// private static String charEncoding = "ISO-8859-1";

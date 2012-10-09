@@ -1,14 +1,14 @@
 package edu.berkeley.nlp.syntax;
 
-import edu.berkeley.nlp.ling.HeadFinder;
-import edu.berkeley.nlp.ling.CollinsHeadFinder;
-import edu.berkeley.nlp.util.CollectionUtils;
-import edu.berkeley.nlp.util.Pair;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import edu.berkeley.nlp.ling.CollinsHeadFinder;
+import edu.berkeley.nlp.ling.HeadFinder;
+import edu.berkeley.nlp.util.CollectionUtils;
+import edu.berkeley.nlp.util.Pair;
 
 /**
  * User: aria42 Date: Apr 15, 2009

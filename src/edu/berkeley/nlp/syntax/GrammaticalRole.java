@@ -1,12 +1,12 @@
 package edu.berkeley.nlp.syntax;
 
-import edu.berkeley.nlp.util.IdentityHashSet;
-import edu.berkeley.nlp.util.functional.FunctionalUtils;
-import edu.berkeley.nlp.util.functional.Predicate;
-
 import java.io.StringReader;
 import java.util.List;
 import java.util.Set;
+
+import edu.berkeley.nlp.util.IdentityHashSet;
+import edu.berkeley.nlp.util.functional.FunctionalUtils;
+import edu.berkeley.nlp.util.functional.Predicate;
 
 /**
  * User: aria42 Date: Mar 24, 2009

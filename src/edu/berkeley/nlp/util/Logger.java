@@ -1,8 +1,8 @@
 package edu.berkeley.nlp.util;
 
-import java.io.PrintStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.Stack;
 
 public class Logger {

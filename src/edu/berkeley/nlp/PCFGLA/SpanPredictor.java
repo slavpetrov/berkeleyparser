@@ -8,11 +8,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.berkeley.nlp.discPCFG.WordInSentence;
+import edu.berkeley.nlp.math.SloppyMath;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.math.DoubleArrays;
-import edu.berkeley.nlp.math.SloppyMath;
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.Counter;
 import edu.berkeley.nlp.util.Indexer;
@@ -567,6 +565,7 @@ public class SpanPredictor implements Serializable {
 		return result;
 	}
 
+	@Override
 	public String toString() {
 		return toString(null);
 	}

@@ -4,10 +4,7 @@
 package edu.berkeley.nlp.PCFGLA;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
 
@@ -51,6 +48,7 @@ public class HierarchicalGrammar extends Grammar {
 		isGrammarTag = gr.isGrammarTag;
 	}
 
+	@Override
 	public void splitRules() {
 		explicitlyComputeScores(finalLevel);
 		super.splitRules();
@@ -67,6 +65,7 @@ public class HierarchicalGrammar extends Grammar {
 		}
 	}
 
+	@Override
 	public HierarchicalGrammar splitAllStates(double randomness, int[] counts,
 			boolean moreSubstatesThanCounts, int mode) {
 		short[] newNumSubStates = new short[numSubStates.length];
@@ -125,6 +124,7 @@ public class HierarchicalGrammar extends Grammar {
 				+ nUnaryMerged + " unary parameters.");
 	}
 
+	@Override
 	public HierarchicalGrammar copyGrammar(boolean noUnaryChains) {
 		short[] newNumSubStates = numSubStates.clone();
 
@@ -154,6 +154,7 @@ public class HierarchicalGrammar extends Grammar {
 		return grammar;
 	}
 
+	@Override
 	public String toString() {
 		printLevelCounts();
 		return super.toString();
@@ -221,6 +222,7 @@ public class HierarchicalGrammar extends Grammar {
 																			// fringe.");
 	}
 
+	@Override
 	public void writeData(Writer w) throws IOException {
 		printLevelCounts();
 		super.writeData(w);

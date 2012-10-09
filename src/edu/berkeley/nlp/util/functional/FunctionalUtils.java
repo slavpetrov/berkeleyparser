@@ -1,13 +1,18 @@
 package edu.berkeley.nlp.util.functional;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import edu.berkeley.nlp.util.CollectionUtils;
 import edu.berkeley.nlp.util.Factory;
 import edu.berkeley.nlp.util.LazyIterable;
 import edu.berkeley.nlp.util.Pair;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.*;
 
 /**
  * Collection of Functional Utilities you'd find in any functional programming
@@ -237,7 +242,7 @@ public class FunctionalUtils {
 		for (O obj : objs) {
 			K key = null;
 			try {
-				key = (K) groupFn.apply(obj);
+				key = groupFn.apply(obj);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -296,6 +301,7 @@ public class FunctionalUtils {
 			this.prefix = name.substring(0, 3);
 		}
 
+		@Override
 		public String toString() {
 			return "Person(" + name + ")";
 		}

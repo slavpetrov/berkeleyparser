@@ -1,6 +1,5 @@
 package edu.berkeley.nlp.mapper;
 
-import java.util.List;
 
 public interface MapWorkerFactory<Item> {
 	public MapWorker<Item> newMapWorker();

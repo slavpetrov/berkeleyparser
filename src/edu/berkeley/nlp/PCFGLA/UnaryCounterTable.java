@@ -6,7 +6,6 @@ import java.util.Set;
 
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.MapFactory;
-import edu.berkeley.nlp.util.MapFactory.HashMapFactory;
 
 public class UnaryCounterTable implements Serializable {
 	/**

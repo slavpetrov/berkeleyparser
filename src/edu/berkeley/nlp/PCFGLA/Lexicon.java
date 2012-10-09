@@ -3,8 +3,6 @@
  */
 package edu.berkeley.nlp.PCFGLA;
 
-import java.util.List;
-
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;

@@ -23,12 +23,9 @@ import edu.berkeley.nlp.PCFGLA.GrammarMerger;
 import edu.berkeley.nlp.PCFGLA.Lexicon;
 import edu.berkeley.nlp.PCFGLA.ParserData;
 import edu.berkeley.nlp.PCFGLA.StateSetTreeList;
-import edu.berkeley.nlp.discPCFG.ParsingObjectiveFunction.Counts;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.math.SloppyMath;
 import edu.berkeley.nlp.util.Numberer;
-import edu.berkeley.nlp.util.ScalingTools;
 
 /**
  * @author petrov

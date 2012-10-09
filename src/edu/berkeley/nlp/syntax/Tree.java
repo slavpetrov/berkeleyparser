@@ -1,12 +1,24 @@
 package edu.berkeley.nlp.syntax;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+
 import edu.berkeley.nlp.util.CollectionUtils;
 import edu.berkeley.nlp.util.MapFactory;
 import edu.berkeley.nlp.util.MyMethod;
 import edu.berkeley.nlp.util.Pair;
-
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * Represent linguistic trees, with each node consisting of a label and a list

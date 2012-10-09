@@ -3,8 +3,8 @@
  */
 package edu.berkeley.nlp.tokenizer;
 
-import java.util.*;
-import java.io.Reader;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Tokenizers break up text into individual Objects. These objects may be

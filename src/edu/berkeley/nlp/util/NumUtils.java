@@ -1,6 +1,6 @@
 package edu.berkeley.nlp.util;
 
-import java.util.*;
+import java.util.Random;
 
 public class NumUtils {
 	// This random stuff should be deprecated. DON'T USE IT!

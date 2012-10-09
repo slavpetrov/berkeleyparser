@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import edu.berkeley.nlp.PCFGLA.ConditionalTrainer.Options;
 import edu.berkeley.nlp.syntax.SpanTree;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
@@ -183,13 +184,13 @@ public class ParserConstrainer implements Callable {
 		if (nChunks == 1)
 			thisThreadConstrainer = new ParserConstrainer(trainingTrees[0],
 					grammar, lexicon, spanPredictor, outBaseName, threshold,
-					keepGoldAlive, 0, opts.cons, opts.hierarchicalChart);
+					keepGoldAlive, 0, opts.cons, Options.hierarchicalChart);
 		else {
 			for (int i = 0; i < nChunks; i++) {
 				ParserConstrainer constrainer = new ParserConstrainer(
 						trainingTrees[i], grammar, lexicon, spanPredictor,
 						outBaseName, threshold, keepGoldAlive, i, opts.cons,
-						opts.hierarchicalChart);
+						Options.hierarchicalChart);
 				submits[i] = pool.submit(constrainer);
 			}
 

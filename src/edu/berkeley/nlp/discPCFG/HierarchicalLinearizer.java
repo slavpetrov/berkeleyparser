@@ -3,21 +3,17 @@
  */
 package edu.berkeley.nlp.discPCFG;
 
-import java.io.Serializable;
-
 import edu.berkeley.nlp.PCFGLA.BinaryRule;
 import edu.berkeley.nlp.PCFGLA.Grammar;
 import edu.berkeley.nlp.PCFGLA.HierarchicalBinaryRule;
 import edu.berkeley.nlp.PCFGLA.HierarchicalGrammar;
 import edu.berkeley.nlp.PCFGLA.HierarchicalLexicon;
 import edu.berkeley.nlp.PCFGLA.HierarchicalUnaryRule;
-import edu.berkeley.nlp.PCFGLA.Rule;
 import edu.berkeley.nlp.PCFGLA.SimpleLexicon;
 import edu.berkeley.nlp.PCFGLA.SpanPredictor;
 import edu.berkeley.nlp.PCFGLA.UnaryRule;
-import edu.berkeley.nlp.syntax.StateSet;
-import edu.berkeley.nlp.math.DoubleArrays;
 import edu.berkeley.nlp.math.SloppyMath;
+import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.util.ArrayUtil;
 
 /**
@@ -98,6 +94,7 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 	//
 	// }
 
+	@Override
 	public void delinearizeGrammar(double[] probs) {
 		int nDangerous = 0;
 		for (BinaryRule bRule : grammar.binaryRuleMap.keySet()) {
@@ -160,6 +157,7 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 		// return grammar;
 	}
 
+	@Override
 	public void delinearizeLexicon(double[] logProbs) {
 		int nDangerous = 0;
 		for (short tag = 0; tag < lexicon.hierarchicalScores.length; tag++) {
@@ -186,6 +184,7 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 		// return lexicon;
 	}
 
+	@Override
 	public double[] getLinearizedGrammar(boolean update) {
 		if (update) {
 			// int nRules = grammar.binaryRuleMap.size() +
@@ -258,6 +257,7 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 		return logProbs;
 	}
 
+	@Override
 	public double[] getLinearizedLexicon(boolean update) {
 		if (update) {
 			nLexiconWeights = 0;
@@ -294,6 +294,7 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 		return logProbs;
 	}
 
+	@Override
 	public int getLinearIndex(int globalWordIndex, int tag) {
 		int tagSpecificWordIndex = lexicon.tagWordIndexer[tag]
 				.indexOf(globalWordIndex);
@@ -302,10 +303,12 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 		return linearIndex[tag][tagSpecificWordIndex];
 	}
 
+	@Override
 	public int dimension() {
 		return nGrammarWeights + nLexiconWeights + nSpanWeights;
 	}
 
+	@Override
 	public void increment(double[] counts, StateSet stateSet, int tag,
 			double[] weights, boolean isGold) {
 		int globalSigIndex = stateSet.sigIndex;
@@ -339,6 +342,7 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 		}
 	}
 
+	@Override
 	public void increment(double[] counts, UnaryRule rule, double[] weights,
 			boolean isGold) {
 		HierarchicalUnaryRule hr = (HierarchicalUnaryRule) rule;
@@ -378,6 +382,7 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 		}
 	}
 
+	@Override
 	public void increment(double[] counts, BinaryRule rule, double[] weights,
 			boolean isGold) {
 		HierarchicalBinaryRule hr = (HierarchicalBinaryRule) rule;
@@ -404,14 +409,17 @@ public class HierarchicalLinearizer extends DefaultLinearizer {
 		}
 	}
 
+	@Override
 	public Grammar getGrammar() {
 		return grammar;
 	}
 
+	@Override
 	public SimpleLexicon getLexicon() {
 		return lexicon;
 	}
 
+	@Override
 	public SpanPredictor getSpanPredictor() {
 		return spanPredictor;
 	}

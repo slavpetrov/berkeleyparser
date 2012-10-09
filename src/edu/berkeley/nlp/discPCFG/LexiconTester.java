@@ -4,13 +4,11 @@
 package edu.berkeley.nlp.discPCFG;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import edu.berkeley.nlp.classify.LabeledInstance;
 import edu.berkeley.nlp.classify.MaximumEntropyClassifier;
 import edu.berkeley.nlp.math.DoubleArrays;
-import edu.berkeley.nlp.util.Counter;
 
 /**
  * @author adpauls
@@ -24,7 +22,7 @@ public class LexiconTester {
 	public static void main(String[] args) {
 		// create datums
 		int k = 2;
-		double[] dummyWeights = DoubleArrays.constantArray(1.0 / (double) k, k);
+		double[] dummyWeights = DoubleArrays.constantArray(1.0 / k, k);
 		LabeledInstance<WordInSentence, String> datum1 = new LabeledInstance<WordInSentence, String>(
 				"NN", new WordInSentence("The cats died", 1));
 		LabeledInstance<WordInSentence, String> datum2 = new LabeledInstance<WordInSentence, String>(

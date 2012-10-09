@@ -1,11 +1,10 @@
 package edu.berkeley.nlp.util;
 
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
-import java.lang.reflect.Method;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA. User: aria42 Date: Oct 7, 2008 Time: 1:06:08 PM
@@ -76,6 +75,7 @@ public class SmartMapUtils {
 			this.prefix = name.substring(0, 3);
 		}
 
+		@Override
 		public String toString() {
 			return "Person(" + name + ")";
 		}

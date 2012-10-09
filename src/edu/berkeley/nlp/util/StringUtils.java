@@ -1,14 +1,29 @@
 package edu.berkeley.nlp.util;
 
-import edu.berkeley.nlp.math.SloppyMath;
-
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import edu.berkeley.nlp.math.SloppyMath;
 
 /**
  * StringUtils is a class for random String things.
@@ -606,12 +621,12 @@ public class StringUtils {
 					}
 				} else
 					result.put(key,
-							(String[]) flagArgs.toArray(new String[] {}));
+							flagArgs.toArray(new String[] {}));
 			} else {
 				remainingArgs.add(args[i]);
 			}
 		}
-		result.put(null, (String[]) remainingArgs.toArray(new String[] {}));
+		result.put(null, remainingArgs.toArray(new String[] {}));
 		return result;
 	}
 
@@ -869,7 +884,7 @@ public class StringUtils {
 		if (b.length() > 0) {
 			result.add(b.toString());
 		}
-		return (String[]) result.toArray(new String[0]);
+		return result.toArray(new String[0]);
 	}
 
 	/**
@@ -1025,8 +1040,8 @@ public class StringUtils {
 	 * @return a capitalized version of the string
 	 */
 	public static String capitalize(String s) {
-		if ((char) s.charAt(0) >= 'a') {
-			return (String) ((char) (s.charAt(0) + ('A' - 'a')) + s
+		if (s.charAt(0) >= 'a') {
+			return ((char) (s.charAt(0) + ('A' - 'a')) + s
 					.substring(1));
 		} else {
 			return s;

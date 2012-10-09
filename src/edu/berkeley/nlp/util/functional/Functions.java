@@ -5,7 +5,7 @@ package edu.berkeley.nlp.util.functional;
  */
 public class Functions {
 
-	public static final Function<String, String> lowerCaseFn = (Function<String, String>) FunctionalUtils
+	public static final Function<String, String> lowerCaseFn = FunctionalUtils
 			.getAccessor("toLowercase", String.class);
 
 }

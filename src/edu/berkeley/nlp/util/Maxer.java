@@ -4,6 +4,7 @@ public class Maxer<T> {
 	private double max = Double.NEGATIVE_INFINITY;
 	private T argMax = null;
 
+	@Override
 	public String toString() {
 		return argMax.toString() + ": " + Fmt.D(max);
 	}

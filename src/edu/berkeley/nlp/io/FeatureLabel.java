@@ -1,10 +1,16 @@
 package edu.berkeley.nlp.io;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import edu.berkeley.nlp.util.CollectionUtils;
 import edu.berkeley.nlp.util.Interner;
 import edu.berkeley.nlp.util.MapFactory;
-
-import java.util.*;
 
 /**
  * An <code>AbstractMapLabel</code> implementation which defines equality as
@@ -106,6 +112,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	/**
 	 * convenience method for getting word *
 	 */
+	@Override
 	public String word() {
 		return getString(WORD_KEY);
 	}
@@ -113,6 +120,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	/**
 	 * convenience method for getting answer *
 	 */
+	@Override
 	public String answer() {
 		return getString(ANSWER_KEY);
 	}
@@ -120,6 +128,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	/**
 	 * convenience method for getting gold answer *
 	 */
+	@Override
 	public String goldAnswer() {
 		return getString(GOLDANSWER_KEY);
 	}
@@ -127,6 +136,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	/**
 	 * convenience method for setting word *
 	 */
+	@Override
 	public void setWord(String word) {
 		put(WORD_KEY, word);
 	}
@@ -134,6 +144,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	/**
 	 * convenience method for setting answer *
 	 */
+	@Override
 	public void setAnswer(String answer) {
 		put(ANSWER_KEY, answer);
 	}
@@ -141,6 +152,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	/**
 	 * convenience method for setting gold answer *
 	 */
+	@Override
 	public void setGoldAnswer(String goldAnswer) {
 		put(GOLDANSWER_KEY, goldAnswer);
 	}
@@ -151,6 +163,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * 
 	 * @return the String before the word
 	 */
+	@Override
 	public String before() {
 		return getString(BEFORE_KEY);
 	}
@@ -162,6 +175,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * @param before
 	 *            the String before the word
 	 */
+	@Override
 	public void setBefore(String before) {
 		map.put(BEFORE_KEY, before);
 	}
@@ -172,6 +186,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * @param before
 	 *            the String to be prepended
 	 */
+	@Override
 	public void prependBefore(String before) {
 		String oldBefore = before();
 		setBefore(before + oldBefore);
@@ -184,6 +199,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * 
 	 * @return the unmangled word
 	 */
+	@Override
 	public String current() {
 		return getString(CURRENT_KEY);
 	}
@@ -196,6 +212,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * @param current
 	 *            the unmangled word
 	 */
+	@Override
 	public void setCurrent(String current) {
 		map.put(CURRENT_KEY, current);
 	}
@@ -206,6 +223,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * 
 	 * @return the String after the word
 	 */
+	@Override
 	public String after() {
 		return getString(AFTER_KEY);
 	}
@@ -217,6 +235,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * @param after
 	 *            The String after the word
 	 */
+	@Override
 	public void setAfter(String after) {
 		map.put(AFTER_KEY, after);
 	}
@@ -227,6 +246,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * @param after
 	 *            The String to be prepended
 	 */
+	@Override
 	public void appendAfter(String after) {
 		String oldAfter = after();
 		setAfter(oldAfter + after);
@@ -238,6 +258,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * 
 	 * @return the String after the word
 	 */
+	@Override
 	public String ner() {
 		return getString(NER_KEY);
 	}
@@ -249,6 +270,7 @@ public class FeatureLabel extends AbstractMapLabel {
 	 * @param ner
 	 *            The String ner the word
 	 */
+	@Override
 	public void setNER(String ner) {
 		map.put(NER_KEY, ner);
 	}
@@ -295,14 +317,17 @@ public class FeatureLabel extends AbstractMapLabel {
 		return text.toString();
 	}
 
+	@Override
 	public String value() {
 		return getString(VALUE_KEY);
 	}
 
+	@Override
 	public void setValue(String value) {
 		put(VALUE_KEY, value);
 	}
 
+	@Override
 	public String toString() {
 		return toString(TOSTRING_FORMAT);
 	}
@@ -337,6 +362,7 @@ public class FeatureLabel extends AbstractMapLabel {
 		}
 	}
 
+	@Override
 	public void setFromString(String labelStr) {
 		put(VALUE_KEY, labelStr);
 	}
@@ -401,6 +427,7 @@ public class FeatureLabel extends AbstractMapLabel {
 		return getString(LEMMA_KEY);
 	}
 
+	@Override
 	public String tag() {
 		return getString(TAG_KEY);
 	}
@@ -426,10 +453,12 @@ public class FeatureLabel extends AbstractMapLabel {
 		put(attribute, value);
 	}
 
+	@Override
 	public Map map() {
 		return map;
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -441,6 +470,7 @@ public class FeatureLabel extends AbstractMapLabel {
 				.equals(featureLabel.map);
 	}
 
+	@Override
 	public int hashCode() {
 		return (map != null ? map.hashCode() : 7);
 	}

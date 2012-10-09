@@ -1,10 +1,23 @@
 package edu.berkeley.nlp.util;
 
-import static edu.berkeley.nlp.util.LogInfo.*;
-import java.io.*;
-import java.util.*;
-import java.lang.annotation.*;
-import java.lang.reflect.*;
+import static edu.berkeley.nlp.util.LogInfo.stderr;
+import static edu.berkeley.nlp.util.LogInfo.stdout;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 class OptInfo {
 	public String group, name, gloss;
@@ -76,6 +89,7 @@ class OptInfo {
 		return o.toString();
 	}
 
+	@Override
 	public String toString() {
 		String valueStr = getValueString();
 		String s = String.format("%-30s <%5s> : %s [%s]", fullName(),
@@ -117,7 +131,7 @@ class OptInfo {
 	}
 
 	static Class arrayTypeOfType(Type t) {
-		return (Class) ((Class) t).getComponentType();
+		return ((Class) t).getComponentType();
 	}
 
 	private static boolean isBool(Type type) {
@@ -424,7 +438,7 @@ public class OptionsParser {
 
 		// Recursively register its option sets
 		for (Field field : classOf(o).getFields()) {
-			OptionSet ann = (OptionSet) field.getAnnotation(OptionSet.class);
+			OptionSet ann = field.getAnnotation(OptionSet.class);
 			if (ann == null)
 				continue;
 			try {

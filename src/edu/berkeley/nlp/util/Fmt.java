@@ -1,6 +1,6 @@
 package edu.berkeley.nlp.util;
 
-import java.text.*;
+import java.text.SimpleDateFormat;
 
 /**
  * Formatting class. I'm really lazy. D() is a family of default functions for
@@ -73,7 +73,7 @@ public class Fmt {
 		if (o instanceof double[][])
 			return Fmt.D((double[][]) o);
 		if (o instanceof double[][][])
-			return Fmt.D((double[][][]) o);
+			return Fmt.D(o);
 		throw Exceptions.unknownCase;
 	}
 

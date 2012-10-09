@@ -1,20 +1,25 @@
 package edu.berkeley.nlp.PCFGLA;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import edu.berkeley.nlp.PCFGLA.smoothing.Smoother;
+import edu.berkeley.nlp.math.SloppyMath;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.math.SloppyMath;
 import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.Counter;
 import edu.berkeley.nlp.util.Numberer;
 import edu.berkeley.nlp.util.PriorityQueue;
 import edu.berkeley.nlp.util.ScalingTools;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.io.Writer;
-import java.util.*;
 
 /**
  * Simple default implementation of a lexicon, which scores word, tag pairs with

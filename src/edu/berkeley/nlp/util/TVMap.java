@@ -1,8 +1,18 @@
 package edu.berkeley.nlp.util;
 
-import static edu.berkeley.nlp.util.LogInfo.*;
-import java.io.*;
-import java.util.*;
+import static edu.berkeley.nlp.util.LogInfo.errors;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.AbstractCollection;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Provides a map from objects to objects. Motivation: provides a specialized
@@ -123,7 +133,7 @@ public class TVMap<T, V> extends AbstractTMap<T> implements
 		newMap.locked = locked;
 		newMap.num = num;
 		newMap.keys = locked ? keys : (T[]) keys.clone(); // Share keys! CHECKED
-		newMap.values = (V[]) values.clone();
+		newMap.values = values.clone();
 		return newMap;
 	}
 
@@ -162,7 +172,7 @@ public class TVMap<T, V> extends AbstractTMap<T> implements
 			int h2 = hash(e.key);
 			if (h1 != h2)
 				return h1 - h2;
-			return ((Comparable) key).compareTo((Comparable) e.key);
+			return ((Comparable) key).compareTo(e.key);
 		}
 
 		private final T key;
@@ -205,62 +215,76 @@ public class TVMap<T, V> extends AbstractTMap<T> implements
 	// //////////////////////////////////////////////////////////
 
 	private class EntrySet extends AbstractSet<Entry> {
+		@Override
 		public Iterator<Entry> iterator() {
 			return new EntryIterator();
 		}
 
+		@Override
 		public int size() {
 			return num;
 		}
 
+		@Override
 		public boolean contains(Object o) {
 			throw new UnsupportedOperationException();
 		}
 
+		@Override
 		public boolean remove(Object o) {
 			throw new UnsupportedOperationException();
 		}
 
+		@Override
 		public void clear() {
 			throw new UnsupportedOperationException();
 		}
 	}
 
 	private class KeySet extends AbstractSet<T> {
+		@Override
 		public Iterator<T> iterator() {
 			return new KeyIterator();
 		}
 
+		@Override
 		public int size() {
 			return num;
 		}
 
+		@Override
 		public boolean contains(Object o) {
 			return containsKey((T) o);
 		} // CHECKED
 
+		@Override
 		public boolean remove(Object o) {
 			throw new UnsupportedOperationException();
 		}
 
+		@Override
 		public void clear() {
 			throw new UnsupportedOperationException();
 		}
 	}
 
 	private class ValueCollection extends AbstractCollection<V> {
+		@Override
 		public Iterator<V> iterator() {
 			return new ValueIterator();
 		}
 
+		@Override
 		public int size() {
 			return num;
 		}
 
+		@Override
 		public boolean contains(Object o) {
 			throw new UnsupportedOperationException();
 		}
 
+		@Override
 		public void clear() {
 			throw new UnsupportedOperationException();
 		}
@@ -403,7 +427,7 @@ public class TVMap<T, V> extends AbstractTMap<T> implements
 			int keyHash = hash(keys[m]);
 			if (targetHash < keyHash
 					|| (targetHash == keyHash && ((Comparable) targetKey)
-							.compareTo((Comparable) keys[m]) <= 0))
+							.compareTo(keys[m]) <= 0))
 				u = m;
 			else
 				l = m + 1;
@@ -525,7 +549,7 @@ public class TVMap<T, V> extends AbstractTMap<T> implements
 				assert h1 <= h2;
 				if (h1 == h2)
 					assert ((Comparable) keys[i - 1])
-							.compareTo((Comparable) keys[i]) < 0;
+							.compareTo(keys[i]) < 0;
 			}
 		}
 	}

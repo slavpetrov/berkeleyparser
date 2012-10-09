@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import edu.berkeley.nlp.util.Logger;
-
 /**
  * @author dburkett
  * 

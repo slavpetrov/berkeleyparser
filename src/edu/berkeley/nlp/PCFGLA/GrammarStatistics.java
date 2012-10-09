@@ -6,25 +6,19 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import edu.berkeley.nlp.PCFGLA.ConditionalTrainer.Options;
 import edu.berkeley.nlp.PCFGLA.Corpus.TreeBankType;
-import edu.berkeley.nlp.PCFGLA.smoothing.SmoothAcrossParentBits;
-import edu.berkeley.nlp.PCFGLA.smoothing.SmoothAcrossParentSubstate;
-import edu.berkeley.nlp.discPCFG.HiearchicalAdaptiveLinearizer;
-import edu.berkeley.nlp.discPCFG.Linearizer;
+import edu.berkeley.nlp.math.SloppyMath;
 import edu.berkeley.nlp.syntax.StateSet;
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.math.DoubleArrays;
-import edu.berkeley.nlp.math.SloppyMath;
-import edu.berkeley.nlp.util.*;
+import edu.berkeley.nlp.util.ArrayUtil;
+import edu.berkeley.nlp.util.Numberer;
+import edu.berkeley.nlp.util.PriorityQueue;
+import edu.berkeley.nlp.util.ScalingTools;
 
 class FullState {
 	public short state;

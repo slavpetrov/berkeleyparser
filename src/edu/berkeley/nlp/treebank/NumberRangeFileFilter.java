@@ -1,7 +1,7 @@
 package edu.berkeley.nlp.treebank;
 
-import java.io.FileFilter;
 import java.io.File;
+import java.io.FileFilter;
 
 /**
  * Accepts files based on the (last) number in their filename. Optionally

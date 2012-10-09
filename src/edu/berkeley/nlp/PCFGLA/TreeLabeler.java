@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.berkeley.nlp.syntax.StateSet;

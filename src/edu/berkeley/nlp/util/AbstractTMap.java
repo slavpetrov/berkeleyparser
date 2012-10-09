@@ -1,7 +1,6 @@
 package edu.berkeley.nlp.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
 
 /**
  * Just a dummy class. TODO: move common functionality here.
@@ -20,6 +19,7 @@ public abstract class AbstractTMap<T> implements Serializable {
 	}
 
 	public static class ObjectFunctionality extends Functionality<Object> {
+		@Override
 		public Object[] createArray(int n) {
 			return new Object[n];
 		}

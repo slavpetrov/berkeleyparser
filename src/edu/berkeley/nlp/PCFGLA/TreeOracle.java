@@ -5,10 +5,7 @@ package edu.berkeley.nlp.PCFGLA;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;

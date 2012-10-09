@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import edu.berkeley.nlp.syntax.Tree;
-import edu.berkeley.nlp.util.ArrayUtil;
 import edu.berkeley.nlp.util.ScalingTools;
 
 /**
@@ -48,6 +47,7 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser {
 	 * been computed. In particular, the narrowRExtent and other arrays need not
 	 * be updated.
 	 */
+	@Override
 	void doConstrainedMaxCScores(List<String> sentence, Grammar grammar,
 			Lexicon lexicon, final boolean scale) {
 		numSubStatesArray = grammar.numSubStates;
@@ -414,6 +414,7 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser {
 	 * Returns the best parse, the one with maximum expected labelled recall.
 	 * Assumes that the maxc* arrays have been filled.
 	 */
+	@Override
 	public Tree<String> extractBestMaxRuleParse(int start, int end,
 			List<String> sentence) {
 		return extractBestMaxRuleParse1(start, end, 0, 0, sentence);
@@ -448,6 +449,7 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser {
 
 	}
 
+	@Override
 	public double getModelScore(Tree<String> parsedTree) {
 		return maxRuleScores.get(tmp_k++);
 	}
@@ -639,6 +641,7 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser {
 		}
 	}
 
+	@Override
 	public List<Tree<String>> getKBestConstrainedParses(List<String> sentence,
 			List<String> posTags, int k) {
 		if (sentence.size() == 0) {
@@ -719,6 +722,7 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser {
 		return bestTrees;
 	}
 
+	@Override
 	public CoarseToFineNBestParser newInstance() {
 		CoarseToFineNBestParser newParser = new CoarseToFineNBestParser(
 				grammar, lexicon, k, unaryPenalty, endLevel, viterbiParse,
@@ -728,6 +732,7 @@ public class CoarseToFineNBestParser extends CoarseToFineMaxRuleParser {
 		return newParser;
 	}
 
+	@Override
 	public synchronized Object call() {
 		List<Tree<String>> result = getKBestConstrainedParses(nextSentence,
 				null, k);
