@@ -14,7 +14,7 @@ import java.util.List;
  * @author Simon George
  * @version 1.0 31 Aug 2001
  * 
- * Extended by John DeNero
+ *          Extended by John DeNero
  */
 public class Histogram {
 
@@ -45,7 +45,7 @@ public class Histogram {
 		Histogram h = new Histogram();
 		for (Double d : counter.keySet()) {
 			double count = counter.getCount(d);
-			for(int i = 0; i < count; i++) {
+			for (int i = 0; i < count; i++) {
 				h.add(d);
 			}
 		}
@@ -57,11 +57,11 @@ public class Histogram {
 	}
 
 	/**
-	 * Enter data into the histogram. The fill method takes the given value, works
-	 * out which bin this corresponds to, and increments this bin by one.
+	 * Enter data into the histogram. The fill method takes the given value,
+	 * works out which bin this corresponds to, and increments this bin by one.
 	 * 
 	 * @param x
-	 *          is the value to add in to the histogram
+	 *            is the value to add in to the histogram
 	 */
 	private void fill(double x) {
 		// use findBin method to work out which bin x falls in
@@ -88,8 +88,8 @@ public class Histogram {
 	}
 
 	/**
-	 * Private internal utility method to figure out which bin of the histogram a
-	 * number falls in.
+	 * Private internal utility method to figure out which bin of the histogram
+	 * a number falls in.
 	 * 
 	 * @return info on which bin x falls in.
 	 */
@@ -124,11 +124,11 @@ public class Histogram {
 	 * other applications.
 	 * 
 	 * @param fileName
-	 *          name of the file to write the histogram to. Note this must be
-	 *          valid for your operating system, e.g. a unix filename might not
-	 *          work under windows
+	 *            name of the file to write the histogram to. Note this must be
+	 *            valid for your operating system, e.g. a unix filename might
+	 *            not work under windows
 	 * @exception IOException
-	 *              if file cannot be opened or written to.
+	 *                if file cannot be opened or written to.
 	 */
 
 	public void write(PrintWriter outfile) {

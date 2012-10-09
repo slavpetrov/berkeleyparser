@@ -275,8 +275,8 @@ public class SophisticatedLexicon implements java.io.Serializable, Lexicon {
 		// unseenTagCounter[state][substate])/total;
 		// }
 		// }
-		//  	
-		//  	
+		//
+		//
 		// // overwrite wordToTagCounters to contain P(W|T)
 		// HashMap<String, double[]>[] probCounter = new
 		// HashMap[numSubStates.length];
@@ -845,8 +845,8 @@ public class SophisticatedLexicon implements java.io.Serializable, Lexicon {
 
 		default:
 			sb.append("-");
-			sb.append(word.substring(Math.max(word.length() - 2, 0), word
-					.length()));
+			sb.append(word.substring(Math.max(word.length() - 2, 0),
+					word.length()));
 			sb.append("-");
 			if (Character.isLowerCase(word.charAt(0))) {
 				sb.append("LOWER");
@@ -862,7 +862,8 @@ public class SophisticatedLexicon implements java.io.Serializable, Lexicon {
 				}
 			}
 		} // end switch (unknownLevel)
-		// System.err.println("Summarized " + word + " to " + sb.toString());
+			// System.err.println("Summarized " + word + " to " +
+			// sb.toString());
 		return sb.toString();
 	} // end getSignature()
 
@@ -940,7 +941,7 @@ public class SophisticatedLexicon implements java.io.Serializable, Lexicon {
 						pb_T_W = c_TW / 1;
 					else
 						pb_T_W = (c_TW + 0.0001 * p_T_U) / (c_W + 0.0001);
-					//	pb_T_W = c_TW / c_W;
+					// pb_T_W = c_TW / c_W;
 					// System.out.println("c_TW "+c_TW+" c_W "+c_W);
 				} else {
 					// we haven't seen the word enough times to have confidence
@@ -1097,171 +1098,186 @@ public class SophisticatedLexicon implements java.io.Serializable, Lexicon {
 	 * System.out.println("Tuning selected smoothUnseen " + smooth[0] +
 	 * " smoothSeen " + smooth[1] + " at " + bestScore); } }
 	 */
-	
-    public Counter<String> getWordCounter() {
-    	return wordCounter;
-    }
 
-    public void tieRareWordStats(int threshold) {
-        for (int ni = 0; ni < numSubStates.length; ni++) {
-            double unseenTagTokens = 0;
-            for (int si = 0; si < numSubStates[ni]; si++) {
-                unseenTagTokens += unseenTagCounter[ni][si];
-            }
-            if (unseenTagTokens == 0) {
-                continue;
-            }
-            for (Map.Entry<String, double[]> wordToTagEntry : wordToTagCounters[ni].entrySet()) {
-                String word = wordToTagEntry.getKey();
-                double[] substateCounter = wordToTagEntry.getValue();
-                if (wordCounter.getCount(word) < threshold+0.5) {
-                    double wordTagTokens = 0;
-                    for (int si = 0; si < numSubStates[ni]; si++) {
-                        wordTagTokens += substateCounter[si];
-                    }
-                    for (int si = 0; si < numSubStates[ni]; si++) {
-                        substateCounter[si] = unseenTagCounter[ni][si] * wordTagTokens / unseenTagTokens;
-                    }
-                }
-            }
-        }
-    }
+	public Counter<String> getWordCounter() {
+		return wordCounter;
+	}
+
+	public void tieRareWordStats(int threshold) {
+		for (int ni = 0; ni < numSubStates.length; ni++) {
+			double unseenTagTokens = 0;
+			for (int si = 0; si < numSubStates[ni]; si++) {
+				unseenTagTokens += unseenTagCounter[ni][si];
+			}
+			if (unseenTagTokens == 0) {
+				continue;
+			}
+			for (Map.Entry<String, double[]> wordToTagEntry : wordToTagCounters[ni]
+					.entrySet()) {
+				String word = wordToTagEntry.getKey();
+				double[] substateCounter = wordToTagEntry.getValue();
+				if (wordCounter.getCount(word) < threshold + 0.5) {
+					double wordTagTokens = 0;
+					for (int si = 0; si < numSubStates[ni]; si++) {
+						wordTagTokens += substateCounter[si];
+					}
+					for (int si = 0; si < numSubStates[ni]; si++) {
+						substateCounter[si] = unseenTagCounter[ni][si]
+								* wordTagTokens / unseenTagTokens;
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * Trains this lexicon on the Collection of trees.
 	 */
-    public void trainTree(Tree<StateSet> trainTree, double randomness,
-            Lexicon oldLexicon, boolean secondHalf, boolean noSmoothing,
-            int threshold) {
-        // scan data
-        //for all substates that the word's preterminal tag has
-        double sentenceScore = 0;
-        if (randomness == -1) {
-            sentenceScore = trainTree.getLabel().getIScore(0);
-            if (sentenceScore == 0) {
-                System.out.println("Something is wrong with this tree. I will skip it.");
-                return;
-            }
-        }
-        int sentenceScale = trainTree.getLabel().getIScale();
+	public void trainTree(Tree<StateSet> trainTree, double randomness,
+			Lexicon oldLexicon, boolean secondHalf, boolean noSmoothing,
+			int threshold) {
+		// scan data
+		// for all substates that the word's preterminal tag has
+		double sentenceScore = 0;
+		if (randomness == -1) {
+			sentenceScore = trainTree.getLabel().getIScore(0);
+			if (sentenceScore == 0) {
+				System.out
+						.println("Something is wrong with this tree. I will skip it.");
+				return;
+			}
+		}
+		int sentenceScale = trainTree.getLabel().getIScale();
 
-        List<StateSet> words = trainTree.getYield();
-        List<StateSet> tags = trainTree.getPreTerminalYield();
-        if (words.size() != tags.size()) {
-            System.out.println("Yield an preterminal yield do not match!");
-            System.out.println(words.toString());
-            System.out.println(tags.toString());
-        }
+		List<StateSet> words = trainTree.getYield();
+		List<StateSet> tags = trainTree.getPreTerminalYield();
+		if (words.size() != tags.size()) {
+			System.out.println("Yield an preterminal yield do not match!");
+			System.out.println(words.toString());
+			System.out.println(tags.toString());
+		}
 
-        Counter<String> oldWordCounter = null;
-        if (oldLexicon != null) {
-            oldWordCounter = oldLexicon.getWordCounter();
-        }
-        //for all words in sentence
-        for (int position = 0; position < words.size(); position++) {
-            totalWords++;
-            String word = words.get(position).getWord();
-            int nSubStates = tags.get(position).numSubStates();
-            short tag = tags.get(position).getState();
+		Counter<String> oldWordCounter = null;
+		if (oldLexicon != null) {
+			oldWordCounter = oldLexicon.getWordCounter();
+		}
+		// for all words in sentence
+		for (int position = 0; position < words.size(); position++) {
+			totalWords++;
+			String word = words.get(position).getWord();
+			int nSubStates = tags.get(position).numSubStates();
+			short tag = tags.get(position).getState();
 
+			String sig = getCachedSignature(word, position);
+			wordCounter.incrementCount(sig, 0);
 
-            String sig = getCachedSignature(word, position);
-            wordCounter.incrementCount(sig, 0);
+			if (unseenWordToTagCounters[tag] == null) {
+				unseenWordToTagCounters[tag] = new HashMap<String, double[]>();
+			}
+			double[] substateCounter2 = unseenWordToTagCounters[tag].get(sig);
+			if (substateCounter2 == null) {
+				// System.out.print("Sig "+sig+" word "+ word+" pos "+position);
+				substateCounter2 = new double[numSubStates[tag]];
+				unseenWordToTagCounters[tag].put(sig, substateCounter2);
+			}
 
-            if (unseenWordToTagCounters[tag] == null) {
-                unseenWordToTagCounters[tag] = new HashMap<String, double[]>();
-            }
-            double[] substateCounter2 = unseenWordToTagCounters[tag].get(sig);
-            if (substateCounter2 == null) {
-                //System.out.print("Sig "+sig+" word "+ word+" pos "+position);
-                substateCounter2 = new double[numSubStates[tag]];
-                unseenWordToTagCounters[tag].put(sig, substateCounter2);
-            }
+			// guarantee that the wordToTagCounter element exists so we can
+			// tally the combination
+			if (wordToTagCounters[tag] == null) {
+				wordToTagCounters[tag] = new HashMap<String, double[]>();
+			}
+			double[] substateCounter = wordToTagCounters[tag].get(word);
+			if (substateCounter == null) {
+				substateCounter = new double[numSubStates[tag]];
+				wordToTagCounters[tag].put(word, substateCounter);
+			}
 
-            //guarantee that the wordToTagCounter element exists so we can tally the combination
-            if (wordToTagCounters[tag] == null) {
-                wordToTagCounters[tag] = new HashMap<String, double[]>();
-            }
-            double[] substateCounter = wordToTagCounters[tag].get(word);
-            if (substateCounter == null) {
-                substateCounter = new double[numSubStates[tag]];
-                wordToTagCounters[tag].put(word, substateCounter);
-            }
+			double[] oldLexiconScores = null;
+			if (randomness == -1) {
+				oldLexiconScores = oldLexicon.score(word, tag, position,
+						noSmoothing, false);
+			}
 
-            double[] oldLexiconScores = null;
-            if (randomness == -1) {
-                oldLexiconScores = oldLexicon.score(word, tag, position, noSmoothing, false);
-            }
+			StateSet currentState = tags.get(position);
+			double scale = ScalingTools.calcScaleFactor(currentState
+					.getOScale() - sentenceScale)
+					/ sentenceScore;
+			// double weightSum = 0;
 
-            StateSet currentState = tags.get(position);
-            double scale = ScalingTools.calcScaleFactor(currentState.getOScale() - sentenceScale) / sentenceScore;
-            //double weightSum = 0;
+			for (short substate = 0; substate < nSubStates; substate++) {
+				double weight = 1;
+				if (randomness == -1) {
+					// weight by the probability of seeing the tag and word
+					// together, given the sentence
+					if (!Double.isInfinite(scale)) {
+						weight = currentState.getOScore(substate)
+								* oldLexiconScores[substate] * scale;
+					} else {
+						weight = Math.exp(Math.log(ScalingTools.SCALE)
+								* (currentState.getOScale() - sentenceScale)
+								- Math.log(sentenceScore)
+								+ Math.log(currentState.getOScore(substate))
+								+ Math.log(oldLexiconScores[substate]));
+					}
+					// weightSum+=weight;
+				} else if (randomness == 0) {
+					// for the baseline
+					weight = 1;
+				} else {
+					// add a bit of randomness
+					weight = GrammarTrainer.RANDOM.nextDouble() * randomness
+							/ 100.0 + 1.0;
+				}
+				if (weight == 0) {
+					continue;
+				}
+				// tally in the tag with the given weight
+				substateCounter[substate] += weight;
+				// update the counters
+				tagCounter[tag][substate] += weight;
+				wordCounter.incrementCount(word, weight);
+				totalTokens += weight;
 
-            for (short substate = 0; substate < nSubStates; substate++) {
-                double weight = 1;
-                if (randomness == -1) {
-                    //weight by the probability of seeing the tag and word together, given the sentence
-                    if (!Double.isInfinite(scale)) {
-                        weight = currentState.getOScore(substate) * oldLexiconScores[substate] * scale;
-                    } else {
-                        weight = Math.exp(Math.log(ScalingTools.SCALE) * (currentState.getOScale() - sentenceScale) - Math.log(sentenceScore) + Math.log(currentState.getOScore(
-substate)) + Math.log(oldLexiconScores[substate]));
-                    }
-                    //weightSum+=weight;
-                } else if (randomness == 0) {
-                    // for the baseline
-                    weight = 1;
-                } else {
-                    //add a bit of randomness
-                    weight = GrammarTrainer.RANDOM.nextDouble() * randomness / 100.0 + 1.0;
-                }
-                if (weight == 0) {
-                    continue;
-                }
-                //tally in the tag with the given weight
-                substateCounter[substate] += weight;
-                // update the counters
-                tagCounter[tag][substate] += weight;
-                wordCounter.incrementCount(word, weight);
-                totalTokens += weight;
+				if (Double.isNaN(totalTokens)) {
+					throw new Error(
+							"totalTokens is NaN: this would fail if we let it continue!");
+				}
 
-                if (Double.isNaN(totalTokens)) {
-                    throw new Error("totalTokens is NaN: this would fail if we let it continue!");
-                }
+				if (oldLexicon != null
+						&& oldWordCounter.getCount(word) < threshold + 0.5) {
+					wordCounter.incrementCount(sig, weight);
+					substateCounter2[substate] += weight;
+					unseenTagCounter[tag][substate] += weight;
+					totalUnseenTokens += weight;
+				}
+				// if (secondHalf) {
+				// // start doing this once we're halfway through the trees
+				// // it's an entirely unknown word
+				// if (wordCounter.getCount(word) < 2) {
+				// wordCounter.incrementCount(sig, weight);
+				//
+				// if (unseenWordToTagCounters[tag] == null) {
+				// unseenWordToTagCounters[tag] = new HashMap<String,
+				// double[]>();
+				// }
+				// substateCounter = unseenWordToTagCounters[tag].get(sig);
+				// if (substateCounter == null) {
+				// //System.out.print("Sig "+sig+" word "+
+				// word+" pos "+position);
+				// substateCounter = new double[numSubStates[tag]];
+				// unseenWordToTagCounters[tag].put(sig, substateCounter);
+				// }
+				//
+				// substateCounter[substate] += weight;
+				// unseenTagCounter[tag][substate] += weight;
+				// totalUnseenTokens += weight;
+				// } else {
+				// }
+				// }
+			}
+		}
+	}
 
-                if (oldLexicon != null && oldWordCounter.getCount(word) < threshold+0.5) {
-                    wordCounter.incrementCount(sig, weight);
-                    substateCounter2[substate] += weight;
-                    unseenTagCounter[tag][substate] += weight;
-                    totalUnseenTokens += weight;
-                }
-//                if (secondHalf) {
-//                    // start doing this once we're halfway through the trees
-//                    // it's an entirely unknown word
-//                    if (wordCounter.getCount(word) < 2) {
-//                        wordCounter.incrementCount(sig, weight);
-//
-//                        if (unseenWordToTagCounters[tag] == null) {
-//                            unseenWordToTagCounters[tag] = new HashMap<String, double[]>();
-//                        }
-//                        substateCounter = unseenWordToTagCounters[tag].get(sig);
-//                        if (substateCounter == null) {
-//                            //System.out.print("Sig "+sig+" word "+ word+" pos "+position);
-//                            substateCounter = new double[numSubStates[tag]];
-//                            unseenWordToTagCounters[tag].put(sig, substateCounter);
-//                        }
-//
-//                        substateCounter[substate] += weight;
-//                        unseenTagCounter[tag][substate] += weight;
-//                        totalUnseenTokens += weight;
-//                    } else {
-//                    }
-//                }
-            }
-        }
-    }
-
-	
 	/**
 	 * Returns the index of the signature of the word numbered wordIndex, where
 	 * the signature is the String representation of unknown word features.
@@ -1632,7 +1648,7 @@ substate)) + Math.log(oldLexiconScores[substate]));
 	// public Pair<double[],int[][]> getLinearizedLexicon(){
 	// return getLinearizedLexicon(getNumberOfEntries());
 	// }
-	//	
+	//
 	// public Pair<double[],int[][]> getLinearizedLexicon(int n){
 	// if (isConditional) {
 	// System.out.println("Do not have the functionality to linearize a conditional lexicon!");
@@ -1663,7 +1679,7 @@ substate)) + Math.log(oldLexiconScores[substate]));
 	// }
 	// }
 	// //tagCounter = null;
-	//		
+	//
 	// return new Pair<double[],int[][]>(probs,startIndex);
 	// }
 

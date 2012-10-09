@@ -3,14 +3,14 @@ package edu.berkeley.nlp.util;
 import java.util.Arrays;
 
 public class Scaler {
-	final int MAX_LEN ;
-	int[] scales ;
+	final int MAX_LEN;
+	int[] scales;
 	double[] unscaled;
-	int index ;
+	int index;
 
-	final double SCALE ;
-	double sumUnscaled ;
-	int sumScale ;
+	final double SCALE;
+	double sumUnscaled;
+	int sumScale;
 
 	public Scaler(double scale, int maxLen) {
 		this.SCALE = scale;
@@ -32,30 +32,38 @@ public class Scaler {
 		index++;
 	}
 
-	public void clear( ) {
+	public void clear() {
 		index = 0;
 		Arrays.fill(unscaled, 0.0);
 		Arrays.fill(scales, 0);
 	}
 
 	private double getScale(int logScale) {
-	 	if (logScale == 0.0) return 1.0;
-		if (logScale == 1.0) return SCALE;
-		if (logScale == 2.0) return SCALE * SCALE;
-		if (logScale == 3.0) return SCALE * SCALE * SCALE;
-		if (logScale == -1.0) return 1.0 / SCALE;
-		if (logScale == -2.0) return 1.0 / SCALE / SCALE;
-		if (logScale == -3.0) return 1.0 / SCALE / SCALE / SCALE;
+		if (logScale == 0.0)
+			return 1.0;
+		if (logScale == 1.0)
+			return SCALE;
+		if (logScale == 2.0)
+			return SCALE * SCALE;
+		if (logScale == 3.0)
+			return SCALE * SCALE * SCALE;
+		if (logScale == -1.0)
+			return 1.0 / SCALE;
+		if (logScale == -2.0)
+			return 1.0 / SCALE / SCALE;
+		if (logScale == -3.0)
+			return 1.0 / SCALE / SCALE / SCALE;
 		return Math.pow(SCALE, logScale);
 	}
 
 	public void scale() {
 		sumScale = Integer.MIN_VALUE;
-		for (int scale: scales) sumScale = Math.max(sumScale, scale);
+		for (int scale : scales)
+			sumScale = Math.max(sumScale, scale);
 		assert sumScale > Integer.MIN_VALUE;
 		sumUnscaled = 0.0;
-		for (int i=0; i < index; ++i) {
-			double scale = getScale(scales[i]-sumScale);
+		for (int i = 0; i < index; ++i) {
+			double scale = getScale(scales[i] - sumScale);
 			sumUnscaled += scale * unscaled[i];
 		}
 		while (true) {
@@ -67,7 +75,7 @@ public class Scaler {
 				sumScale++;
 				continue;
 			}
-			if (sumUnscaled < 1.0/SCALE) {
+			if (sumUnscaled < 1.0 / SCALE) {
 				sumUnscaled *= SCALE;
 				sumScale--;
 				continue;

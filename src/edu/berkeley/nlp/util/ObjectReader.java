@@ -14,16 +14,16 @@ import edu.berkeley.nlp.util.Logger;
 
 /**
  * @author dburkett
- *
+ * 
  */
 public class ObjectReader<T extends Serializable> {
 	private final File folder;
 	private final String[] files;
-	
+
 	private ObjectInputStream currentStream = null;
 	private int currentIndex = -1;
 	private boolean currentStreamHasNext = false;
-	
+
 	public ObjectReader(File folder, final String filenameFilter) {
 		this.folder = folder;
 		files = folder.list(new FilenameFilter() {
@@ -34,7 +34,7 @@ public class ObjectReader<T extends Serializable> {
 		Arrays.sort(files);
 		openNextStream();
 	}
-	
+
 	public void reset() {
 		currentIndex = -1;
 		openNextStream();
@@ -48,10 +48,11 @@ public class ObjectReader<T extends Serializable> {
 			}
 			currentIndex++;
 			if (currentIndex < files.length) {
-				currentStream = IOUtils.openObjIn(new File(folder, files[currentIndex]));
+				currentStream = IOUtils.openObjIn(new File(folder,
+						files[currentIndex]));
 				currentStreamHasNext = currentStream.readBoolean();
 			}
-		} catch(IOException e) {
+		} catch (IOException e) {
 			Logger.err("Error opening forest file: " + e);
 			currentStream = null;
 		}
@@ -66,10 +67,10 @@ public class ObjectReader<T extends Serializable> {
 			if (currentStream == null) {
 				return null;
 			}
-			T nextObject = (T)currentStream.readObject();
+			T nextObject = (T) currentStream.readObject();
 			currentStreamHasNext = currentStream.readBoolean();
 			return nextObject;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Logger.err("Error reading object: " + e);
 			return null;
 		}

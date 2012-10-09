@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 
-
 /**
  * A map from objects to doubles. Includes convenience methods for getting,
  * setting, and incrementing element counts. Objects not in the counter will
@@ -89,9 +88,10 @@ public class Counter<E> implements Serializable {
 	 */
 	public double getCount(E key) {
 		Double value = entries.get(key);
-		if (value == null) return deflt;
+		if (value == null)
+			return deflt;
 		return value;
-	}  
+	}
 
 	/**
 	 * I know, I know, this should be wrapped in a Distribution class, but it's
@@ -107,7 +107,8 @@ public class Counter<E> implements Serializable {
 		double count = getCount(key);
 		double total = totalCount();
 		if (total < 0.0) {
-			throw new RuntimeException("Can't call getProbability() with totalCount < 0.0");
+			throw new RuntimeException(
+					"Can't call getProbability() with totalCount < 0.0");
 		}
 		return total > 0.0 ? count / total : 0.0;
 	}
@@ -176,7 +177,8 @@ public class Counter<E> implements Serializable {
 				return entry.getKey();
 			}
 		}
-		throw new IllegalStateException("Shoudl've have returned a sample by now....");
+		throw new IllegalStateException(
+				"Shoudl've have returned a sample by now....");
 	}
 
 	/**
@@ -243,7 +245,7 @@ public class Counter<E> implements Serializable {
 	 * @param increment
 	 */
 	public double incrementCount(E key, double increment) {
-	  double newVal = getCount(key) + increment;
+		double newVal = getCount(key) + increment;
 		setCount(key, newVal);
 		dirty = true;
 		return newVal;
@@ -322,7 +324,8 @@ public class Counter<E> implements Serializable {
 	}
 
 	private double maxMinHelp(boolean max) {
-		double maxCount = max ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
+		double maxCount = max ? Double.NEGATIVE_INFINITY
+				: Double.POSITIVE_INFINITY;
 
 		for (Map.Entry<E, Double> entry : entries.entrySet()) {
 			if ((max && entry.getValue() > maxCount)
@@ -356,10 +359,12 @@ public class Counter<E> implements Serializable {
 			sb.append(element.toString());
 			sb.append(" : ");
 			sb.append(f.format(getCount(element)));
-			if (numKeysPrinted < size() - 1) sb.append(", ");
+			if (numKeysPrinted < size() - 1)
+				sb.append(", ");
 			numKeysPrinted++;
 		}
-		if (numKeysPrinted < size()) sb.append("...");
+		if (numKeysPrinted < size())
+			sb.append("...");
 		sb.append("]");
 		return sb.toString();
 	}
@@ -374,11 +379,11 @@ public class Counter<E> implements Serializable {
 	public String toString(int maxKeysToPrint) {
 		return asPriorityQueue().toString(maxKeysToPrint, false);
 	}
-	
+
 	/**
 	 * Returns a string representation which includes no more than the
-	 * maxKeysToPrint elements with largest counts and optionally prints
-	 * one element per line.
+	 * maxKeysToPrint elements with largest counts and optionally prints one
+	 * element per line.
 	 * 
 	 * @param maxKeysToPrint
 	 * @return partial string representation
@@ -418,8 +423,9 @@ public class Counter<E> implements Serializable {
 	}
 
 	public Counter(boolean identityHashMap) {
-		this(identityHashMap ? new MapFactory.IdentityHashMapFactory<E, Double>()
-				: new MapFactory.HashMapFactory<E, Double>());
+		this(
+				identityHashMap ? new MapFactory.IdentityHashMapFactory<E, Double>()
+						: new MapFactory.HashMapFactory<E, Double>());
 	}
 
 	public Counter(MapFactory<E, Double> mf) {
@@ -502,9 +508,11 @@ public class Counter<E> implements Serializable {
 		Counter<E> tmp = new Counter<E>();
 
 		int n = 0;
-		for (E e : Iterators.able(top ? asPriorityQueue() : asMinPriorityQueue())) {
+		for (E e : Iterators.able(top ? asPriorityQueue()
+				: asMinPriorityQueue())) {
 
-			if (n <= keepN) tmp.setCount(e, getCount(e));
+			if (n <= keepN)
+				tmp.setCount(e, getCount(e));
 			n++;
 
 		}
@@ -528,9 +536,11 @@ public class Counter<E> implements Serializable {
 		double sum = 0.0;
 		for (Map.Entry<E, Double> entry : getEntrySet()) {
 			final double otherCount = other.getCount(entry.getKey());
-			if (otherCount == 0.0) continue;
+			if (otherCount == 0.0)
+				continue;
 			final double value = entry.getValue();
-			if (value == 0.0) continue;
+			if (value == 0.0)
+				continue;
 			sum += value * otherCount;
 
 		}
@@ -574,17 +584,19 @@ public class Counter<E> implements Serializable {
 
 	public boolean approxEquals(Counter<E> other, double tol) {
 		for (E key : keySet()) {
-			if (Math.abs(getCount(key) - other.getCount(key)) > tol) return false;
+			if (Math.abs(getCount(key) - other.getCount(key)) > tol)
+				return false;
 		}
 		for (E key : other.keySet()) {
-			if (Math.abs(getCount(key) - other.getCount(key)) > tol) return false;
+			if (Math.abs(getCount(key) - other.getCount(key)) > tol)
+				return false;
 		}
 		return true;
 	}
 
-  public void setDirty(boolean dirty) {
-    this.dirty = dirty;
-  }
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+	}
 
 	public String toStringTabSeparated() {
 		StringBuilder sb = new StringBuilder();

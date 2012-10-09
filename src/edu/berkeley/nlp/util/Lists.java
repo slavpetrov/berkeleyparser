@@ -47,15 +47,18 @@ public class Lists {
 		list.set(index, element);
 	}
 
-	public static <T extends Comparable<T>> Comparator<List<T>> comparator(T example) {
+	public static <T extends Comparable<T>> Comparator<List<T>> comparator(
+			T example) {
 		return new Comparator<List<T>>() {
 			public int compare(List<T> o1, List<T> o2) {
 				for (int i = 0; i < o1.size(); i++) {
-					if (i == o2.size()) return 1;
+					if (i == o2.size())
+						return 1;
 					T c1 = o1.get(i);
 					T c2 = o2.get(i);
 					int r = c1.compareTo(c2);
-					if (r != 0) return r;
+					if (r != 0)
+						return r;
 				}
 				return o2.size() > o1.size() ? -1 : 0;
 			}
@@ -65,7 +68,8 @@ public class Lists {
 	public static int min(List<Integer> list) {
 		int min = Integer.MAX_VALUE;
 		for (int i : list) {
-			if (i < min) min = i;
+			if (i < min)
+				min = i;
 		}
 		return min;
 	}
@@ -73,13 +77,15 @@ public class Lists {
 	public static int max(List<Integer> list) {
 		int max = Integer.MIN_VALUE;
 		for (int i : list) {
-			if (i > max) max = i;
+			if (i > max)
+				max = i;
 		}
 		return max;
 	}
 
 	public static <T> List<T> truncate(List<T> list, int len) {
-		if (len >= list.size()) return list;
+		if (len >= list.size())
+			return list;
 		// remove reference to old list to save memory
 		List<T> newlist = new ArrayList<T>(list.subList(0, len));
 		return newlist;
@@ -94,27 +100,27 @@ public class Lists {
 
 	public static <T> List<T> fromArray(T[] array) {
 		List<T> list = new ArrayList<T>(array.length);
-		for (int i=0; i<array.length; i++) {
+		for (int i = 0; i < array.length; i++) {
 			list.add(array[i]);
 		}
 		return list;
 	}
 
-//	public static int[] toPrimitiveArray(List<Integer> curList) {
-//		int[] newArray = new int[curList.size()];
-//		for(int i=0; i < newArray.length; i++) {
-//			newArray[i] = curList.get(i);
-//		}
-//		return newArray;
-//	}
-//
-//	public static double[] toPrimitiveArray(List<Double> curList) {
-//		double[] newArray = new double[curList.size()];
-//		for(int i=0; i < newArray.length; i++) {
-//			newArray[i] = curList.get(i);
-//		}
-//		return newArray;
-//	}
+	// public static int[] toPrimitiveArray(List<Integer> curList) {
+	// int[] newArray = new int[curList.size()];
+	// for(int i=0; i < newArray.length; i++) {
+	// newArray[i] = curList.get(i);
+	// }
+	// return newArray;
+	// }
+	//
+	// public static double[] toPrimitiveArray(List<Double> curList) {
+	// double[] newArray = new double[curList.size()];
+	// for(int i=0; i < newArray.length; i++) {
+	// newArray[i] = curList.get(i);
+	// }
+	// return newArray;
+	// }
 
 	/**
 	 * Like Python

@@ -1,7 +1,6 @@
 package edu.berkeley.nlp.util;
 
-public interface PriorityQueueInterface<E>
-{
+public interface PriorityQueueInterface<E> {
 
 	/**
 	 * Returns true if the priority queue is non-empty
@@ -40,9 +39,9 @@ public interface PriorityQueueInterface<E>
 	public abstract boolean isEmpty();
 
 	/**
-	 * Adds a key to the queue with the given priority.  If the key is already in
+	 * Adds a key to the queue with the given priority. If the key is already in
 	 * the queue, it will be added an additional time, NOT promoted/demoted.
-	 *
+	 * 
 	 * @param key
 	 * @param priority
 	 */

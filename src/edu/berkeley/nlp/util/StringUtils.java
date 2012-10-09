@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 /**
  * StringUtils is a class for random String things.
- *
+ * 
  * @author Dan Klein
  * @author Christopher Manning
  * @author Tim Grow (grow@stanford.edu)
@@ -28,14 +28,15 @@ public class StringUtils {
 	}
 
 	/**
-	 * Say whether this regular expression can be found inside
-	 * this String.  This method provides one of the two "missing"
-	 * convenience methods for regular expressions in the String class
-	 * in JDK1.4.  This is the one you'll want to use all the time if
-	 * you're used to Perl.  What were they smoking?
-	 *
-	 * @param str   String to search for match in
-	 * @param regex String to compile as the regular expression
+	 * Say whether this regular expression can be found inside this String. This
+	 * method provides one of the two "missing" convenience methods for regular
+	 * expressions in the String class in JDK1.4. This is the one you'll want to
+	 * use all the time if you're used to Perl. What were they smoking?
+	 * 
+	 * @param str
+	 *            String to search for match in
+	 * @param regex
+	 *            String to compile as the regular expression
 	 * @return Whether the regex can be found in str
 	 */
 	public static boolean find(String str, String regex) {
@@ -43,13 +44,14 @@ public class StringUtils {
 	}
 
 	/**
-	 * Say whether this regular expression can be found at the beginning of
-	 * this String.  This method provides one of the two "missing"
-	 * convenience methods for regular expressions in the String class
-	 * in JDK1.4.
-	 *
-	 * @param str   String to search for match at start of
-	 * @param regex String to compile as the regular expression
+	 * Say whether this regular expression can be found at the beginning of this
+	 * String. This method provides one of the two "missing" convenience methods
+	 * for regular expressions in the String class in JDK1.4.
+	 * 
+	 * @param str
+	 *            String to search for match at start of
+	 * @param regex
+	 *            String to compile as the regular expression
 	 * @return Whether the regex can be found at the start of str
 	 */
 	public static boolean lookingAt(String str, String regex) {
@@ -57,13 +59,14 @@ public class StringUtils {
 	}
 
 	/**
-	 * Say whether this regular expression matches
-	 * this String.  This method is the same as the String.matches() method,
-	 * and is included just to give a call that is parallel to the other
-	 * static regex methods in this class.
-	 *
-	 * @param str   String to search for match at start of
-	 * @param regex String to compile as the regular expression
+	 * Say whether this regular expression matches this String. This method is
+	 * the same as the String.matches() method, and is included just to give a
+	 * call that is parallel to the other static regex methods in this class.
+	 * 
+	 * @param str
+	 *            String to search for match at start of
+	 * @param regex
+	 *            String to compile as the regular expression
 	 * @return Whether the regex matches the whole of this str
 	 */
 	public static boolean matches(String str, String regex) {
@@ -87,15 +90,17 @@ public class StringUtils {
 	/**
 	 * Returns all the text in the given file with the given encoding.
 	 */
-	public static String slurpFile(String filename, String encoding) throws IOException {
-		Reader r = new InputStreamReader(new FileInputStream(filename), encoding);
+	public static String slurpFile(String filename, String encoding)
+			throws IOException {
+		Reader r = new InputStreamReader(new FileInputStream(filename),
+				encoding);
 		return slurpReader(r);
 	}
 
 	/**
-	 * Returns all the text in the given file with the given encoding.
-	 * If the file cannot be read (non-existent, etc.),
-	 * then and only then the method returns <code>null</code>.
+	 * Returns all the text in the given file with the given encoding. If the
+	 * file cannot be read (non-existent, etc.), then and only then the method
+	 * returns <code>null</code>.
 	 */
 	public static String slurpFileNoExceptions(String filename, String encoding) {
 		try {
@@ -111,7 +116,7 @@ public class StringUtils {
 
 	/**
 	 * Returns all the text from the given Reader.
-	 *
+	 * 
 	 * @return The text in the file.
 	 */
 	public static String slurpReader(Reader reader) {
@@ -135,7 +140,7 @@ public class StringUtils {
 
 	/**
 	 * Returns all the text in the given file
-	 *
+	 * 
 	 * @return The text in the file.
 	 */
 	public static String slurpFile(String filename) throws IOException {
@@ -144,10 +149,10 @@ public class StringUtils {
 
 	/**
 	 * Returns all the text in the given File.
-	 *
-	 * @return The text in the file.  May be an empty string if the file
-	 *         is empty.  If the file cannot be read (non-existent, etc.),
-	 *         then and only then the method returns <code>null</code>.
+	 * 
+	 * @return The text in the file. May be an empty string if the file is
+	 *         empty. If the file cannot be read (non-existent, etc.), then and
+	 *         only then the method returns <code>null</code>.
 	 */
 	public static String slurpFileNoExceptions(File file) {
 		try {
@@ -160,10 +165,10 @@ public class StringUtils {
 
 	/**
 	 * Returns all the text in the given File.
-	 *
-	 * @return The text in the file.  May be an empty string if the file
-	 *         is empty.  If the file cannot be read (non-existent, etc.),
-	 *         then and only then the method returns <code>null</code>.
+	 * 
+	 * @return The text in the file. May be an empty string if the file is
+	 *         empty. If the file cannot be read (non-existent, etc.), then and
+	 *         only then the method returns <code>null</code>.
 	 */
 	public static String slurpFileNoExceptions(String filename) {
 		try {
@@ -216,11 +221,12 @@ public class StringUtils {
 		try {
 			is = uc.getInputStream();
 		} catch (SocketTimeoutException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			System.err.println("Time out. Return empty string");
 			return "";
 		}
-		BufferedReader br = new BufferedReader(new InputStreamReader(is, encoding));
+		BufferedReader br = new BufferedReader(new InputStreamReader(is,
+				encoding));
 		String temp;
 		StringBuffer buff = new StringBuffer(16000); // make biggish
 		while ((temp = br.readLine()) != null) {
@@ -269,8 +275,9 @@ public class StringUtils {
 	}
 
 	/**
-	 * Returns all the text at the given URL. If the file cannot be read (non-existent, etc.),
-	 * then and only then the method returns <code>null</code>.
+	 * Returns all the text at the given URL. If the file cannot be read
+	 * (non-existent, etc.), then and only then the method returns
+	 * <code>null</code>.
 	 */
 	public static String slurpURLNoExceptions(String path) {
 		try {
@@ -282,9 +289,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * Joins each elem in the Collection with the given glue. For example, given a
-	 * list
-	 * of Integers, you can create a comma-separated list by calling
+	 * Joins each elem in the Collection with the given glue. For example, given
+	 * a list of Integers, you can create a comma-separated list by calling
 	 * <tt>join(numbers, ", ")</tt>.
 	 */
 	public static String join(Iterable l, String glue) {
@@ -302,8 +308,7 @@ public class StringUtils {
 
 	/**
 	 * Joins each elem in the List with the given glue. For example, given a
-	 * list
-	 * of Integers, you can create a comma-separated list by calling
+	 * list of Integers, you can create a comma-separated list by calling
 	 * <tt>join(numbers, ", ")</tt>.
 	 */
 	public static String join(List<?> l, String glue) {
@@ -319,8 +324,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * Joins each elem in the array with the given glue. For example, given a list
-	 * of ints, you can create a comma-separated list by calling
+	 * Joins each elem in the array with the given glue. For example, given a
+	 * list of ints, you can create a comma-separated list by calling
 	 * <tt>join(numbers, ", ")</tt>.
 	 */
 	public static String join(Object[] elements, String glue) {
@@ -349,14 +354,15 @@ public class StringUtils {
 	}
 
 	/**
-	 * Splits the given string using the given regex as delimiters.
-	 * This method is the same as the String.split() method (except it throws
-	 * the results in a List),
-	 * and is included just to give a call that is parallel to the other
-	 * static regex methods in this class.
-	 *
-	 * @param str   String to split up
-	 * @param regex String to compile as the regular expression
+	 * Splits the given string using the given regex as delimiters. This method
+	 * is the same as the String.split() method (except it throws the results in
+	 * a List), and is included just to give a call that is parallel to the
+	 * other static regex methods in this class.
+	 * 
+	 * @param str
+	 *            String to split up
+	 * @param regex
+	 *            String to compile as the regular expression
 	 * @return List of Strings resulting from splitting on the regex
 	 */
 	public static List split(String str, String regex) {
@@ -364,9 +370,9 @@ public class StringUtils {
 	}
 
 	/**
-	 * Return a String of length a minimum of totalChars characters by
-	 * padding the input String str with spaces.  If str is already longer
-	 * than totalChars, it is returned unchanged.
+	 * Return a String of length a minimum of totalChars characters by padding
+	 * the input String str with spaces. If str is already longer than
+	 * totalChars, it is returned unchanged.
 	 */
 	public static String pad(String str, int totalChars) {
 		if (str == null)
@@ -388,9 +394,11 @@ public class StringUtils {
 
 	/**
 	 * Pad or trim so as to produce a string of exactly a certain length.
-	 *
-	 * @param str The String to be padded or truncated
-	 * @param num The desired length
+	 * 
+	 * @param str
+	 *            The String to be padded or truncated
+	 * @param num
+	 *            The desired length
 	 */
 	public static String padOrTrim(String str, int num) {
 		if (str == null)
@@ -417,8 +425,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * Pads the given String to the left with spaces to ensure that it's
-	 * at least totalChars long.
+	 * Pads the given String to the left with spaces to ensure that it's at
+	 * least totalChars long.
 	 */
 	public static String padLeft(String str, int totalChars) {
 		if (str == null)
@@ -444,7 +452,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * Returns s if it's at most maxWidth chars, otherwise chops right side to fit.
+	 * Returns s if it's at most maxWidth chars, otherwise chops right side to
+	 * fit.
 	 */
 	public static String trim(String s, int maxWidth) {
 		if (s.length() <= maxWidth) {
@@ -458,16 +467,16 @@ public class StringUtils {
 	}
 
 	/**
-	 * Returns a "clean" version of the given filename in which spaces have
-	 * been converted to dashes and all non-alphaneumeric chars are underscores.
+	 * Returns a "clean" version of the given filename in which spaces have been
+	 * converted to dashes and all non-alphaneumeric chars are underscores.
 	 */
 	public static String fileNameClean(String s) {
 		char[] chars = s.toCharArray();
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < chars.length; i++) {
 			char c = chars[i];
-			if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')
-					|| (c == '_')) {
+			if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
+					|| (c >= '0' && c <= '9') || (c == '_')) {
 				sb.append(c);
 			} else {
 				if (c == ' ' || c == '-') {
@@ -481,8 +490,8 @@ public class StringUtils {
 	}
 
 	/**
-	 * Returns the index of the <i>n</i>th occurrence of ch in s, or -1
-	 * if there are less than n occurrences of ch.
+	 * Returns the index of the <i>n</i>th occurrence of ch in s, or -1 if there
+	 * are less than n occurrences of ch.
 	 */
 	public static int nthIndex(String s, char ch, int n) {
 		int index = 0;
@@ -502,8 +511,7 @@ public class StringUtils {
 
 	/**
 	 * This returns a string from decimal digit smallestDigit to decimal digit
-	 * biggest digit. Smallest digit is labeled 1, and the limits are
-	 * inclusive.
+	 * biggest digit. Smallest digit is labeled 1, and the limits are inclusive.
 	 */
 	public static String truncate(int n, int smallestDigit, int biggestDigit) {
 		int numDigits = biggestDigit - smallestDigit + 1;
@@ -523,18 +531,17 @@ public class StringUtils {
 	 * <p/>
 	 * -flag1 arg1a arg1b ... arg1m -flag2 -flag3 arg3a ... arg3n
 	 * <p/>
-	 * will be parsed so that the flag is a key in the Map (including
-	 * the hyphen) and its value will be a {@link String[] } containing
-	 * the optional arguments (if present).  The non-flag values not
-	 * captured as flag arguments are collected into a String[] array
-	 * and returned as the value of <code>null</code> in the Map.  In
-	 * this invocation, flags cannot take arguments, so all the {@link
-	 * String} array values other than the value for <code>null</code>
-	 * will be zero-length.
-	 *
+	 * will be parsed so that the flag is a key in the Map (including the
+	 * hyphen) and its value will be a {@link String[] } containing the optional
+	 * arguments (if present). The non-flag values not captured as flag
+	 * arguments are collected into a String[] array and returned as the value
+	 * of <code>null</code> in the Map. In this invocation, flags cannot take
+	 * arguments, so all the {@link String} array values other than the value
+	 * for <code>null</code> will be zero-length.
+	 * 
 	 * @param args
-	 * @return a {@link Map} of flag names to flag argument {@link
-	 *         String[]} arrays.
+	 * @return a {@link Map} of flag names to flag argument {@link String[]}
+	 *         arrays.
 	 */
 	public static Map<String, String[]> argsToMap(String[] args) {
 		return argsToMap(args, new HashMap<String, Integer>());
@@ -545,15 +552,14 @@ public class StringUtils {
 	 * <p/>
 	 * -flag1 arg1a arg1b ... arg1m -flag2 -flag3 arg3a ... arg3n
 	 * <p/>
-	 * will be parsed so that the flag is a key in the Map (including
-	 * the hyphen) and its value will be a {@link String[] } containing
-	 * the optional arguments (if present).  The non-flag values not
-	 * captured as flag arguments are collected into a String[] array
-	 * and returned as the value of <code>null</code> in the Map.  In
-	 * this invocation, the maximum number of arguments for each flag
-	 * can be specified as an {@link Integer} value of the appropriate
-	 * flag key in the <code>flagsToNumArgs</code> {@link Map}
-	 * argument. (By default, flags cannot take arguments.)
+	 * will be parsed so that the flag is a key in the Map (including the
+	 * hyphen) and its value will be a {@link String[] } containing the optional
+	 * arguments (if present). The non-flag values not captured as flag
+	 * arguments are collected into a String[] array and returned as the value
+	 * of <code>null</code> in the Map. In this invocation, the maximum number
+	 * of arguments for each flag can be specified as an {@link Integer} value
+	 * of the appropriate flag key in the <code>flagsToNumArgs</code>
+	 * {@link Map} argument. (By default, flags cannot take arguments.)
 	 * <p/>
 	 * Example of usage:
 	 * <p/>
@@ -563,13 +569,15 @@ public class StringUtils {
 	 * flagsToNumArgs.put("-d",new Integer(1));
 	 * Map result = argsToMap(args,flagsToNumArgs);
 	 * </code>
-	 *
-	 * @param args           the argument array to be parsed
-	 * @param flagsToNumArgs a {@link Map} of flag names to {@link
-	 *                       Integer} values specifying the maximum number of allowed
-	 *                       arguments for that flag (default 0).
-	 * @return a {@link Map} of flag names to flag argument {@link
-	 *         String[]} arrays.
+	 * 
+	 * @param args
+	 *            the argument array to be parsed
+	 * @param flagsToNumArgs
+	 *            a {@link Map} of flag names to {@link Integer} values
+	 *            specifying the maximum number of allowed arguments for that
+	 *            flag (default 0).
+	 * @return a {@link Map} of flag names to flag argument {@link String[]}
+	 *         arrays.
 	 */
 	public static Map<String, String[]> argsToMap(String[] args,
 			Map<String, Integer> flagsToNumArgs) {
@@ -582,19 +590,23 @@ public class StringUtils {
 				Integer maxFlagArgs = flagsToNumArgs.get(key);
 				int max = maxFlagArgs == null ? 0 : maxFlagArgs.intValue();
 				List<String> flagArgs = new ArrayList<String>();
-				for (int j = 0; j < max && i + 1 < args.length && args[i + 1].charAt(0) != '-'; i++, j++) {
+				for (int j = 0; j < max && i + 1 < args.length
+						&& args[i + 1].charAt(0) != '-'; i++, j++) {
 					flagArgs.add(args[i + 1]);
 				}
-				if (result.containsKey(key)) { // append the second specification into the args.
+				if (result.containsKey(key)) { // append the second
+												// specification into the args.
 					String[] newFlagArg = new String[result.get(key).length
 							+ flagsToNumArgs.get(key)];
 					int oldNumArgs = result.get(key).length;
-					System.arraycopy(result.get(key), 0, newFlagArg, 0, oldNumArgs);
+					System.arraycopy(result.get(key), 0, newFlagArg, 0,
+							oldNumArgs);
 					for (int j = 0; j < flagArgs.size(); j++) {
 						newFlagArg[j + oldNumArgs] = flagArgs.get(j);
 					}
 				} else
-					result.put(key, (String[]) flagArgs.toArray(new String[] {}));
+					result.put(key,
+							(String[]) flagArgs.toArray(new String[] {}));
 			} else {
 				remainingArgs.add(args[i]);
 			}
@@ -610,14 +622,17 @@ public class StringUtils {
 	}
 
 	/**
-	 * Analagous to {@link #argsToMap}.  However, there are several key differences between this method and {@link #argsToMap}:
+	 * Analagous to {@link #argsToMap}. However, there are several key
+	 * differences between this method and {@link #argsToMap}:
 	 * <ul>
-	 * <li> Hyphens are stripped from flag names </li>
-	 * <li> Since Properties objects are String to String mappings, the default number of arguments to a flag is
-	 * assumed to be 1 and not 0. </li>
-	 * <li> Furthermore, the list of arguments not bound to a flag is mapped to the "" property, not null </li>
-	 * <li> The special flag "-prop" will load the property file specified by it's argument. </li>
-	 * <li> The value for flags without arguments is set to "true" </li>
+	 * <li>Hyphens are stripped from flag names</li>
+	 * <li>Since Properties objects are String to String mappings, the default
+	 * number of arguments to a flag is assumed to be 1 and not 0.</li>
+	 * <li>Furthermore, the list of arguments not bound to a flag is mapped to
+	 * the "" property, not null</li>
+	 * <li>The special flag "-prop" will load the property file specified by
+	 * it's argument.</li>
+	 * <li>The value for flags without arguments is set to "true"</li>
 	 */
 	public static Properties argsToProperties(String[] args, Map flagsToNumArgs) {
 		Properties result = new Properties();
@@ -631,7 +646,8 @@ public class StringUtils {
 				Integer maxFlagArgs = (Integer) flagsToNumArgs.get(key);
 				int max = maxFlagArgs == null ? 1 : maxFlagArgs.intValue();
 				List<String> flagArgs = new ArrayList<String>();
-				for (int j = 0; j < max && i + 1 < args.length && args[i + 1].charAt(0) != '-'; i++, j++) {
+				for (int j = 0; j < max && i + 1 < args.length
+						&& args[i + 1].charAt(0) != '-'; i++, j++) {
 					flagArgs.add(args[i + 1]);
 				}
 				if (flagArgs.size() == 0) {
@@ -640,8 +656,9 @@ public class StringUtils {
 					result.setProperty(key, join(flagArgs, " "));
 					if (key.equalsIgnoreCase(PROP)) {
 						try {
-							result.load(new BufferedInputStream(new FileInputStream(result
-									.getProperty(PROP))));
+							result.load(new BufferedInputStream(
+									new FileInputStream(result
+											.getProperty(PROP))));
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -656,10 +673,10 @@ public class StringUtils {
 	}
 
 	/**
-	 * This method converts a comma-separated String (with whitespace
-	 * optionally allowed after the comma) representing properties
-	 * to a Properties object.  Each property is "property=value".  The value
-	 * for properties without an explicitly given value is set to "true".
+	 * This method converts a comma-separated String (with whitespace optionally
+	 * allowed after the comma) representing properties to a Properties object.
+	 * Each property is "property=value". The value for properties without an
+	 * explicitly given value is set to "true".
 	 */
 	public static Properties stringToProperties(String str) {
 		Properties result = new Properties();
@@ -682,7 +699,7 @@ public class StringUtils {
 	}
 
 	/**
-	 * Prints to a file.  If the file already exists, appends if
+	 * Prints to a file. If the file already exists, appends if
 	 * <code>append=true</code>, and overwrites if <code>append=false</code>
 	 */
 	public static void printToFile(File file, String message, boolean append) {
@@ -693,8 +710,8 @@ public class StringUtils {
 			pw = new PrintWriter(fw);
 			pw.print(message);
 		} catch (Exception e) {
-			System.out.println("Exception: in printToFile " + file.getAbsolutePath() + " "
-					+ message);
+			System.out.println("Exception: in printToFile "
+					+ file.getAbsolutePath() + " " + message);
 			e.printStackTrace();
 		} finally {
 			if (pw != null) {
@@ -704,39 +721,38 @@ public class StringUtils {
 	}
 
 	/**
-	 * Prints to a file.  If the file does not exist, rewrites the file;
-	 * does not append.
+	 * Prints to a file. If the file does not exist, rewrites the file; does not
+	 * append.
 	 */
 	public static void printToFile(File file, String message) {
 		printToFile(file, message, false);
 	}
 
 	/**
-	 * Prints to a file.  If the file already exists, appends if
+	 * Prints to a file. If the file already exists, appends if
 	 * <code>append=true</code>, and overwrites if <code>append=false</code>
 	 */
-	public static void printToFile(String filename, String message, boolean append) {
+	public static void printToFile(String filename, String message,
+			boolean append) {
 		printToFile(new File(filename), message, append);
 	}
 
 	/**
-	 * Prints to a file.  If the file does not exist, rewrites the file;
-	 * does not append.
+	 * Prints to a file. If the file does not exist, rewrites the file; does not
+	 * append.
 	 */
 	public static void printToFile(String filename, String message) {
 		printToFile(new File(filename), message, false);
 	}
 
 	/**
-	 * A simpler form of command line argument parsing.
-	 * Dan thinks this is highly superior to the overly complexified code that
-	 * comes before it.
-	 * Parses command line arguments into a Map. Arguments of the form
-	 * -flag1 arg1 -flag2 -flag3 arg3
-	 * will be parsed so that the flag is a key in the Map (including the hyphen)
-	 * and the
-	 * optional argument will be its value (if present).
-	 *
+	 * A simpler form of command line argument parsing. Dan thinks this is
+	 * highly superior to the overly complexified code that comes before it.
+	 * Parses command line arguments into a Map. Arguments of the form -flag1
+	 * arg1 -flag2 -flag3 arg3 will be parsed so that the flag is a key in the
+	 * Map (including the hyphen) and the optional argument will be its value
+	 * (if present).
+	 * 
 	 * @param args
 	 * @return A Map from keys to possible values (String or null)
 	 */
@@ -767,7 +783,8 @@ public class StringUtils {
 		char c;
 		for (int i = 0; i < orig.length(); i++) {
 			c = orig.charAt(i);
-			if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
+			if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+					|| (c >= '0' && c <= '9')) {
 				sb.append(c);
 			}
 		}
@@ -781,7 +798,8 @@ public class StringUtils {
 		}
 	}
 
-	public static String escapeString(String s, char[] charsToEscape, char escapeChar) {
+	public static String escapeString(String s, char[] charsToEscape,
+			char escapeChar) {
 		StringBuffer result = new StringBuffer();
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
@@ -802,18 +820,18 @@ public class StringUtils {
 
 	/**
 	 * This function splits the String s into multiple Strings using the
-	 * splitChar.  However, it provides an quoting facility: it is possible to
-	 * quote strings with the quoteChar.
-	 * If the quoteChar occurs within the quotedExpression, it must be prefaced
-	 * by the escapeChar
-	 *
-	 * @param s         The String to split
+	 * splitChar. However, it provides an quoting facility: it is possible to
+	 * quote strings with the quoteChar. If the quoteChar occurs within the
+	 * quotedExpression, it must be prefaced by the escapeChar
+	 * 
+	 * @param s
+	 *            The String to split
 	 * @param splitChar
 	 * @param quoteChar
 	 * @return An array of Strings that s is split into
 	 */
-	public static String[] splitOnCharWithQuoting(String s, char splitChar, char quoteChar,
-			char escapeChar) {
+	public static String[] splitOnCharWithQuoting(String s, char splitChar,
+			char quoteChar, char escapeChar) {
 		List<String> result = new ArrayList<String>();
 		int i = 0;
 		int length = s.length();
@@ -855,12 +873,12 @@ public class StringUtils {
 	}
 
 	/**
-	 * Computes the longest common substring of s and t.
-	 * The longest common substring of a and b is the longest run of
-	 * characters that appear in order inside both a and b. Both a and b
-	 * may have other extraneous characters along the way. This is like
-	 * edit distance but with no substitution and a higher number means
-	 * more similar. For example, the LCS of "abcD" and "aXbc" is 3 (abc).
+	 * Computes the longest common substring of s and t. The longest common
+	 * substring of a and b is the longest run of characters that appear in
+	 * order inside both a and b. Both a and b may have other extraneous
+	 * characters along the way. This is like edit distance but with no
+	 * substitution and a higher number means more similar. For example, the LCS
+	 * of "abcD" and "aXbc" is 3 (abc).
 	 */
 	public static int longestCommonSubstring(String s, String t) {
 		int d[][]; // matrix
@@ -897,7 +915,8 @@ public class StringUtils {
 				// js: if the chars match, you can get an extra point
 				// otherwise you have to skip an insertion or deletion (no subs)
 				if (s_i == t_j) {
-					d[i][j] = SloppyMath.max(d[i - 1][j], d[i][j - 1], d[i - 1][j - 1] + 1);
+					d[i][j] = SloppyMath.max(d[i - 1][j], d[i][j - 1],
+							d[i - 1][j - 1] + 1);
 				} else {
 					d[i][j] = Math.max(d[i - 1][j], d[i][j - 1]);
 				}
@@ -967,8 +986,8 @@ public class StringUtils {
 					cost = 1;
 				}
 				// Step 6
-				d[i][j] = SloppyMath
-						.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+				d[i][j] = SloppyMath.min(d[i - 1][j] + 1, d[i][j - 1] + 1,
+						d[i - 1][j - 1] + cost);
 			}
 		}
 
@@ -978,8 +997,9 @@ public class StringUtils {
 
 	/**
 	 * Computes the WordNet 2.0 POS tag corresponding to the PTB POS tag s.
-	 *
-	 * @param s a Penn TreeBank POS tag.
+	 * 
+	 * @param s
+	 *            a Penn TreeBank POS tag.
 	 */
 	public static String pennPOSToWordnetPOS(String s) {
 		if (s.matches("NN|NNP|NNS|NNPS")) {
@@ -999,40 +1019,46 @@ public class StringUtils {
 
 	/**
 	 * Uppercases the first character of a string.
-	 *
-	 * @param s a string to capitalize
+	 * 
+	 * @param s
+	 *            a string to capitalize
 	 * @return a capitalized version of the string
 	 */
 	public static String capitalize(String s) {
 		if ((char) s.charAt(0) >= 'a') {
-			return (String) ((char) (s.charAt(0) + ('A' - 'a')) + s.substring(1));
+			return (String) ((char) (s.charAt(0) + ('A' - 'a')) + s
+					.substring(1));
 		} else {
 			return s;
 		}
 	}
 
-  public static List<Matcher> allMatches(String str, String regex) {
-    Pattern p = Pattern.compile(regex);
-    List<Matcher> matches = new ArrayList<Matcher>();
-    while (true) {
-      Matcher m = p.matcher(str);
-      if (!m.find()) break;
-      matches.add(m);
-      str = str.substring(m.end());
-    }
-    return matches;
-  }
+	public static List<Matcher> allMatches(String str, String regex) {
+		Pattern p = Pattern.compile(regex);
+		List<Matcher> matches = new ArrayList<Matcher>();
+		while (true) {
+			Matcher m = p.matcher(str);
+			if (!m.find())
+				break;
+			matches.add(m);
+			str = str.substring(m.end());
+		}
+		return matches;
+	}
 
 	public static void main(String[] args) throws IOException {
 
-		String[] s = { "there once was a man", "this one is a manic", "hey there",
-				"there once was a mane", "once in a manger.", "where is one match?" };
+		String[] s = { "there once was a man", "this one is a manic",
+				"hey there", "there once was a mane", "once in a manger.",
+				"where is one match?" };
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 6; j++) {
 				System.out.println("s1: " + s[i]);
 				System.out.println("s2: " + s[j]);
-				System.out.println("edit distance: " + editDistance(s[i], s[j]));
-				System.out.println("LCS:           " + longestCommonSubstring(s[i], s[j]));
+				System.out
+						.println("edit distance: " + editDistance(s[i], s[j]));
+				System.out.println("LCS:           "
+						+ longestCommonSubstring(s[i], s[j]));
 				System.out.println();
 			}
 		}

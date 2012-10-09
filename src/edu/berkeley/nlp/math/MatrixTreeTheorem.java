@@ -154,4 +154,4 @@
 //    Pair<Double,double[][]> res = computeMultiRoot(potentials);
 //    System.out.println("sumTrees: " + Math.exp(res.getFirst()));
 //  }
-//}
+// }

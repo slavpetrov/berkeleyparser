@@ -5,6 +5,6 @@ package edu.berkeley.nlp.classify;
  * 
  * @author Dan Klein
  */
-public interface LabeledFeatureVector<F,L> extends FeatureVector<F> {
-  L getLabel();
+public interface LabeledFeatureVector<F, L> extends FeatureVector<F> {
+	L getLabel();
 }

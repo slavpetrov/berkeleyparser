@@ -28,7 +28,8 @@ public class Beam<T> {
 	public void observe(T t, double val) {
 		if (val < kstat || (val <= kstat && kbest.size() < size)) {
 			// something falls off the beam
-			if (kbest.size() == size) kbest.remove(kbest.size() - 1);
+			if (kbest.size() == size)
+				kbest.remove(kbest.size() - 1);
 			int index = Arrays.binarySearch(kbestValues, val);
 			int pos = (index < 0) ? -1 * index - 1 : index;
 			kbest.add(pos, t);
@@ -63,7 +64,8 @@ public class Beam<T> {
 	}
 
 	public T argMin() {
-		if (size() == 0) return null;
+		if (size() == 0)
+			return null;
 		return kbest.get(0);
 	}
 
@@ -89,7 +91,8 @@ public class Beam<T> {
 		Collections.sort(l);
 		for (int i = 0; i < n; i++) {
 			if (i < bsd.kbest.size()) {
-				System.out.println("Same?:\t"+ bsd.kbest.get(i) + "\t" + l.get(i));
+				System.out.println("Same?:\t" + bsd.kbest.get(i) + "\t"
+						+ l.get(i));
 			}
 		}
 

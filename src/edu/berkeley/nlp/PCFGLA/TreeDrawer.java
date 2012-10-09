@@ -20,15 +20,16 @@ public class TreeDrawer {
 		// provide feedback on command-line arguments
 		System.err.println("Calling with " + optParser.getPassedInOptions());
 
-		BufferedReader inputData = new BufferedReader(new InputStreamReader(new FileInputStream(opts.inputFile), "UTF-8"));
-    	String line = "";
+		BufferedReader inputData = new BufferedReader(new InputStreamReader(
+				new FileInputStream(opts.inputFile), "UTF-8"));
+		String line = "";
 		Tree<String> tree = null;
 		int i = 0;
-    	while((line=inputData.readLine()) != null){
-    		tree = PennTreeReader.parseEasy(line);
-    		String fileName = i++ + ".png";
-    		BerkeleyParser.writeTreeToImage(tree, fileName);
-    	}
+		while ((line = inputData.readLine()) != null) {
+			tree = PennTreeReader.parseEasy(line);
+			String fileName = i++ + ".png";
+			BerkeleyParser.writeTreeToImage(tree, fileName);
+		}
 	}
 
 }

@@ -48,12 +48,14 @@ public class IntegerProgram {
 	}
 
 	public double objectiveValue() {
-		if (!optimized) optimize();
+		if (!optimized)
+			optimize();
 		return lp_solve_objective_value;
 	}
 
 	public double[] solution() {
-		if (!optimized) optimize();
+		if (!optimized)
+			optimize();
 		return lp_solve_solution;
 	}
 
@@ -70,11 +72,13 @@ public class IntegerProgram {
 	}
 
 	private void addObjectiveWeight(int pos, double val) {
-		if (objectiveCoefficients == null) objectiveCoefficients = new double[numVars];
+		if (objectiveCoefficients == null)
+			objectiveCoefficients = new double[numVars];
 		if (objectiveCoefficients.length < numVars) {
 			double[] oldCoef = objectiveCoefficients;
 			objectiveCoefficients = new double[numVars];
-			System.arraycopy(oldCoef, 0, objectiveCoefficients, 0, oldCoef.length);
+			System.arraycopy(oldCoef, 0, objectiveCoefficients, 0,
+					oldCoef.length);
 		}
 		objectiveCoefficients[pos] = val;
 	}
@@ -93,7 +97,8 @@ public class IntegerProgram {
 		addEqualityConstraint(vars, weights, rhs);
 	}
 
-	public void addEqualityConstraint(int[] indices, double[] weights, double rhs) {
+	public void addEqualityConstraint(int[] indices, double[] weights,
+			double rhs) {
 		addConstraint(indices, weights, rhs, "=");
 	}
 
@@ -105,11 +110,13 @@ public class IntegerProgram {
 		addLessThanConstraint(vars, weights, rhs);
 	}
 
-	public void addLessThanConstraint(int[] indices, double[] weights, double rhs) {
+	public void addLessThanConstraint(int[] indices, double[] weights,
+			double rhs) {
 		addConstraint(indices, weights, rhs, "<=");
 	}
 
-	public void addConstraint(int[] indices, double[] weights, double rhs, String op) {
+	public void addConstraint(int[] indices, double[] weights, double rhs,
+			String op) {
 		StringBuilder sb = new StringBuilder();
 		assert (indices.length == weights.length);
 		for (int i = 0; i < indices.length; i++) {
@@ -129,7 +136,8 @@ public class IntegerProgram {
 	public void addBoundedVars(int k, double lower, double upper) {
 		for (int i = numVars; i < k + numVars; i++) {
 			integerVariables.add(var(i));
-			if (lower != 0) addLessThanConstraint(i, -1, lower);
+			if (lower != 0)
+				addLessThanConstraint(i, -1, lower);
 			addLessThanConstraint(i, 1, upper);
 		}
 		numVars += k;
@@ -152,10 +160,12 @@ public class IntegerProgram {
 		} else {
 			try {
 				File temp = File.createTempFile("ilp-", ".mps");
-				if (dontDeleteFiles) System.err.println("[IntPgrm] " + temp.getPath());
+				if (dontDeleteFiles)
+					System.err.println("[IntPgrm] " + temp.getPath());
 				writeProgram(temp);
 				executeLPSolve(temp.getAbsolutePath());
-				if (!dontDeleteFiles) temp.delete();
+				if (!dontDeleteFiles)
+					temp.delete();
 				optimized = true;
 			} catch (IOException e) {
 				throw new RuntimeException(e);
@@ -171,7 +181,8 @@ public class IntegerProgram {
 			out.println(c);
 		}
 		String intCons = "int " + StrUtils.join(integerVariables, ", ") + ";";
-		if (!relaxIntegerConstraint) out.println(intCons);
+		if (!relaxIntegerConstraint)
+			out.println(intCons);
 		out.close();
 	}
 
@@ -206,23 +217,27 @@ public class IntegerProgram {
 		StringWriter error = new StringWriter();
 		PrintWriter err = new PrintWriter(error);
 		Utils.systemHard(command.toString(), out, err);
-		BufferedReader reader = new BufferedReader(new StringReader(output.toString()));
+		BufferedReader reader = new BufferedReader(new StringReader(
+				output.toString()));
 		lp_solve_solution = new double[numVars];
 		int var = 0;
 		try {
 			while (reader.ready()) {
 				String next = reader.readLine();
-				if (next == null) return;
+				if (next == null)
+					return;
 				if (next.startsWith("x")) {
 					String[] parts = next.trim().split("\\s+");
-					if (parts[0].equals("x")) continue; // Weird output from lp_solve
+					if (parts[0].equals("x"))
+						continue; // Weird output from lp_solve
 					assert (parts[0].equals(var(var)));
 					double val = Double.parseDouble(parts[1]);
 					lp_solve_solution[var] = val;
 					var++;
 				} else if (next.startsWith("Value of objective function")) {
 					String[] parts = next.split("\\s+");
-					lp_solve_objective_value = Double.parseDouble(parts[parts.length - 1]);
+					lp_solve_objective_value = Double
+							.parseDouble(parts[parts.length - 1]);
 				}
 			}
 		} catch (IOException e) {

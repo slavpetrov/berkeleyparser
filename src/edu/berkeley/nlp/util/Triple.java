@@ -1,52 +1,39 @@
 package edu.berkeley.nlp.util;
 
-
-public class Triple<S,T,U> {
+public class Triple<S, T, U> {
 	S first;
 	T second;
 	U third;
-	
+
 	public Triple(S first, T second, U third) {
 		this.first = first;
 		this.second = second;
 		this.third = third;
 	}
-	
+
 	public S getFirst() {
 		return first;
 	}
-
-
 
 	public void setFirst(S first) {
 		this.first = first;
 	}
 
-
-
 	public T getSecond() {
 		return second;
 	}
-
-
 
 	public void setSecond(T second) {
 		this.second = second;
 	}
 
-
-
 	public U getThird() {
 		return third;
 	}
 
-
-
 	public void setThird(U third) {
 		this.third = third;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -84,14 +71,14 @@ public class Triple<S,T,U> {
 			return false;
 		return true;
 	}
-	
+
 	public String toString() {
-		return String.format("(%s,%s,%s)",first,second,third);
+		return String.format("(%s,%s,%s)", first, second, third);
 	}
 
-	public static <S,T,U> Triple<S,T,U> makeTriple(S s, T t, U u) {
+	public static <S, T, U> Triple<S, T, U> makeTriple(S s, T t, U u) {
 		// TODO Auto-generated method stub
-		return new Triple<S, T, U>(s,t,u);
+		return new Triple<S, T, U>(s, t, u);
 	}
-	
+
 }

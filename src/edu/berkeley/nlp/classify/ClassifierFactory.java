@@ -5,6 +5,6 @@ import java.util.List;
 /**
  * Classifier factories construct classifiers from training instances.
  */
-public interface ClassifierFactory<I,L> {
-  Classifier<I,L> trainClassifier(List<LabeledInstance<I,L>> trainingData);
+public interface ClassifierFactory<I, L> {
+	Classifier<I, L> trainClassifier(List<LabeledInstance<I, L>> trainingData);
 }

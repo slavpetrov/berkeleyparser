@@ -9,10 +9,8 @@ public class MemoryUtils {
 	public static double getHeapMemoryUsed() {
 		MemoryMXBean bean = ManagementFactory.getMemoryMXBean();
 		MemoryUsage usage = bean.getHeapMemoryUsage();
-		long bytes = usage.getUsed();  
-		return bytes /1.0e6;
+		long bytes = usage.getUsed();
+		return bytes / 1.0e6;
 	}
-	
-	
-	
+
 }

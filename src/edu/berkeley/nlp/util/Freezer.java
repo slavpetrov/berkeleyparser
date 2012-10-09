@@ -21,7 +21,8 @@ public class Freezer implements Serializable {
 
 	public void checkHard() {
 		if (frozen) {
-			throw new RuntimeException("Attempt to edit "+owner+" while it was frozen.");
+			throw new RuntimeException("Attempt to edit " + owner
+					+ " while it was frozen.");
 		}
 	}
 

@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-
 public class OptionParser {
 
 	private final Map<String, Option> nameToOption = new HashMap<String, Option>();
@@ -53,13 +52,15 @@ public class OptionParser {
 	public Object parse(String[] args) {
 		return parse(args, false, false);
 	}
-	
+
 	public Object parse(String[] args, boolean failOnUnrecognized) {
 		return parse(args, failOnUnrecognized, false);
 	}
 
-	public Object parse(String[] args, boolean failOnUnrecognized, boolean parrot) {
-		if (parrot) System.out.println("Calling with " + Arrays.deepToString(args));
+	public Object parse(String[] args, boolean failOnUnrecognized,
+			boolean parrot) {
+		if (parrot)
+			System.out.println("Calling with " + Arrays.deepToString(args));
 		try {
 			Set<String> seenOpts = new HashSet<String>();
 			passedInOptions = new StringBuilder("{");
@@ -71,9 +72,11 @@ public class OptionParser {
 				Option opt = nameToOption.get(args[i]);
 				if (opt == null) {
 					if (failOnUnrecognized) {
-						throw new RuntimeException("Did not recognize option " + args[i]);
+						throw new RuntimeException("Did not recognize option "
+								+ args[i]);
 					} else {
-						System.err.println("WARNING: Did not recognize option " + args[i]);
+						System.err.println("WARNING: Did not recognize option "
+								+ args[i]);
 					}
 					continue;
 				}
@@ -84,7 +87,8 @@ public class OptionParser {
 				// we set the associate field to true
 				if (fieldType == boolean.class) {
 					field.setBoolean(options, true);
-					passedInOptions.append(String.format(" %s => true", opt.name()));
+					passedInOptions.append(String.format(" %s => true",
+							opt.name()));
 				}
 				// Otherwise look at next arg and
 				// set field to that value
@@ -93,8 +97,10 @@ public class OptionParser {
 				// whatever
 				else {
 					String value = args[i + 1];
-					if (value != null) value.trim();
-					passedInOptions.append(String.format(" %s => %s", opt.name(), value));
+					if (value != null)
+						value.trim();
+					passedInOptions.append(String.format(" %s => %s",
+							opt.name(), value));
 					if (fieldType == int.class) {
 						field.setInt(options, Integer.parseInt(value));
 					} else if (fieldType == double.class) {
@@ -118,8 +124,9 @@ public class OptionParser {
 						}
 						if (!found) {
 							if (failOnUnrecognized) {
-								throw new RuntimeException("Unrecognized enumeration option "
-										+ value);
+								throw new RuntimeException(
+										"Unrecognized enumeration option "
+												+ value);
 							} else {
 								System.err
 										.println("WARNING: Did not recognize option Enumeration option "
@@ -132,11 +139,15 @@ public class OptionParser {
 						try {
 							Constructor constructor = fieldType
 									.getConstructor(new Class[] { String.class });
-							field.set(options, constructor
-									.newInstance((Object[]) (new String[] { value })));
+							field.set(
+									options,
+									constructor
+											.newInstance((Object[]) (new String[] { value })));
 						} catch (NoSuchMethodException e) {
-							System.err.println("Cannot construct object of type "
-									+ fieldType.getCanonicalName() + " from just a string");
+							System.err
+									.println("Cannot construct object of type "
+											+ fieldType.getCanonicalName()
+											+ " from just a string");
 						}
 					}
 					++i;

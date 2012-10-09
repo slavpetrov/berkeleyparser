@@ -20,7 +20,7 @@ import edu.berkeley.nlp.syntax.Trees.PennTreeReader;
 
 /**
  * @author petrov
- *
+ * 
  */
 public class PTBtoDep {
 
@@ -30,26 +30,28 @@ public class PTBtoDep {
 		public String inFileName;
 
 	}
-	
+
 	public static void main(String[] args) {
 		OptionParser optParser = new OptionParser(Options.class);
 		Options opts = (Options) optParser.parse(args, true);
 		// provide feedback on command-line arguments
-//		System.out.println("Calling with " + optParser.getPassedInOptions());
+		// System.out.println("Calling with " + optParser.getPassedInOptions());
 
 		String fileName = opts.inFileName;
 		try {
-			PennTreeReader treeReader = new PennTreeReader(new InputStreamReader(new FileInputStream(fileName), Charset.forName("UTF-8")));//GB18030")));
-				while (treeReader.hasNext()) {
-					Tree<String> rootedTree = treeReader.next(); 
-//					if (rootedTree.getChildren().size()>1)
-//						System.err.println(rootedTree);
-					if (rootedTree.getLabel().equals("ROOT"))
-						rootedTree = rootedTree.getChildren().get(0);
-				   printDependencies(rootedTree);
-				}
+			PennTreeReader treeReader = new PennTreeReader(
+					new InputStreamReader(new FileInputStream(fileName),
+							Charset.forName("UTF-8")));// GB18030")));
+			while (treeReader.hasNext()) {
+				Tree<String> rootedTree = treeReader.next();
+				// if (rootedTree.getChildren().size()>1)
+				// System.err.println(rootedTree);
+				if (rootedTree.getLabel().equals("ROOT"))
+					rootedTree = rootedTree.getChildren().get(0);
+				printDependencies(rootedTree);
+			}
 
-			} catch (Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
@@ -59,42 +61,44 @@ public class PTBtoDep {
 	 * @param sentence
 	 */
 	private static void printDependencies(Tree<String> tree) {
-//		System.out.println(tree);
-		if (tree.getYield().size()<=1) 	{
-			System.out.println(0+"\t_\t_\t_");
+		// System.out.println(tree);
+		if (tree.getYield().size() <= 1) {
+			System.out.println(0 + "\t_\t_\t_");
 			return;
 		}
 		int thisHead = findHead(tree);
 		int nWordsFound = printDependencies(tree, thisHead, 0, 0);
 		int nWords = tree.getYield().size();
-		while (nWords<nWordsFound){
+		while (nWords < nWordsFound) {
 			nWordsFound++;
-			System.out.println(0+"\t_\t_\t_");
+			System.out.println(0 + "\t_\t_\t_");
 			System.err.println("too short");
 		}
 		System.out.println("");
 	}
 
-	private static int printDependencies(Tree<String> tree, int parent, int previousWords, int parentOfParent) {
-		for (Tree<String> child : tree.getChildren()){
-			if (previousWords==parent-1){ // we are at the parent of this (sub)tree
-				System.out.println(parentOfParent+"\t_\t_\t_");
-//						(previousWords+1) + 
-//						"\t" + child.getChildren().get(0).getLabel() + 
-//						"\t" + child.getLabel()+
-//						"\t" + parentOfParent);
-				if (child.getYield().size()>1) 
+	private static int printDependencies(Tree<String> tree, int parent,
+			int previousWords, int parentOfParent) {
+		for (Tree<String> child : tree.getChildren()) {
+			if (previousWords == parent - 1) { // we are at the parent of this
+												// (sub)tree
+				System.out.println(parentOfParent + "\t_\t_\t_");
+				// (previousWords+1) +
+				// "\t" + child.getChildren().get(0).getLabel() +
+				// "\t" + child.getLabel()+
+				// "\t" + parentOfParent);
+				if (child.getYield().size() > 1)
 					System.err.println(child);
 				previousWords++;
-			} else if (child.isPreTerminal()){
-				System.out.println(parent+"\t_\t_\t_");
-//						(previousWords+1) + 
-//						"\t" + child.getChildren().get(0).getLabel() + 
-//						"\t" + child.getLabel()+
-//						"\t" + parent);
+			} else if (child.isPreTerminal()) {
+				System.out.println(parent + "\t_\t_\t_");
+				// (previousWords+1) +
+				// "\t" + child.getChildren().get(0).getLabel() +
+				// "\t" + child.getLabel()+
+				// "\t" + parent);
 				previousWords++;
 			} else {
-				int thisHead =  previousWords + findHead(child);
+				int thisHead = previousWords + findHead(child);
 				printDependencies(child, thisHead, previousWords, parent);
 				previousWords += child.getYield().size();
 			}
@@ -102,24 +106,28 @@ public class PTBtoDep {
 		return previousWords;
 
 	}
+
 	/**
 	 * @param tree
 	 * @return
 	 */
 	private static int findHead(Tree<String> tree) {
 		String headLabel = tree.getLabel();
-		headLabel = headLabel.substring(0,headLabel.length()-1);//cut off the *
+		headLabel = headLabel.substring(0, headLabel.length() - 1);// cut off
+																	// the *
 		int headIndex = -2;
 		int previousWords = 0;
-		for (Tree<String> child : tree.getChildren()){
-			if (child.isPreTerminal()&& child.getLabel().equals(headLabel)){ // found a potential head
+		for (Tree<String> child : tree.getChildren()) {
+			if (child.isPreTerminal() && child.getLabel().equals(headLabel)) { // found
+																				// a
+																				// potential
+																				// head
 				headIndex = previousWords;
 				previousWords++;
-			}
-			else previousWords += child.getYield().size();
+			} else
+				previousWords += child.getYield().size();
 		}
-		return headIndex+1; //+1 since indices start with 1
+		return headIndex + 1; // +1 since indices start with 1
 	}
 
-	
 }

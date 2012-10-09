@@ -29,12 +29,12 @@ public class FeatureManager implements Serializable {
 	}
 
 	public Feature getFeatrue(String pred, String val) {
-		return getFeature(pred+"="+val);
+		return getFeature(pred + "=" + val);
 	}
 
 	public void addFeature(String pred, String val) {
 		assert !locked;
-		addFeature(String.format("%s=%s",pred, val));
+		addFeature(String.format("%s=%s", pred, val));
 	}
 
 	public void addFeature(String val) {
@@ -50,11 +50,12 @@ public class FeatureManager implements Serializable {
 		Feature feat = new Feature(val, -1);
 		Feature canonicalFeat = featureInterner.get(feat);
 		if (canonicalFeat == null) {
-			assert !locked : "Can't find feature " + val + " in locked FeatureManager";
-		feat = new Feature(feat.toString(), featureInterner.size());
-		featureInterner.put(feat, feat);
-		featureList.add(feat);
-		canonicalFeat = feat;
+			assert !locked : "Can't find feature " + val
+					+ " in locked FeatureManager";
+			feat = new Feature(feat.toString(), featureInterner.size());
+			featureInterner.put(feat, feat);
+			featureList.add(feat);
+			canonicalFeat = feat;
 		}
 		return canonicalFeat;
 	}
@@ -62,38 +63,37 @@ public class FeatureManager implements Serializable {
 	public int getNumFeatures() {
 		return featureInterner.size();
 	}
-	
+
 	public boolean hasFeature(String val) {
 		Feature feat = new Feature(val, -1);
 		return featureInterner.containsKey(feat);
 	}
 
-	public boolean isLocked() {		
+	public boolean isLocked() {
 		return locked;
 	}
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
 		out.writeObject(featureList.size());
-		for (Feature feat: featureList) {
-			out.writeObject(feat.toString()); 
+		for (Feature feat : featureList) {
+			out.writeObject(feat.toString());
 		}
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
-	{
+	private void readObject(ObjectInputStream in) throws IOException,
+			ClassNotFoundException {
 		in.defaultReadObject();
 		featureList = new ArrayList<Feature>();
 		featureInterner = new HashMap<Feature, Feature>();
 		boolean oldLocked = this.locked;
 		this.locked = false;
 		int numFeats = (Integer) in.readObject();
-		for (int i=0; i < numFeats; ++i) {
+		for (int i = 0; i < numFeats; ++i) {
 			String f = (String) in.readObject();
 			addFeature(f);
 		}
 		this.locked = oldLocked;
 	}
-
 
 }

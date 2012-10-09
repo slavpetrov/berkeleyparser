@@ -8,12 +8,11 @@ import java.util.List;
 
 import edu.berkeley.nlp.util.Pair;
 
-
 /**
  * @author adpauls
- *
+ * 
  */
-public class WordInSentence extends Pair<List<String>,Integer> {
+public class WordInSentence extends Pair<List<String>, Integer> {
 
 	/**
 	 * @param first
@@ -23,7 +22,7 @@ public class WordInSentence extends Pair<List<String>,Integer> {
 		super(sentenceWords, wordPos);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @param first
 	 * @param second

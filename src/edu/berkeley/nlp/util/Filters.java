@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Filters contains some simple implementations of the Filter interface.
- *
+ * 
  * @author Christopher Manning
  * @version 1.0
  */
@@ -19,13 +19,13 @@ public class Filters {
 	/**
 	 * Nothing to instantiate
 	 */
-	private Filters() {}
+	private Filters() {
+	}
 
 	/**
 	 * The acceptFilter accepts everything.
 	 */
-	public static Filter acceptFilter()
-	{
+	public static Filter acceptFilter() {
 		return new CategoricalFilter(true);
 	}
 
@@ -54,8 +54,9 @@ public class Filters {
 
 		/**
 		 * Checks if the given object passes the filter.
-		 *
-		 * @param obj an object to test
+		 * 
+		 * @param obj
+		 *            an object to test
 		 */
 		public boolean accept(T obj) {
 			return judgment;
@@ -90,7 +91,8 @@ public class Filters {
 		return new CollectionAcceptFilter<T>(objs, false);
 	}
 
-	private static final class CollectionAcceptFilter<T> implements Filter<T>, Serializable {
+	private static final class CollectionAcceptFilter<T> implements Filter<T>,
+			Serializable {
 
 		private static final long serialVersionUID = 1L;
 		private final Collection<T> args;
@@ -103,8 +105,9 @@ public class Filters {
 
 		/**
 		 * Checks if the given object passes the filter.
-		 *
-		 * @param obj an object to test
+		 * 
+		 * @param obj
+		 *            an object to test
 		 */
 		public boolean accept(T obj) {
 			if (args.contains(obj)) {
@@ -186,9 +189,9 @@ public class Filters {
 	}
 
 	/**
-	 * Applies the given filter to each of the given elems, and returns the
-	 * list of elems that were accepted. The runtime type of the returned
-	 * array is the same as the passed in array.
+	 * Applies the given filter to each of the given elems, and returns the list
+	 * of elems that were accepted. The runtime type of the returned array is
+	 * the same as the passed in array.
 	 */
 	public static <T> Object[] filter(T[] elems, Filter<T> filter) {
 		List<T> filtered = new ArrayList<T>();
@@ -202,7 +205,8 @@ public class Filters {
 	}
 
 	/**
-	 * Removes all elems in the given Collection that aren't accepted by the given Filter.
+	 * Removes all elems in the given Collection that aren't accepted by the
+	 * given Filter.
 	 */
 	public static <T> void retainAll(Collection<T> elems, Filter<T> filter) {
 		for (T elem : elems) {

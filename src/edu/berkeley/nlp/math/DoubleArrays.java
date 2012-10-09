@@ -71,8 +71,9 @@ public class DoubleArrays {
 
 	public static boolean probabilisticNormalize(double[] x) {
 		double sum = add(x);
-		if (sum <= 0.0) return false;
-		scale(x,1.0/sum);		
+		if (sum <= 0.0)
+			return false;
+		scale(x, 1.0 / sum);
 		return true;
 	}
 
@@ -80,29 +81,30 @@ public class DoubleArrays {
 		return toString(x, x.length);
 	}
 
-  public static String toString(double[][] x) {
-    StringBuilder sb = new StringBuilder();
-    for (double[] row: x) {
-      sb.append(DoubleArrays.toString(row));
-      sb.append("\n");
-    }
-    return sb.toString();
-  }
-
+	public static String toString(double[][] x) {
+		StringBuilder sb = new StringBuilder();
+		for (double[] row : x) {
+			sb.append(DoubleArrays.toString(row));
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
 
 	public static String toString(double[] x, int length) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[");
 		for (int i = 0; i < SloppyMath.min(x.length, length); i++) {
-			sb.append(String.format("%.5f",x[i]));
-			if (i + 1 < SloppyMath.min(x.length, length)) sb.append(", ");
+			sb.append(String.format("%.5f", x[i]));
+			if (i + 1 < SloppyMath.min(x.length, length))
+				sb.append(", ");
 		}
 		sb.append("]");
 		return sb.toString();
 	}
 
 	public static void scale(double[] x, double s) {
-		if (s == 1.0) return;
+		if (s == 1.0)
+			return;
 		for (int i = 0; i < x.length; i++) {
 			x[i] *= s;
 		}
@@ -142,13 +144,13 @@ public class DoubleArrays {
 		return maxV;
 	}
 
-  public static double max(double[][] m) {
-    double max = Double.NEGATIVE_INFINITY;
-    for (double[] row : m) {
-      max = Math.max(max(row),max);
-    }
-    return max;
-  }
+	public static double max(double[][] m) {
+		double max = Double.NEGATIVE_INFINITY;
+		for (double[] row : m) {
+			max = Math.max(max(row), max);
+		}
+		return max;
+	}
 
 	public static int argMin(double[] v) {
 		int minI = -1;
@@ -172,13 +174,13 @@ public class DoubleArrays {
 		return minV;
 	}
 
-  public static double min(double[][] m) {
-    double min = Double.POSITIVE_INFINITY;
-    for (double[] row : m) {
-      min = Math.min(min(row),min);
-    }
-    return min;
-  }
+	public static double min(double[][] m) {
+		double min = Double.POSITIVE_INFINITY;
+		for (double[] row : m) {
+			min = Math.min(min(row), min);
+		}
+		return min;
+	}
 
 	public static double maxAbs(double[] v) {
 		double maxV = 0;
@@ -219,7 +221,8 @@ public class DoubleArrays {
 	public static double add(double[] a, int first, int last) {
 		if (last >= a.length)
 			throw new RuntimeException("last beyond end of array");
-		if (first < 0) throw new RuntimeException("first must be at least 0");
+		if (first < 0)
+			throw new RuntimeException("first must be at least 0");
 		double sum = 0.0;
 		for (int i = first; i <= last; i++) {
 			sum += a[i];
@@ -242,34 +245,35 @@ public class DoubleArrays {
 		return result;
 	}
 
-  public static void subtractInPlace(double[] x, double[] y) {
-    // be in cvs
-    for (int i=0; i < x.length; ++i) {      
-      x[i] -= y[i];
-    }
-  }
+	public static void subtractInPlace(double[] x, double[] y) {
+		// be in cvs
+		for (int i = 0; i < x.length; ++i) {
+			x[i] -= y[i];
+		}
+	}
 
-  public static void subtractInPlace(double[] x, double y) {
-    for (int i=0; i < x.length; ++i) {
-      x[i] -= y;
-    }
-  }
+	public static void subtractInPlace(double[] x, double y) {
+		for (int i = 0; i < x.length; ++i) {
+			x[i] -= y;
+		}
+	}
 
-  /**
-   * If a subtraction results in NaN (i.e -inf - (-inf))
-   * does not perform the computation.
-   * @param x
-   * @param y
-   */
-  public static void subtractInPlaceUnsafe(double[] x, double[] y) {
-    // be in cvs
-    for (int i=0; i < x.length; ++i) {
-      if (Double.isNaN(x[i]-y[i])) {
-        continue;
-      }
-      x[i] -= y[i];
-    }
-  }
+	/**
+	 * If a subtraction results in NaN (i.e -inf - (-inf)) does not perform the
+	 * computation.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public static void subtractInPlaceUnsafe(double[] x, double[] y) {
+		// be in cvs
+		for (int i = 0; i < x.length; ++i) {
+			if (Double.isNaN(x[i] - y[i])) {
+				continue;
+			}
+			x[i] -= y[i];
+		}
+	}
 
 	public static double[] subtract(double[] x, double[] y) {
 		if (x.length != y.length)
@@ -290,27 +294,28 @@ public class DoubleArrays {
 		return exponentiated;
 	}
 
-  public static double[][] exponentiate(double[][] pUnexponentiated) {
-    double[][] exponentiated = new double[pUnexponentiated.length][];
-    for (int index = 0; index < pUnexponentiated.length; index++) {
-      exponentiated[index] = exponentiate(pUnexponentiated[index]);
-    }
-    return exponentiated;
-  }
+	public static double[][] exponentiate(double[][] pUnexponentiated) {
+		double[][] exponentiated = new double[pUnexponentiated.length][];
+		for (int index = 0; index < pUnexponentiated.length; index++) {
+			exponentiated[index] = exponentiate(pUnexponentiated[index]);
+		}
+		return exponentiated;
+	}
 
-  public static double[][][] exponentiate(double[][][] pUnexponentiated) {
-    double[][][] exponentiated = new double[pUnexponentiated.length][][];
-    for (int index = 0; index < pUnexponentiated.length; index++) {
-      exponentiated[index] = exponentiate(pUnexponentiated[index]);
-    }
-    return exponentiated;
-  }
-
+	public static double[][][] exponentiate(double[][][] pUnexponentiated) {
+		double[][][] exponentiated = new double[pUnexponentiated.length][][];
+		for (int index = 0; index < pUnexponentiated.length; index++) {
+			exponentiated[index] = exponentiate(pUnexponentiated[index]);
+		}
+		return exponentiated;
+	}
 
 	public static void truncate(double[] x, double maxVal) {
 		for (int index = 0; index < x.length; index++) {
-			if (x[index] > maxVal) x[index] = maxVal;
-			else if (x[index] < -maxVal) x[index] = -maxVal;
+			if (x[index] > maxVal)
+				x[index] = maxVal;
+			else if (x[index] < -maxVal)
+				x[index] = -maxVal;
 		}
 	}
 
@@ -321,8 +326,10 @@ public class DoubleArrays {
 	public static void initialize(Object[] x, double d) {
 		for (int i = 0; i < x.length; i++) {
 			Object o = x[i];
-			if (o instanceof double[]) initialize((double[]) o, d);
-			else initialize((Object[]) o, d);
+			if (o instanceof double[])
+				initialize((double[]) o, d);
+			else
+				initialize((Object[]) o, d);
 		}
 	}
 
@@ -347,11 +354,11 @@ public class DoubleArrays {
 		}
 	}
 
-  public static void multiplyInPlace(double[] x, double[] y) {
-    for (int i = 0; i < x.length; i++) {
-      x[i] *= y[i];
-    }
-  }
+	public static void multiplyInPlace(double[] x, double[] y) {
+		for (int i = 0; i < x.length; i++) {
+			x[i] *= y[i];
+		}
+	}
 
 	public static double[] average(double[][] x) {
 		if (x.length == 0) {
@@ -364,139 +371,142 @@ public class DoubleArrays {
 		double[] avg = multiply(sum, (1.0 / x.length));
 		return avg;
 	}
-	
-	
+
 	/*
 	 * project x onto a orthant defined by y
 	 */
-	public static void project(double[] x, double[] y){
-		for (int i=0; i<x.length; i++){
-			if (x[i]*y[i] <= 0) x[i] = 0;
+	public static void project(double[] x, double[] y) {
+		for (int i = 0; i < x.length; i++) {
+			if (x[i] * y[i] <= 0)
+				x[i] = 0;
 		}
 	}
-	
+
 	/*
 	 * project x onto a orthant defined by y
 	 */
-	public static void project2(double[] x, double[] y){
-		for (int i=0; i<x.length; i++){
-			if (x[i]*y[i] < 0) x[i] = 0;
+	public static void project2(double[] x, double[] y) {
+		for (int i = 0; i < x.length; i++) {
+			if (x[i] * y[i] < 0)
+				x[i] = 0;
 		}
 	}
 
-  public static void checkNonNegative(double[] x) {
-    for (double v : x) {
-      if (v < -1.0e-10) {
-        throw new RuntimeException("Negative number " + v);
-      }
-    }
-  }
+	public static void checkNonNegative(double[] x) {
+		for (double v : x) {
+			if (v < -1.0e-10) {
+				throw new RuntimeException("Negative number " + v);
+			}
+		}
+	}
 
-  public static void checkNonNegative(double[][] m) {
-    for (double[] row : m) {
-      checkNonNegative(row);
-    }
-  }
+	public static void checkNonNegative(double[][] m) {
+		for (double[] row : m) {
+			checkNonNegative(row);
+		}
+	}
 
-  /**
-   * Loop and ensure all elements are non-infiite
-   * and non-nan, throws an exception if one is
-   * @param x
-   */
-  public static void checkValid(double[] x) {
-    for (double v : x) {
-      if (Double.isNaN(v)) {
-        throw new RuntimeException("Invalid entry " + v);
-      }
-    }
-  }
+	/**
+	 * Loop and ensure all elements are non-infiite and non-nan, throws an
+	 * exception if one is
+	 * 
+	 * @param x
+	 */
+	public static void checkValid(double[] x) {
+		for (double v : x) {
+			if (Double.isNaN(v)) {
+				throw new RuntimeException("Invalid entry " + v);
+			}
+		}
+	}
 
-  public static void checkValid(double[][] m) {
-    for (double[] row : m) {
-      checkValid(row);
-    }
-  }
+	public static void checkValid(double[][] m) {
+		for (double[] row : m) {
+			checkValid(row);
+		}
+	}
 
-  public static double lInfinityDist(double[] x, double[] y) {
-    double max = Double.NEGATIVE_INFINITY;
-    for (int i = 0; i < x.length; i++) {
-      max = Math.max(max,Math.abs(x[i]-y[i]));
-    }
-    return max;
-  }
+	public static double lInfinityDist(double[] x, double[] y) {
+		double max = Double.NEGATIVE_INFINITY;
+		for (int i = 0; i < x.length; i++) {
+			max = Math.max(max, Math.abs(x[i] - y[i]));
+		}
+		return max;
+	}
 
-  public static void logInPlace(double[] vec) {
-    for (int i = 0; i < vec.length; i++) {
-      vec[i] = Math.log(vec[i]);
-    }
-  }
+	public static void logInPlace(double[] vec) {
+		for (int i = 0; i < vec.length; i++) {
+			vec[i] = Math.log(vec[i]);
+		}
+	}
 
-  public static void checkNonInfinite(double[] vec) {
-    for (double v : vec) {
-      if (Double.isInfinite(v)) {
-        throw new RuntimeException("Invalid Entry: " + v);
-      }
-    }
-  }
+	public static void checkNonInfinite(double[] vec) {
+		for (double v : vec) {
+			if (Double.isInfinite(v)) {
+				throw new RuntimeException("Invalid Entry: " + v);
+			}
+		}
+	}
 
-  public static void checkNonInfinite(double[][] m) {
-    for (double[] row : m) {
-      checkNonInfinite(row);      
-    }
-  }
+	public static void checkNonInfinite(double[][] m) {
+		for (double[] row : m) {
+			checkNonInfinite(row);
+		}
+	}
 
-  public static void addInPlace(double[] a, double[] b, double c) {
-   for (int i = 0; i < a.length; i++) {
-        a[i] += b[i] * c;
-      }
-  }
-  public static void addInPlace(double[][] a, double[][] b, double c) {
-    for (int i = 0; i < a.length; i++) {
-      addInPlace(a[i],b[i],c);
-    }
-  }
+	public static void addInPlace(double[] a, double[] b, double c) {
+		for (int i = 0; i < a.length; i++) {
+			a[i] += b[i] * c;
+		}
+	}
 
-  public static double[] multiply(double[][] X, double[] y) {
-    int m = X.length;
-    int n = X[0].length;
-    assert n == y.length;
-    double[] result = new double[m];
-    for (int i = 0; i < result.length; i++) {
-      result[i] = DoubleArrays.innerProduct(X[i],y);
-    }
-    return result;
-  }
+	public static void addInPlace(double[][] a, double[][] b, double c) {
+		for (int i = 0; i < a.length; i++) {
+			addInPlace(a[i], b[i], c);
+		}
+	}
 
-  public static double[][] clone(double[][] M) {
-    double[][] copy = new double[M.length][];
-    for (int i = 0; i < M.length; i++) {
-      copy[i] = clone(M[i]);
-    }
-    return copy;
-  }
+	public static double[] multiply(double[][] X, double[] y) {
+		int m = X.length;
+		int n = X[0].length;
+		assert n == y.length;
+		double[] result = new double[m];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = DoubleArrays.innerProduct(X[i], y);
+		}
+		return result;
+	}
 
-  public static double[][][] clone(double[][][] M ) {
-    double[][][] copy = new double[M.length][][];
-    for (int i = 0; i < M.length; i++) {
-      copy[i] = clone(M[i]);
-    }
-    return copy;
-  }
+	public static double[][] clone(double[][] M) {
+		double[][] copy = new double[M.length][];
+		for (int i = 0; i < M.length; i++) {
+			copy[i] = clone(M[i]);
+		}
+		return copy;
+	}
 
-  public static double[][][][] clone(double[][][][] M ) {
-    double[][][][] copy = new double[M.length][][][];
-    for (int i = 0; i < M.length; i++) {
-        copy[i] = clone(M[i]);
-    }
-    return copy;
-  }
+	public static double[][][] clone(double[][][] M) {
+		double[][][] copy = new double[M.length][][];
+		for (int i = 0; i < M.length; i++) {
+			copy[i] = clone(M[i]);
+		}
+		return copy;
+	}
+
+	public static double[][][][] clone(double[][][][] M) {
+		double[][][][] copy = new double[M.length][][][];
+		for (int i = 0; i < M.length; i++) {
+			copy[i] = clone(M[i]);
+		}
+		return copy;
+	}
 
 	public static float[] clone(float[] x) {
 		float[] y = new float[x.length];
 		assign(y, x);
 		return y;
 	}
-	
+
 	public static void assign(float[] y, float[] x) {
 		if (x.length != y.length)
 			throw new RuntimeException("diff lengths: " + x.length + " "
@@ -504,37 +514,37 @@ public class DoubleArrays {
 		System.arraycopy(x, 0, y, 0, x.length);
 	}
 
-  public static float[][] clone(float[][] M) {
-    float[][] copy = new float[M.length][];
-    for (int i = 0; i < M.length; i++) {
-      copy[i] = clone(M[i]);
-    }
-    return copy;
-  }
+	public static float[][] clone(float[][] M) {
+		float[][] copy = new float[M.length][];
+		for (int i = 0; i < M.length; i++) {
+			copy[i] = clone(M[i]);
+		}
+		return copy;
+	}
 
-  public static float[][][] clone(float[][][] M ) {
-    float[][][] copy = new float[M.length][][];
-    for (int i = 0; i < M.length; i++) {
-      copy[i] = clone(M[i]);
-    }
-    return copy;
-  }
-	  
-  public static float[][][][] clone(float[][][][] M ) {
-    float[][][][] copy = new float[M.length][][][];
-    for (int i = 0; i < M.length; i++) {
-      copy[i] = clone(M[i]);
-    }
-    return copy;
-  }
-  
-  public static double outerProduct(double[][] M, double[] x) {
-    double sum = 0.0;
-    for (int i = 0; i < M.length; i++) {
-      for (int j = 0; j < M[i].length; j++) {
-        sum += M[i][j] * x[i] * x[j];
-      }
-    }
-    return sum;
-  }
+	public static float[][][] clone(float[][][] M) {
+		float[][][] copy = new float[M.length][][];
+		for (int i = 0; i < M.length; i++) {
+			copy[i] = clone(M[i]);
+		}
+		return copy;
+	}
+
+	public static float[][][][] clone(float[][][][] M) {
+		float[][][][] copy = new float[M.length][][][];
+		for (int i = 0; i < M.length; i++) {
+			copy[i] = clone(M[i]);
+		}
+		return copy;
+	}
+
+	public static double outerProduct(double[][] M, double[] x) {
+		double sum = 0.0;
+		for (int i = 0; i < M.length; i++) {
+			for (int j = 0; j < M[i].length; j++) {
+				sum += M[i][j] * x[i] * x[j];
+			}
+		}
+		return sum;
+	}
 }
