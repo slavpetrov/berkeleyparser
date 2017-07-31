@@ -226,12 +226,18 @@ public class Grammar implements java.io.Serializable {
 			}
 		}
 		for (int state = 0; state < numStates; state++) {
-			UnaryRule[] unaries = this
-					.getClosedViterbiUnaryRulesByParent(state);
-			for (int r = 0; r < unaries.length; r++) {
-				UnaryRule ur = unaries[r];
+			List<UnaryRule> unaries = this.getUnaryRulesByParent(state);
+			for (int r = 0; r < unaries.size(); r++) {
+			        UnaryRule ur = unaries.get(r);
 				out.print(ur.toString());
 			}
+
+			/*UnaryRule[] unaries = this.getClosedViterbiUnaryRulesByParent(state);
+			for (int r = 0; r < unaries.length; r++) {
+			        UnaryRule ur = unaries[r];
+				out.print(ur.toString());
+			}*/
+
 		}
 		out.flush();
 	}
@@ -1639,7 +1645,7 @@ public class Grammar implements java.io.Serializable {
 				}
 				if (maxSumScore > -1) {
 					resultRsum.setScores2(scoresSum);
-					addUnary(resultRsum);
+					// addUnary(resultRsum);
 					closedSumRulesWithParent[parentState].add(resultRsum);
 					closedSumRulesWithChild[childState].add(resultRsum);
 					closedSumPaths[parentState][childState] = bestSumIntermed;
